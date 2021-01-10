@@ -1,0 +1,94 @@
+<body>
+
+    <?php $page = 'home'; include('menu_topo.phtml') ?>
+
+
+    <div class="container mt-4">
+        <form method="post" action="/agendaPaciente">
+        <input name="agendado_por" type='hidden' value=<?=$_SESSION['id']?>>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Paciente</label>
+                    <input name="paciente" type="text" class="form-control" id="Paciente" placeholder="Paciente">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="sus">Cartão do SUS</label>
+                    <input type="text" name="sus" class="form-control sus" placeholder="SUS" id="sus">
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group col-md-7">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Médico</label>
+                        </div>
+                        <select name="medico_id" class="custom-select" id="medico">
+                        <?php foreach ($this->view->medicos as $key => $medico) {?>
+                            <option value=<?=$medico['id']?>><?=$medico['nome']?></option>
+                        <?php }?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Horário</label>
+                        </div>
+                        <select name="horario" class="custom-select" id="horario">
+                            <option value="070000">07:00</option>
+                            <option value="120000">12:00</option>
+                            <option value="140000">14:00</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <input name="prontuario" type="text" class="form-control prontuario" id="prontuario" placeholder="Prontuário" onsubmit="formatarCampos()">
+                </div>
+
+            </div>
+
+            <?php
+            if($this->view->agendado == 's'){?>
+                <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Paciente agendado com sucesso!</strong> 
+                </div>
+                
+                <script>
+                  $(".alert").alert();
+                </script>
+            <?php }else if($this->view->agendado == 'n'){?>
+                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Não foi possivel realizar o agendamento, preencha todos os campos</strong> 
+                </div>
+                
+                <script>
+                  $(".alert").alert();
+                </script>
+            <?php }?>
+
+            <div id="calendario">
+                <div id="calendar"></div>
+                <input type="hidden" id='dia' class="dataCompleta" name="dia" value="">
+            </div>
+
+            <div class="form-row justify-content-center mt-4">
+                <button name="pacienteAgendado" type="submit" class="btn btn-primary">Agendar Paciente</button>
+            </div>
+        </form>
+    </div> 
+
+
+
+
+</body>
+

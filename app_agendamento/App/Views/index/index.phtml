@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../css/stylesheet.css" type="text/css">
+    <title>Página de Login - Agendamento Cardoso Fontes</title>
+</head>
+
+<body>
+
+    <div class="row align-items-center" id="fundoTela">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 display-2 p-2 text-center bg-white mb-4">
+                    Sistema de Agendamento de consultas Cardoso Fontes
+                </div>
+            </div>
+
+            <div class="row justify-content-center align-items-center">
+                <div class="col-6">
+                    <h1 class="display-4">Digite seu login e senha para acessar a agenda</h1>
+                </div>
+                <div class="col-6 p-4" id="fundoLogin">
+                    <form action="autenticar" method="post">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class='text-white'>Endereço de E-mail</label>
+                            <input type="text" name="email" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" class='text-white'>Senha</label>
+                            <input name="senha" type="password" class="form-control" id="exampleInputPassword1">
+                        </div>
+
+                        <?php if(isset($_GET['login']) && $_GET['login'] == 'erro'){?>
+                        <div class="row">
+                            <div class="alert col-md-6 ml-3 text-nowrap alert-danger text-center" role="alert">
+                                Usuário ou senha inválidos
+                            </div>
+                        </div>
+                        <?php } ?>
+
+                        <?php if(isset($_GET['login']) && $_GET['login'] == 'erro2'){?>
+
+                        <div class="row justify-content-center">
+                            <div class="alert col-md-10  text-md-nowrap alert-danger text-md-center" role="alert">
+                                Entre com o seu login e senha antes de acessar esta página.
+                            </div>
+                        </div>
+                        <?php }?>
+
+
+                        <div class="row justify-content-end">
+                            <button type="submit" class="btn btn-primary mr-3">Entrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+</body>
+
+</html>
