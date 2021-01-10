@@ -54,6 +54,12 @@ class Route extends Bootstrap{
             'action' => 'cadastraFuncionario'
         );
 
+        $routes['upload_foto'] = array(
+            'route' => '/upload_foto',
+            'controller' => 'AppController',
+            'action' => 'fazerUpload'
+        );
+
         $routes['lista_funcionarios'] = array(
             'route' => '/lista_funcionarios',
             'controller' => 'AppController',

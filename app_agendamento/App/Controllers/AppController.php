@@ -69,13 +69,16 @@ class AppController extends Action{
         
         $funcionario = Container::getModel('Usuario');
 
-        $funcionario->__set('email', $_POST['email']);
-        $funcionario->__set('senha', $_POST['senha']);
-        $funcionario->__set('nome', $_POST['nome']);
-        $funcionario->__set('telefone', $_POST['telefone']);
-        $funcionario->__set('id_setor', $_POST['id_setor']);
+        if($_POST['email'] != '' && $_POST['senha'] != '' && $_POST['nome'] != '' && $_POST['telefone'] != '' && $_POST['id_setor'] != ''){
+            $funcionario->__set('email', $_POST['email']);
+            $funcionario->__set('senha', $_POST['senha']);
+            $funcionario->__set('nome', $_POST['nome']);
+            $funcionario->__set('telefone', $_POST['telefone']);
+            $funcionario->__set('id_setor', $_POST['id_setor']);
         
-        $funcionario->cadastraFuncionario();
+            $funcionario->cadastraFuncionario();
+        }
+        
 
         $this->view->setores = $funcionario->listaSetores();
 
@@ -85,6 +88,27 @@ class AppController extends Action{
     public function listaFuncionarios(){
         $funcionario = Container::getModel('Usuario');
         echo json_encode($funcionario->listaFuncionarios());
+    }
+
+    public function fazerUpload(){
+        $formatos_permitidos = array('gif', 'jpg', 'jpeg', 'png');
+        $extensao = pathinfo($_FILES['arquivo']['name'], PATHINFO_EXTENSION );
+    
+        if(in_array($extensao, $formatos_permitidos)){
+            $pasta = "img/avatar/";
+            $temporario = $_FILES['arquivo']['tmp_name'];
+            $novo_nome = uniqid().".$extensao";
+
+            if(move_uploaded_file($temporario, $pasta.$novo_nome)){
+                $mensagem = "Upload Feito com sucesso";
+            }else{
+                $mensagem = "Erro! Não foi possível realizar o upload";  
+            }
+
+            echo $mensagem;
+        }else{
+            $mensagem = "Formato inválido";
+        }
     }
 
     public function agendaPaciente(){

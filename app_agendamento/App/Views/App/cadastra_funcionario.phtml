@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                         </form>
-                        <form id="form_arquivo" enctype="multipart/form-data">
+                        <form id="form_arquivo" enctype="multipart/form-data" method="post" action="/upload_foto">
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">Foto de perfil</label>
                                 <input class="form-control" name="arquivo" type="file" id="formFile">
@@ -93,12 +93,13 @@
         </table>
     </div>
 </body>
+
 <script>
 //essa rotina acontece quando o cadastro é realizado
 var armazenaIds = []
 $("#form_cadastro").submit(function(e) {
     e.preventDefault();
-    //$("#form_arquivo").submit();
+    $('#form_arquivo').submit();
     $('#exampleModal').modal('toggle');
     $.ajax({
         type: "POST",
@@ -111,40 +112,44 @@ $("#form_cadastro").submit(function(e) {
     });
 });
 
-$(document).ready(function () {
+$(document).ready(function() {
     listarRegistros();
 });
 
+$('#form_arquivo').submit(function (e) { 
+    e.preventDefault();
+});
 
-function listarRegistros(){
-    $.getJSON("lista_funcionarios", function (response) {
-            $("#tabela").html('');
-            response.forEach(function(r, index) {
 
-                let deleteButton = '\n'+
-                '<td>\n'+
-                '<button onclick="deletar_funcionario('+r['id']+')" id="botao_delete_'+r['id']+'" class="btn btn-sm btn-primary">\n'+
-                '<i class="fas fa-trash-alt"></i>\n'+
-                '</button>\n'+
+function listarRegistros() {
+    $.getJSON("lista_funcionarios", function(response) {
+        $("#tabela").html('');
+        response.forEach(function(r, index) {
+
+            let deleteButton = '\n' +
+                '<td>\n' +
+                '<button onclick="deletar_funcionario(' + r['id'] + ')" id="botao_delete_' + r['id'] +
+                '" class="btn btn-sm btn-primary">\n' +
+                '<i class="fas fa-trash-alt"></i>\n' +
+                '</button>\n' +
                 '</td>'
 
 
-                let row = '<tr><th scope="row">' + (index + 1) + '</th><td>' + r['nome'] +
-                    '</td><td>' + r['email'] + '</td><td>' + r['telefone'] + '</td><td>' +
-                    r['setor'] + '</td><td>' + deleteButton + '</td></tr>';
+            let row = '<tr><th scope="row">' + (index + 1) + '</th><td>' + r['nome'] +
+                '</td><td>' + r['email'] + '</td><td>' + r['telefone'] + '</td><td>' +
+                r['setor'] + '</td><td>' + deleteButton + '</td></tr>';
 
-                $("#tabela").append(row);
-            });
-        }
-    );
+            $("#tabela").append(row);
+        });
+    });
 }
 
-function deletar_funcionario(id){
-    
-    $.get("/acao?action=delete&id="+id, function (data) {
+function deletar_funcionario(id) {
+
+    $.get("/acao?action=delete&id=" + id, function(data) {
         listarRegistros();
-        }
-    );
+    });
 }
+
 
 </script>
