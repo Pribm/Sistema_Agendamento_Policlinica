@@ -73,11 +73,11 @@ input:focus, textarea:focus, button:focus {
     -webkit-transform: translate(100%, 0);
         -ms-transform: translate(100%, 0);
             transform: translate(100%, 0);
-    background-color: #8773c1;
+    background-color: #3c77f5;
     padding: 10px 8px;
     cursor: pointer;
-    -webkit-box-shadow: 5px 0 18px -3px #8773c1;
-            box-shadow: 5px 0 18px -3px #8773c1;
+    -webkit-box-shadow: 5px 0 18px -3px #7395c1;
+            box-shadow: 5px 0 18px -3px #7388c1;
 }
 
 .calendar-sidebar > .calendar-year {
@@ -132,10 +132,10 @@ input:focus, textarea:focus, button:focus {
     font-size: 16px;
 }
 .calendar-sidebar > .month-list > .calendar-months > li:hover {
-    background-color: #a692e0;
+    background-color: #6aa0f1;
 }
 .calendar-sidebar > .month-list > .calendar-months > li.active-month {
-    background-color: #755eb5;
+    background-color: #1555b4;
 }
 
 .calendar-inner {
@@ -187,7 +187,7 @@ th[colspan="7"] {
     text-transform: uppercase;
     font-weight: 600;
     font-size: 30px;
-    color: #8773c1;
+    color: #3c77f5;
 }
 th[colspan="7"]::after {
     content: '';
@@ -250,11 +250,11 @@ tr.calendar-body .calendar-day .day.calendar-active:hover {
 
 tr.calendar-body .calendar-day .day.calendar-today {
     color: #fff;
-    background-color: #8773c1;
+    background-color: #376ccf;
 }
 tr.calendar-body .calendar-day .day.calendar-today:hover {
     color: #fff;
-    background-color: #755eb5;
+    background-color: #3b7fce;
 }
 tr.calendar-body .calendar-day .day[disabled] {
     pointer-events: none;
@@ -304,10 +304,10 @@ tr.calendar-body .calendar-day .day[disabled] {
     height: 40px;
     top: 0;
     right: 0;
-    background-color: #8773c1;
+    background-color: #739bc1;
     padding: 10px;
     cursor: pointer;
-    -webkit-box-shadow: 5px 0 18px -3px #8773c1;
+    -webkit-box-shadow: 5px 0 18px -3px #3882f1;
             box-shadow: 5px 0 18px -3px #8773c1;
     z-index: 1;
 }
@@ -323,7 +323,7 @@ tr.calendar-body .calendar-day .day[disabled] {
 }
 .event-list > .event-empty > p {
     margin: 0;
-    color: #755eb5;
+    color: #4071f7;
 }
 .event-container {
     position: relative;
@@ -770,7 +770,7 @@ button.icon-button > span.chevron-arrow-right {
         position: relative;
         padding: 10px 20px;
         text-align: center;
-        background-color: #8773c1;
+        background-color: #1a84db;
         -webkit-box-shadow: 0 3px 8px -3px rgba(53, 43, 80, 0.65);
                 box-shadow: 0 3px 8px -3px rgba(53, 43, 80, 0.65);
     }
@@ -791,7 +791,7 @@ button.icon-button > span.chevron-arrow-right {
         width: 100%;
         height: calc(100% - 43px);
         overflow-y: auto;
-        background-color: #8773c1;
+        background-color: #246ddb;
         -webkit-transform: translateY(0);
             -ms-transform: translateY(0);
                 transform: translateY(0);
