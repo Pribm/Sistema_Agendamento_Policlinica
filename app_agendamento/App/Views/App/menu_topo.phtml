@@ -33,6 +33,15 @@
                 value="3">Cadastrar Funcionário</a>
         </li>
         <?php }?>
+
+        <?php if(isset($_SESSION['setor']) && $_SESSION['setor'] != 'Diretoria'){?>
+        <li class="nav-item">
+            <a href="/configurar_conta"
+                class="nav-link btn <?php if($page == 'configurarDados'){echo 'active';}?> text-nowrap"
+                value="3">Alterar Informaçoes pessoais</a>
+        </li>
+        <?php }?>
+
         <li class="ml-4">
             <img class="rounded-circle img-thumbnail">
             <p><?=$_SESSION['nome']?></p>

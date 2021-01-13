@@ -22,11 +22,15 @@
 </head>
 
 <body>
+<div class="allButFooter">
     <?= $this->content()?>
+</div>
 
+    <?php if(isset($_SESSION['nome'])){?>
     <footer class="bg-primary text-center text-white mt-4 p-4">
     &#169; Aplicação desenvolvida por <br> Paulo Vinícius Ribeiro Monteiro - 2021
     </footer>
+    <?php }?>
     <script src="js/spectrum.min.js"></script>
     <script src="js/cleave.min.js"></script>
     <script type="text/javascript" src="../js/evo-calendar.min.js"></script>

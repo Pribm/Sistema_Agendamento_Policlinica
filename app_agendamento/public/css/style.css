@@ -1,3 +1,7 @@
+.allButFooter {
+    min-height: calc(100vh - 115px); 
+}
+
 a:hover{
     text-decoration: none;
 }
@@ -10,5 +14,17 @@ a:hover{
 .calendar-sidebar{
     background-color: rgb(32, 121, 255);
 }
+
+#fundoTela{
+    background: url("../img/Pneumologia.jpg") no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+#fundoLogin{
+    background-color: rgba(0, 99, 199, 0.315);
+}
+
+
 
 

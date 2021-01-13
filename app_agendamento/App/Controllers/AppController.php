@@ -12,7 +12,7 @@ class AppController extends Action{
     //as funções dessa classe equivalem as actions estabelecidas dentro da rota
     public function navAgendaPaciente(){
         $this->validaAutenticacao();
-        $this->view->agendado = '';
+        $this->view->status = '';
 
         $medicos = Container::getModel('Usuario');
         $this->view->medicos = $medicos->listaMedicos();
@@ -27,8 +27,6 @@ class AppController extends Action{
         $this->view->medicos = $usuario->listaMedicosAtivosInativos();
 
         $this->view->agendamentos = $usuario->listaAgendamentos();
-
-        //print_r($usuario->listaAgendamentos());
 
         $this->render('agenda_dia', 'layout');
     }
@@ -111,31 +109,51 @@ class AppController extends Action{
         }
     }
 
+    public function confirmacaoAgendamento(){
+        $this->validaAutenticacao();
+        $response['post'] = $_POST;
+        $paciente = Container::getModel('Consulta');
+
+        $paciente->__set('medico_id',$_POST['medico_id']);
+        $paciente->__set('dia',$_POST['dia']);
+
+        $contaPac = $paciente->contaAtendidos();
+
+    if($_POST['paciente'] != '' && $_POST['medico_id'] != '' && $_POST['prontuario'] != '' && $_POST['sus'] != '' && $_POST['horario'] != '' && $_POST['dia'] != ''){    
+        if($contaPac['dia'] < 16){
+            $response['mensagem'] = 'Gostaria de confirmar o agendamento?';
+            $response['status'] = 0;
+        }else{
+            $response['mensagem'] = 'Numero de agendamentos dessa data superior ao permitido! Gostaria de inserir como Extra?';
+            $response['status'] = 1;
+        }
+    }else{
+        $response['mensagem'] = 'Não é possível realizar o agendamento, por favor preencha todos os campos';
+        $response['status'] = 2;
+    }
+        echo json_encode($response);
+    }
+
     public function agendaPaciente(){
         $this->validaAutenticacao();
-
+        $dados_salvos = json_decode($_POST['save_data']);
+        
+       
         $paciente = Container::getModel('Consulta');
-        
         $medicos = Container::getModel('Usuario');
-        $this->view->medicos = $medicos->listaMedicos();
 
-        if($_POST['paciente'] != '' && $_POST['medico_id'] != '' && $_POST['prontuario'] != '' && $_POST['sus'] != '' && $_POST['horario'] != '' && $_POST['dia'] != ''){
-            $paciente->__set('paciente',$_POST['paciente']);
-            $paciente->__set('medico_id',$_POST['medico_id']);
-            $paciente->__set('prontuario',$_POST['prontuario']);
-            $paciente->__set('sus',$_POST['sus']);
-            $paciente->__set('horario',$_POST['horario']);
-            $paciente->__set('dia',$_POST['dia']);
-            $paciente->__set('agendado_por',$_POST['agendado_por']);
+            $paciente->__set('paciente',$dados_salvos->paciente);
+            $paciente->__set('medico_id',$dados_salvos->medico_id);
+            $paciente->__set('prontuario',$dados_salvos->prontuario);
+            $paciente->__set('sus',$dados_salvos->sus);
+            $paciente->__set('horario',$dados_salvos->horario);
+            $paciente->__set('dia',$dados_salvos->dia);
+            $paciente->__set('agendado_por',$dados_salvos->agendado_por);
+            $paciente->agendaPaciente($_POST['status']);
 
-            $this->view->agendado = 's';
+        $response['mensagem'] = 'Paciente agendado com sucesso';
 
-            $paciente->agendaPaciente();
-        }else{
-            $this->view->agendado = 'n';
-        }
-        
-        $this->render('agenda_paciente', 'layout');
+        echo json_encode($response);
     }
 
 
@@ -175,10 +193,6 @@ class AppController extends Action{
 
     public function filtrarRelatorio(){
 
-       /* echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';*/
-        
         $dates = FormInputFunctions::getDatesFromRange(date($_POST['data_inicio']), date($_POST['data_fim']));
         $atendidos = Container::getModel('Relatorio_Atendidos');
 
@@ -244,6 +258,5 @@ class AppController extends Action{
         }
     }
 
-  
 }
 ?>

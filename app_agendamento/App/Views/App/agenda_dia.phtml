@@ -1,173 +1,179 @@
-<body>
-
+<div>
     <?php  $page = 'agendaDia'; include('menu_topo.phtml') ?>
 
-    <div class="row">
-        <div class="col-md-12 ">
-            <h1 class="display-4 text-center">Selecione o agendamento do dia desejado</h1>
-        </div>
+<div class="row">
+    <div class="col-md-12 ">
+        <h1 class="display-4 text-center">Selecione o agendamento do dia desejado</h1>
     </div>
+</div>
 
-    <div class="container mt-4">
 
-        <form id="form_filtro" class="form-group ">
+<div class="container mt-4">
 
-            <div class="d-flex flex-wrap flex-md-nowrap justify-content-around">
+    <form id="form_filtro" class="form-group ">
 
-                <input type="text" name="paciente" placeholder="paciente" class="form-control col-12 col-md-8 mr-md-2">
+        <div class="d-flex flex-wrap flex-md-nowrap justify-content-around">
 
-                <input type="text" name="prontuario" placeholder="prontuario"
-                    class="form-control flex-nowrap col-12 mt-md-0 mt-2 col-md-4">
+            <input type="text" name="paciente" placeholder="paciente" class="form-control col-12 col-md-8 mr-md-2">
+
+            <input type="text" name="prontuario" placeholder="prontuario"
+                class="form-control flex-nowrap col-12 mt-md-0 mt-2 col-md-4">
+        </div>
+
+
+        <div class="d-flex flex-wrap flex-md-nowrap justify-content-around mt-2">
+
+            <div class="col-md-6 ">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Médico</label>
+                    </div>
+                    <select name="medico" class="custom-select" id="medico">
+                        <option value=''>--------------------------------------------------</option>
+
+                        <?php foreach ($this->view->medicos as $key => $medico) {?>
+                        <option value=<?=$medico['id']?>><?=$medico['nome']?></option>
+                        <?php }?>
+
+
+                    </select>
+                </div>
             </div>
 
+            <div class="col-md-2">
+                <div class="input-group">
 
-            <div class="d-flex flex-wrap flex-md-nowrap justify-content-around mt-2">
-
-                <div class="col-md-6 ">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect01">Médico</label>
-                        </div>
-                        <select name="medico" class="custom-select" id="medico">
-                            <option value=''>--------------------------------------------------</option>
-
-                            <?php foreach ($this->view->medicos as $key => $medico) {?>
-                            <option value=<?=$medico['id']?>><?=$medico['nome']?></option>
-                            <?php }?>
-
-
-                        </select>
-                    </div>
+                    <select name="horario" class="custom-select" id="horario">
+                        <option value="">----------------------</option>
+                        <option value="070000">07:00</option>
+                        <option value="120000">12:00</option>
+                        <option value="140000">14:00</option>
+                    </select>
                 </div>
+            </div>
 
-                <div class="col-md-2">
-                    <div class="input-group">
-
-                        <select name="horario" class="custom-select" id="horario">
-                            <option value="070000">07:00</option>
-                            <option value="120000">12:00</option>
-                            <option value="140000">14:00</option>
-                        </select>
-                    </div>
-                </div>
-
-                <input class="form-control col-md-3 mb-2" name="data" id="data" type="date">
-                <button id="buscar" form="form_filtro" type="submit" class="mb-2 btn btn-sm btn-primary "><i
-                        class="fas fa-search "></i></button>
-        </form>
-    </div>
-    </div>
+            <input class="form-control col-md-3 mb-2" name="data" id="data" type="date">
+            <button id="buscar" form="form_filtro" type="submit" class="mb-2 btn btn-sm btn-primary "><i
+                    class="fas fa-search "></i></button>
+    </form>
+</div>
 
 
-    <div class="container">
-        <table class='table table-hover'>
-            <thead>
-                <tr>
-                    <th class="align-middle text-center" style="width:2%" scope="col">#</th>
-                    <th class="align-middle text-center table-info" style="width:5%" scope="col">Dia</th>
-                    <th class="align-middle text-center table-secondary" style="width:5%" scope="col">Prontuário</th>
-                    <th class="align-middle text-center table-info" style="width:35%" scope="col">Paciente</th>
-                    <th class="align-middle text-center table-secondary" style="width:20%" scope="col">Médico</th>
-                    <th class="align-middle text-center table-info" style="width:10%" scope="col">Horário</th>
-                    <th class="align-middle text-center table-secondary" style="width:15%" scope="col">Agendado por:
-                    </th>
-                    <th class="align-middle text-center table-info" style="width:10%" scope="col">Atendido</th>
-                </tr>
-            </thead>
 
-            <tbody class="tabelaAgendamento" class="m-4">
+<div class="container">
+    <table class='table table-hover'>
+        <thead>
+            <tr>
+                <th class="align-middle text-center" style="width:2%" scope="col">#</th>
+                <th class="align-middle text-center table-info" style="width:5%" scope="col">Dia</th>
+                <th class="align-middle text-center table-secondary" style="width:5%" scope="col">Prontuário
+                </th>
+                <th class="align-middle text-center table-info" style="width:35%" scope="col">Paciente</th>
+                <th class="align-middle text-center table-secondary" style="width:20%" scope="col">Médico</th>
+                <th class="align-middle text-center table-info" style="width:10%" scope="col">Horário</th>
+                <th class="align-middle text-center table-secondary" style="width:15%" scope="col">Agendado por:
+                </th>
+                <th class="align-middle text-center table-info" style="width:10%" scope="col">Atendido</th>
+            </tr>
+        </thead>
+
+        <tbody class="tabelaAgendamento" class="m-4">
 
 
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
 
 
 
 
-    <script>
-    $(document).ready(function() {
+<script>
+$(document).ready(function() {
+    $('#form_filtro').submit(function(e) {
+        e.preventDefault();
 
-        $('#form_filtro').submit(function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: '/filtra_agendamento',
-                type: 'POST',
-                data: $(this).serialize(),
-                dataType: 'json'
-            }).done(function(response) {
-                let agendamentosFiltrados = response.filtro_array;
-                //console.log(response.filtro_array);
-                $('.tabelaAgendamento').html('');
+        $.ajax({
+            url: '/filtra_agendamento',
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'json'
+        }).done(function(response) {
+            let agendamentosFiltrados = response.filtro_array;
+            //console.log(response.filtro_array);
+            $('.tabelaAgendamento').html('');
 
 
-                agendamentosFiltrados.forEach(function(agendamento, a) {
+            agendamentosFiltrados.forEach(function(agendamento, a) {
 
-                    let tr = $(document.createElement('tr'));
+                let tr = $(document.createElement('tr'));
 
-                    var botaoAtendido;
+                var botaoAtendido;
 
-                    if (agendamento['atendimento_realizado'] == '1') {
-                        botaoAtendido = '<button type="submit" form="paciente_' +
-                            agendamento['id'] +
-                            '" class="btn btn-sm btn-success mt-3 py-3">Atendido</button>';
-                    } else {
-                        botaoAtendido = '<button type="submit" form="paciente_' +
-                            agendamento['id'] +
-                            '" class="btn btn-sm btn-danger">Não Atendido</button>';
-                    }
-
-                    let row = $('.tabelaAgendamento').append(tr);
-                    row.addClass('align-middle');
-                    row.append('<th class="align-middle">' + (a + 1) +
-                        '</th><th class="align-middle">' + agendamento['dia'] +
-                        '</th>' +
-                        '<th class="align-middle text-center">' + agendamento[
-                            'prontuario'] + '</th>' +
-                        '<th class="align-middle text-center">' + agendamento[
-                            'paciente'] + '</th>' +
-                        '<th class="align-middle text-center">' + agendamento[
-                            'medico'] + '</th>' +
-                        '<th class="align-middle text-center">' + agendamento[
-                            'horario'] + '</th>' +
-                        '<th class="align-middle text-center">' + agendamento[
-                            'solicitante'] +
-                        '</th> <th class="align-middle text-center"><form id="paciente_' +
+                if (agendamento['atendimento_realizado'] == '1') {
+                    botaoAtendido = '<button type="submit" form="paciente_' +
                         agendamento['id'] +
-                        '"><input type="hidden" name="action" value="atender"><input type="hidden" name="id" value="' +
-                        agendamento['id'] + '">' + botaoAtendido + '</form></th>'
-                    );
-                    //
-                    //cria um form com um botão pra cada linha
-                    //cria um input-id e submete
-                    //faz o mesmo processo anterior de selecionar o id do form por ajax
+                        '" class="btn btn-sm btn-success mt-3 py-3">Atendido</button>';
+                } else {
+                    botaoAtendido = '<button type="submit" form="paciente_' +
+                        agendamento['id'] +
+                        '" class="btn btn-sm btn-danger">Não Atendido</button>';
+                }
 
-                    if (agendamento['atendimento_realizado'] != '1') {
-                        $('#paciente_' + agendamento['id']).submit(function(e) {
-                            e.preventDefault();
-                            $.ajax({
-                                type: "GET",
-                                url: "/acao",
-                                data: $(this).serialize(),
-                                dataType: "json",
-                                success: function(response) {
-                                    if (response['atendido'] ===
-                                        's') {
-                                        $('#form_filtro').submit();
-                                    }
+                if (agendamento['extra'] == 1) {
+                    var status = ' (EXTRA)';
+                } else {
+                    status = ''
+                }
+
+                let row = $('.tabelaAgendamento').append(tr);
+                row.addClass('align-middle');
+                row.append('<th class="align-middle">' + (a + 1) +
+                    '</th><th class="align-middle">' + agendamento['dia'] +
+                    '</th>' +
+                    '<th class="align-middle text-center">' + agendamento[
+                        'prontuario'] + '</th>' +
+                    '<th class="align-middle text-center">' + agendamento[
+                        'paciente'] + status + '</th>' +
+                    '<th class="align-middle text-center">' + agendamento[
+                        'medico'] + '</th>' +
+                    '<th class="align-middle text-center">' + agendamento[
+                        'horario'] + '</th>' +
+                    '<th class="align-middle text-center">' + agendamento[
+                        'solicitante'] +
+                    '</th> <th class="align-middle text-center"><form id="paciente_' +
+                    agendamento['id'] +
+                    '"><input type="hidden" name="action" value="atender"><input type="hidden" name="id" value="' +
+                    agendamento['id'] + '">' + botaoAtendido + '</form></th>'
+                );
+                //
+                //cria um form com um botão pra cada linha
+                //cria um input-id e submete
+                //faz o mesmo processo anterior de selecionar o id do form por ajax
+
+                if (agendamento['atendimento_realizado'] != '1') {
+                    $('#paciente_' + agendamento['id']).submit(function(e) {
+                        e.preventDefault();
+                        $.ajax({
+                            type: "GET",
+                            url: "/acao",
+                            data: $(this).serialize(),
+                            dataType: "json",
+                            success: function(response) {
+                                if (response['atendido'] ===
+                                    's') {
+                                    $('#form_filtro').submit();
                                 }
-                            });
+                            }
                         });
-                    } else {
-                        $('#paciente_' + agendamento['id']).submit(function(e) {
-                            return false;
-                        });
-                    }
-                });
+                    });
+                } else {
+                    $('#paciente_' + agendamento['id']).submit(function(e) {
+                        return false;
+                    });
+                }
             });
         });
     });
-    </script>
-
-</body>
+    $('#form_filtro').submit();
+});
+</script>
