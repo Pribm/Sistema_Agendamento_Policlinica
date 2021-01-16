@@ -1,140 +1,284 @@
 
 
+
+
     <?php $page = 'home'; include('menu_topo.phtml') ?>
 
 
+
+
+
     <div class="container mt-4">
+
         <form id="agendar_paciente">
+
             <input name="agendado_por" type='hidden' value=<?=$_SESSION['id']?>>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="inputEmail4">Paciente</label>
-                    <input name="paciente" type="text" class="form-control" id="Paciente" placeholder="Paciente">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="sus">Cartão do SUS</label>
-                    <input type="text" name="sus" class="form-control sus" placeholder="SUS" id="sus">
-                </div>
-            </div>
 
             <div class="form-row">
+
+                <div class="form-group col-md-6">
+
+                    <label for="inputEmail4">Paciente</label>
+
+                    <input name="paciente" type="text" class="form-control" id="Paciente" placeholder="Paciente">
+
+                </div>
+
+                <div class="form-group col-md-6">
+
+                    <label for="sus">Cartão do SUS</label>
+
+                    <input type="text" name="sus" class="form-control sus" placeholder="SUS" id="sus">
+
+                </div>
+
+            </div>
+
+
+
+            <div class="form-row">
+
+
 
                 <div class="form-group col-md-7">
+
                     <div class="input-group">
+
                         <div class="input-group-prepend">
+
                             <label class="input-group-text" for="inputGroupSelect01">Médico</label>
+
                         </div>
+
                         <select name="medico_id" class="custom-select" id="medico">
+
                             <?php foreach ($this->view->medicos as $key => $medico) {?>
+
                             <option value=<?=$medico['id']?>><?=$medico['nome']?></option>
+
                             <?php }?>
+
                         </select>
+
                     </div>
+
                 </div>
+
+
 
                 <div class="form-group col-md-2">
+
                     <div class="input-group">
+
                         <div class="input-group-prepend">
+
                             <label class="input-group-text" for="inputGroupSelect01">Horário</label>
+
                         </div>
+
                         <select name="horario" class="custom-select" id="horario">
+
                             <option value="070000">07:00</option>
+
                             <option value="120000">12:00</option>
+
                             <option value="140000">14:00</option>
+
                         </select>
+
                     </div>
+
                 </div>
 
+
+
                 <div class="form-group col-md-3">
+
                     <input name="prontuario" type="text" class="form-control prontuario" id="prontuario"
+
                         placeholder="Prontuário" onsubmit="formatarCampos()">
+
                 </div>
+
             </div>
+
+
+
+
 
 
 
             <div id="calendario">
+
                 <div id="calendar"></div>
+
                 <input type="hidden" id='dia' class="dataCompleta" name="dia" value="">
+
             </div>
+
+
 
             <div class="form-row justify-content-center mt-4">
+
                 <button type="submit" form="agendar_paciente" class="btn btn-primary">Agendar Paciente</button>
+
             </div>
+
         </form>
+
     </div>
+
+
 
     <!-- Modal -->
+
     <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
         <div class="modal-dialog" role="document">
+
             <div class="modal-content">
+
                 <div class="modal-header">
+
                     <h5 class="modal-title">Modal title</h5>
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
                         <span aria-hidden="true">&times;</span>
+
                     </button>
+
                 </div>
+
                 <div class="modal-body">
+
                     <div class="container-fluid" id="mensagem_modal">
+
                         Add rows here
+
                     </div>
+
                 </div>
+
                 <form id="form_confirmacao">
+
                     <div class="modal-footer">
+
                         <input type="hidden" id="save_data" name="save_data">
+
                         <input type="hidden" id="status" name="status">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="button_confirmacao" type="submit" class="btn btn-primary">Save</button>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+
+                        <button id="button_confirmacao" type="submit" class="btn btn-primary">Salvar</button>
+
                     </div>
+
                 </form>
+
             </div>
+
         </div>
+
     </div>
 
+
+
     <script>
+
     $('#agendar_paciente').submit(function(e) {
+
         e.preventDefault();
+
         $("#save_data").val('');
+
         $("#status").val('');
+
         $.ajax({
+
             type: "POST",
+
             url: "/confirma_agendamento",
+
             data: $(this).serialize(),
+
             dataType: "json",
+
             success: function(response) {
+
+           
+
                 $('#mensagem_modal').html(response.mensagem);
+
                 $('#modelId').modal('show');
+
                 if (response.status != 2) {
+
                     $('#button_confirmacao').show();
+
                     $("#save_data").attr('value', JSON.stringify(response.post));
+
                     $("#status").attr('value', response.status);
+
                 } else if (response.status == 2) {
+
                     $('#button_confirmacao').hide();
+
                 }
+
             }
+
         });
+
     });
+
+
 
     $('#form_confirmacao').submit(function(e) {
+
         e.preventDefault();
+
         $.ajax({
+
             type: "POST",
+
             url: "/agendaPaciente",
+
             data: $(this).serialize(),
+
             dataType: "json",
+
             success: function(response) {
+
+          
+
                 $('#mensagem_modal').html(response.mensagem);
+
                 $('#modelId').modal('show');
+
                 $('modal-title').html('Sucesso!')
+
                 $('#button_confirmacao').hide();
+
                 limpaCampos();
+
             }
+
         });
+
     });
 
+
+
     function limpaCampos() {
+
         $('#Paciente').val('');
+
         $('#sus').val('');
+
         $('#prontuario').val('');
+
     }
+
     </script>
+

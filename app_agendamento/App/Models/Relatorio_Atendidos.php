@@ -22,16 +22,23 @@ class Relatorio_Atendidos extends Model{
     }
 
     public function contagemAtendimentosPorDia(){
-        $query = 'SELECT COUNT(id) AS "atendidos" FROM atendimentos_realizados  WHERE (SELECT CAST(hora_dia AS DATE)) = :dia';
+        $query = 'SELECT COUNT(atendimento_realizado) AS "realizados" FROM agendamentos WHERE dia = :dia AND medico_id = :medico_id AND atendimento_realizado = 1';
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':dia', $this->__get('dia'));
+        $stmt->bindValue(':medico_id', $this->__get('medico_id'));
         $stmt->execute();
+        
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 
-        while($results = $stmt->fetch(\PDO::FETCH_ASSOC)){
-            $result[] = $results;
-        }
-
-        return $result;
+    public function contagemExtrasPorDia(){
+        $query = 'SELECT COUNT(extra) AS "extras" FROM agendamentos WHERE dia = :dia AND medico_id = :medico_id AND extra = 1';
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':dia', $this->__get('dia'));
+        $stmt->bindValue(':medico_id', $this->__get('medico_id'));
+        $stmt->execute();
+        
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function contagemAgendamentosPorMedico(){
