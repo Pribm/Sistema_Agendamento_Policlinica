@@ -29,12 +29,6 @@
                             <label class="input-group-text" for="inputGroupSelect01">Médico</label>
                         </div>
                         <select name="medico" class="custom-select" id="medico">
-                            <option value=''>--------------------------------------------------</option>
-
-                            <?php foreach ($this->view->medicos as $key => $medico) {?>
-                            <option value=<?=$medico['id']?>><?=$medico['nome']?></option>
-                            <?php }?>
-
 
                         </select>
                     </div>
@@ -44,10 +38,7 @@
                     <div class="input-group">
 
                         <select name="horario" class="custom-select" id="horario">
-                            <option value="">----------------------</option>
-                            <option value="070000">07:00</option>
-                            <option value="120000">12:00</option>
-                            <option value="140000">14:00</option>
+
                         </select>
                     </div>
                 </div>
@@ -89,6 +80,7 @@
 
     <script>
     $(document).ready(function() {
+
         $('#form_filtro').submit(function(e) {
             e.preventDefault();
 
@@ -177,6 +169,72 @@
                 });
             });
         });
-        $('#form_filtro').submit();
+
+       
+
+        $('#medico').load("lista_funcionarios", function(response) {
+            document.getElementById('medico').innerHTML += '<option value="">------------------------------------------------</option>'
+            let medicos = JSON.parse(response)['medicos'];
+
+            let result = {};
+
+            for (const medico of medicos) {
+                let obj_horario = {
+                    horario: medico.horario,
+                    id_horario: medico.id_horario,
+                    atendimentos: medico.atendimentos
+                };
+                if (result[medico.id]) { // se já existe o id nos resultados, acrescenta os horários
+                    result[medico.id].horarios.push(obj_horario);
+                } else { // se não existe o id nos resultados, cria um novo
+                    result[medico.id] = {
+                        nome: medico.nome,
+                        id: medico.id,
+                        horarios: [obj_horario]
+                    };
+                }
+            }
+
+            result = Object.values(result);
+            console.log(result)
+            result.forEach(r => {
+                document.getElementById('medico').innerHTML += '<option value="' + r['id'] +
+                    '">' +
+                    r['nome'] + '</option>'
+            });
+
+            
+
+            $('#medico').change(function(e) { //toda vez que muda o médico
+                document.getElementById('horario').innerHTML = '<option value="">------------------</option>';
+                ''; //a cada vez que muda, tem que zerar os selects
+                e.preventDefault();
+                result.forEach(r => {
+                    if ($(this).val() == r[
+                        'id']) { //essa lógica muda os médicos horários e atendimentos
+                        for (let i = 0; i < r['horarios'].length; i++) {
+                            
+                            document.getElementById('horario').innerHTML +='<option value="' + r['horarios'][i]['id_horario'] +
+                                '">' +
+                                r['horarios'][i]['horario'] + '</option>';
+
+                            $('#horario').change(function(e) {
+                                if ($('#horario').val() == r.horarios[i]
+                                    .id_horario) {
+                                    $('#atendimentos').val(r.horarios[i]
+                                        .atendimentos)
+                                }
+                            });
+                        }
+                    }
+                });
+                $('#horario').change();
+            });
+
+            $('#medico').change();
+            
+            $('#form_filtro').submit();
+        });
+ 
     });
     </script>

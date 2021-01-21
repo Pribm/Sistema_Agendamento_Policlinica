@@ -1,311 +1,216 @@
-
-
-
-
     <?php $page = 'cadastrarFuncionario'; include_once('menu_topo.phtml'); ?>
-
     <!-- Button trigger modal -->
-
     <div class="container mt-4">
-
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-
             Cadastrar Funcionário
-
         </button>
-
-
-
         <!-- Modal -->
-
-
-
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-
             aria-hidden="true">
-
             <div class="modal-dialog" role="document">
-
                 <div class="modal-content">
-
                     <div class="modal-header">
-
                         <h5 class="modal-title" id="exampleModalLabel">Cadastro de funcionário</h5>
-
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
                             <span aria-hidden="true">&times;</span>
-
                         </button>
-
                     </div>
-
                     <div class="modal-body">
-
-
-
-                        <form id="form_cadastro">
-
+                        <form id="form_cadastro" method="post" action="funcionario_cadastrado">
                             <div class="form-row">
-
                                 <div class="form-group col-md-6">
-
                                     <label for="inputEmail4">Email</label>
-
                                     <input name="email" type="email" class="form-control" id="inputEmail4"
-
                                         placeholder="Email">
-
                                 </div>
-
                                 <div class="form-group col-md-6">
-
                                     <label for="inputPassword4">Senha</label>
-
                                     <input name="senha" type="password" class="form-control" id="inputPassword4"
-
                                         placeholder="Password">
-
                                 </div>
-
                             </div>
-
                             <div class="form-group">
-
                                 <label for="nomeCompleto">Nome Completo</label>
-
                                 <input name="nome" type="text" class="form-control"
-
                                     placeholder="Insira o nome do funcionário">
-
                             </div>
-
-
-
                             <div class="form-row">
-
-                                <div class="form-group col-md-6">
-
+                                <div class="form-group col-md-5">
                                     <label for="telefone">Telefone</label>
-
                                     <input name="telefone" type="text" class="form-control input_phone"
-
                                         placeholder="Telefone">
-
                                 </div>
-
-
-
-                                <div class="form-group col-md-6">
-
+                                <div class="form-group col-md-4">
                                     <label for="setor">Setor</label>
-
-                                    <select class="form-control" name="id_setor">
-
+                                    <select id="setores_select" class="form-control" name="id_setor">
                                         <?php foreach ($this->view->setores as $key => $setor) {?>
-
                                         <option value=<?=$setor['id']?>><?=$setor['setor']?></option>
-
                                         <?php }?>
-
                                     </select>
-
                                 </div>
 
+                                <div class="form-group col-md-3">
+                                    <label for="setor">Horário</label>
+                                    <select id="horarios_select" class="form-control" name="id_horario">
+                                        <?php foreach ($this->view->horarios as $key => $h) {?>
+                                        <option value=<?=$h['id']?>><?=$h['horario']?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
                             </div>
-
                         </form>
-
                         <form id="form_arquivo" enctype="multipart/form-data" method="post" action="/upload_foto">
-
                             <div class="mb-3">
-
                                 <label for="formFile" class="form-label">Foto de perfil</label>
-
                                 <input class="form-control" name="arquivo" type="file" id="formFile">
-
                             </div>
-
                         </form>
-
                         <button form="form_cadastro" type="submit" class="btn btn-primary">Cadastrar</button>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
+    <!----------------------Fim Modal Cadastro---------------------------------->
 
-    <!----------------------Fim Modal Cadastro---------------------------->
 
+
+    <!----------------------Topo da Tabela-------------------------------------->
     <div class="container mt-4">
-
         <table class="table">
-
             <thead>
-
                 <tr>
-
                     <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-
                                 style="color: Dodgerblue;"></button></i>#</th>
-
                     <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-
                                 style="color: Dodgerblue;"></button></i>Nome</th>
-
                     <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-
                                 style="color: Dodgerblue;"></button></i>E-mail</th>
-
                     <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-
                                 style="color: Dodgerblue;"></button></i>Telefone</th>
-
                     <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-
                                 style="color: Dodgerblue;"></button></i>Setor</th>
-
+                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
+                                style="color: Dodgerblue;"></button></i>Horario</th>
                     <th scope="col"></th>
-
                 </tr>
-
             </thead>
-
             <tbody id="tabela">
-
-
-
             </tbody>
-
         </table>
-
     </div>
 
 
-
-
-
-<script>
-
+    <script>
 //essa rotina acontece quando o cadastro é realizado
-
-var armazenaIds = []
-
 $("#form_cadastro").submit(function(e) {
-
     e.preventDefault();
-
     $('#form_arquivo').submit();
-
     $('#exampleModal').modal('toggle');
-
     $.ajax({
-
         type: "POST",
-
         url: "funcionario_cadastrado",
-
         data: $(this).serialize(),
-
         dataType: "json",
-
         success: function(response) {
-
             listarRegistros();
-
         }
-
     });
-
 });
-
-
-
 $(document).ready(function() {
-
     listarRegistros();
-
 });
 
-
-
-$('#form_arquivo').submit(function (e) { 
-
+$('#form_arquivo').submit(function(e) {
     e.preventDefault();
-
 });
-
-
-
 
 
 function listarRegistros() {
-
-   
-
+    
     $.getJSON("lista_funcionarios", function(response) {
-
         $("#tabela").html('');
-
-        response.forEach(function(r, index) {
-
-             //console.log(r)
+        response['todos_funcionarios'].forEach(function(r, index) {
+            //console.log(r)
+            let editButton = '<td>'
+            editButton += '<button onclick="editarFuncionario('+ r['id'] +')" id="botao_editar_' + r['id'] +
+                '" class="btn btn-sm btn-secondary edit">'
+            editButton += '<i class="fas fa-edit"></i>'
+            editButton += '</button>'
+            editButton += '</td>'
+            //console.log(r)
 
             let deleteButton = '\n' +
-
                 '<td>\n' +
-
                 '<button onclick="deletar_funcionario(' + r['id'] + ')" id="botao_delete_' + r['id'] +
-
                 '" class="btn btn-sm btn-primary">\n' +
-
                 '<i class="fas fa-trash-alt"></i>\n' +
-
                 '</button>\n' +
-
                 '</td>'
 
-
-
-
-
-            let row = '<tr><th scope="row">' + (index + 1) + '</th><td>' + r['nome'] +
-
-                '</td><td>' + r['email'] + '</td><td>' + r['telefone'] + '</td><td>' +
-
-                r['setor'] + '</td><td>' + deleteButton + '</td></tr>';
-
-
+            let row = '<tr id="row_funcionario_'+ r['id'] +'">'
+            row += '<th id="row_number_'+ r['id'] +'" scope="row">' + (index + 1) + '</th>'
+            row += '<td id="funcionario_nome_' + r['id'] + '">' + r['nome'] + '</td>'
+            row += '<td id="funcionario_email_' + r['id'] + '">' + r['email'] + '</td>'
+            row += '<td id="funcionario_telefone_' + r['id'] + '">' + r['telefone'] + '</td>'
+            row += '<td id="funcionario_setor_' + r['id'] + '">' + r['setor'] + '</td>'
+            row += '<td id="funcionario_horario_' + r['id'] + '" class="text-center">' + r['horario'] +
+                '</td>'
+            row += '<td id="botoes_'+ r['id'] +'">' + editButton + deleteButton + '</td>'
+            row += '</tr>';
 
             $("#tabela").append(row);
-
         });
-
     });
-
 }
+
+function editarFuncionario(id) {
+
+    let nomeVal = $('#funcionario_nome_'+id).html();
+    let emailVal = $('#funcionario_email_'+id).html();
+    let foneVal = $('#funcionario_telefone_'+id).html();
+    let rowNumber = $('#row_number_'+id).html();
+    let setoresVal = $('#setores_select').html();
+    let horariosVal = $('#horarios_select').html();
+
+    let rowNumberHTML = '<th>'+rowNumber+'</th>';
+    let nomeHTML = '<td><input value="'+nomeVal+'" name="nome" type="text" id="funcionario_nome_'+id+'" class="form-control" form="form_edit_'+id+'"></td>';
+    let emailHTML = '<td><input value="'+emailVal+'" name="email" type="text" id="funcionario_email_'+id+'" class="form-control" form="form_edit_'+id+'"></td>';
+    let foneHTML = '<td><input value="'+foneVal+'" name="fone" type="text" id="funcionario_telefone_'+id+'" class="form-control" form="form_edit_'+id+'"></td>';
+    let hiddenIdHTML = '<input type="hidden" form="form_edit_'+id+'" name="id" value="'+id+'">';
+
+    
+    let setorHTML = '<td><select class="form-control" name="setor" form="form_edit_'+id+'">'+setoresVal+'</select></td>'
+    let horarioHTML = '<td><select class="form-control" name="horario" form="form_edit_'+id+'">'+horariosVal+'</select></td>';
+
+
+    let botaoHTML = '<td><input type="submit" name="action" value="atualizar" id="salvar_modificacao_'+id+'" class="form-control btn-success" form="form_edit_'+id+'"></td>';
+
+
+    $('#row_funcionario_'+id).html('');
+
+    let  form = document.createElement('form');
+    $(form).attr('id', 'form_edit_'+id);
+    $(form).attr('method', 'get');
+    $(form).attr('action', 'acao');
+    $('#row_funcionario_'+id).prepend(form);
+
+    let num = $('#row_funcionario_'+id).append(rowNumberHTML);
+    let nome = $('#row_funcionario_'+id).append(nomeHTML);
+    let email = $('#row_funcionario_'+id).append(emailHTML);
+    let fone = $('#row_funcionario_'+id).append(foneHTML);
+    let setor = $('#row_funcionario_'+id).append(setorHTML);
+    let horario = $('#row_funcionario_'+id).append(horarioHTML);
+    let hiddenId = $('#row_funcionario_'+id).append(hiddenIdHTML);
+    let botao = $('#row_funcionario_'+id).append(botaoHTML);
+}
+
 
 
 
 function deletar_funcionario(id) {
-
-
-
     $.get("/acao?action=delete&id=" + id, function(data) {
-
         listarRegistros();
-
     });
-
 }
-
-
-
-
-
-</script>
+    </script>
