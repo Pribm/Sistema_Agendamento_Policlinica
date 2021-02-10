@@ -1,54 +1,41 @@
+<section class="bg-primary d-flex align-items-center justify-content-center" style="min-height:100vh; background: url('../img/Pneumologia.jpg') no-repeat; background-position: center; background-size: cover;">
+    <div class="container mx-4">
+                <div class="row align-items-center bg-light rounded shadow-sm" style="min-height:50vh;">
+                    <div class="col-12 col-md-7"><!--coluna de email-->
+                        <h1 class="my-4">Login</h1>
+                        <form action="autenticar" method="post">
+                        <div class="form-group my-2">
+                                <label for="helpId">E-mail:</label>
+                                <input type="email" class="form-control" name="email" id="helpId" aria-describedby="helpId"
+                                    placeholder="">
+                            </div>
 
-    <div class="row align-items-center" id="fundoTela">
+                            <div class="form-group my-2">
+                                <label for="senha">Senha:</label>
+                                <input type="password" class="form-control" name="senha" id="senha" placeholder="">
+                            </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-12 display-2 p-2 text-center bg-white mb-4">
-                    Sistema de Agendamento de consultas Cardoso Fontes
-                </div>
-            </div>
-
-            <div class="row justify-content-center align-items-center">
-                <div class="col-6">
-                    <h1 class="display-4">Digite seu login e senha para acessar a agenda</h1>
-                </div>
-                <div class="col-6 p-4" id="fundoLogin">
-                    <form action="autenticar" method="post">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1" class='text-white'>Endereço de E-mail</label>
-                            <input type="text" name="email" class="form-control" id="exampleInputEmail1"
-                                aria-describedby="emailHelp">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1" class='text-white'>Senha</label>
-                            <input name="senha" type="password" class="form-control" id="exampleInputPassword1">
-                        </div>
-
-                        <?php if(isset($_GET['login']) && $_GET['login'] == 'erro'){?>
-                        <div class="row">
-                            <div class="alert col-md-6 ml-3 text-nowrap alert-danger text-center" role="alert">
+                            <?php if(isset($_GET['login']) && $_GET['login'] == 'erro'){?>
+                        
+                            <div class="alert alert-danger text-center" role="alert">
                                 Usuário ou senha inválidos
                             </div>
-                        </div>
                         <?php } ?>
 
                         <?php if(isset($_GET['login']) && $_GET['login'] == 'erro2'){?>
 
-                        <div class="row justify-content-center">
-                            <div class="alert col-md-10  text-md-nowrap alert-danger text-md-center" role="alert">
-                                Entre com o seu login e senha antes de acessar esta página.
+                            <div class="alert alert-danger text-center" role="alert">
+                                Entre com o seu login e senha antes de acessar esta página
                             </div>
-                        </div>
                         <?php }?>
+                        
+                        <button type="submit" class="btn btn-lg btn-primary my-4">Login</button>
+                        </form>
+                    </div>
 
-
-                        <div class="row justify-content-end">
-                            <button type="submit" class="btn btn-primary mr-3">Entrar</button>
-                        </div>
-                    </form>
+                    <div class="col-12 col-md-5">
+                        <img src="img/logo_cardoso_fontes.gif" width="100%" class="bg-light">
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-
+</section>
