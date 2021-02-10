@@ -191,8 +191,8 @@ function editarFuncionario(id) {
 
     let  form = document.createElement('form');
     $(form).attr('id', 'form_edit_'+id);
-    $(form).attr('method', 'get');
-    $(form).attr('action', 'acao');
+    //$(form).attr('method', 'post');
+    //$(form).attr('action', 'acao?action=atualizar&id='+id);
     $('#row_funcionario_'+id).prepend(form);
 
     let num = $('#row_funcionario_'+id).append(rowNumberHTML);
@@ -203,6 +203,19 @@ function editarFuncionario(id) {
     let horario = $('#row_funcionario_'+id).append(horarioHTML);
     let hiddenId = $('#row_funcionario_'+id).append(hiddenIdHTML);
     let botao = $('#row_funcionario_'+id).append(botaoHTML);
+
+    $('#form_edit_'+id).submit(function (e) { 
+        e.preventDefault();
+        
+            $.ajax({
+            type: "POST",
+            url: 'acao?action=atualizar&id='+id,
+            data: $(this).serialize(),
+            success: function(response) {
+                listarRegistros();
+            }
+        });
+    });
 }
 
 

@@ -95,7 +95,6 @@ class AppController extends Action{
 
     public function confirmacaoAgendamento(){
         $this->validaAutenticacao();
-      
         $response['post'] = $_POST;
         $paciente = Container::getModel('Consulta');
         $paciente->__set('medico_id',$_POST['medico_id']);
@@ -146,7 +145,17 @@ class AppController extends Action{
             echo json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
         if(isset($_GET['action']) && $_GET['action'] == 'atualizar'){
-            print_r($_GET);
+           // print_r($_POST);
+            
+            $usuario = Container::getModel('Usuario');
+            $usuario->__set('nome',$_POST['nome']);
+            $usuario->__set('email',$_POST['email']);
+            $usuario->__set('telefone',$_POST['fone']);
+            $usuario->__set('id_setor',$_POST['setor']);
+            $usuario->__set('id_horario',$_POST['horario']);
+            $usuario->atualizar($_POST['id']);
+            $this->listaFuncionarios();
+            
         }
     }
 
