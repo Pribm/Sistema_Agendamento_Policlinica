@@ -70,11 +70,32 @@ class AppController extends Action{
     }
 
     public function cadastraProntuario(){
-        /*echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';*/
 
-        echo json_encode($_POST, JSON_UNESCAPED_UNICODE);
+        $prontuario = Container::getModel('Prontuario');
+
+        $prontuario->__set('bairro',  $_POST['bairro']);
+        $prontuario->__set('complemento', $_POST['complemento']);
+        $prontuario->__set('endereco', $_POST['endereco']);
+        $prontuario->__set('estadoCivil', $_POST['estado_civil']);
+        $prontuario->__set('fone', $_POST['telefone']);
+        $prontuario->__set('mae', $_POST['nome_mae']);
+        $prontuario->__set('naturalidade', $_POST['naturalidade']);
+        $prontuario->__set('nome', $_POST['nome']);
+        $prontuario->__set('numero', $_POST['numero']);
+        $prontuario->__set('obs', $_POST['obs']);
+        $prontuario->__set('pai', $_POST['nome_pai']);
+        $prontuario->__set('profissao', $_POST['profissao']);
+        $prontuario->__set('prontuario', $_POST['prontuario']);
+        $prontuario->__set('sexo', $_POST['sexo']);
+        $prontuario->__set('sus', $_POST['sus']);
+
+        if(isset($_POST['nome']) && $_POST['nome'] != '' && isset($_POST['sus']) && $_POST['sus'] != '' && isset($_POST['prontuario']) && $_POST['prontuario'] != ''){
+            $response = ['dados' => $_POST, 'status' => 'sucesso', 'mensagem' => 'Registro inserido com sucesso no banco de dados!'];
+            $prontuario->inserir();
+        }else{
+            $response = ['dados' => '', 'status' => 'erro', 'mensagem' => 'Não foi possível cadastrar estr prontuário, por favor insira os campos requeridos!'];
+        }
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
     }
 
     public function insereHorarioAtendimentos(){

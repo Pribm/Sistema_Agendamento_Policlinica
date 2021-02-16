@@ -27,7 +27,7 @@ require_once('menu_topo.phtml');
 
         <div class="col-md-6 mt-3">
             <label for="mae">Nome da mãe:</label>
-            <input type="text" id="mae" class="form-control" name="nome_mãe">
+            <input type="text" id="mae" class="form-control" name="nome_mae">
         </div>
     </div>
 
@@ -39,7 +39,7 @@ require_once('menu_topo.phtml');
 
         <div class="col-md-2 mt-3">
             <label for="estadoCivil">Estado Civil:</label>
-            <select class="custom-select" id="estadoCivil">
+            <select name="estado_civil" class="custom-select" id="estadoCivil">
                 <option selected>Estado Civil</option>
                 <option value="1">Casado(a)</option>
                 <option value="2">Solteiro(a)</option>
@@ -50,8 +50,8 @@ require_once('menu_topo.phtml');
         </div>
 
         <div class="col-md-2 mt-3">
-        <label for="estadoCivil">Sexo:</label>
-            <select class="custom-select" id="estadoCivil">
+            <label for="estadoCivil">Sexo:</label>
+            <select name="sexo" class="custom-select" id="estadoCivil">
                 <option selected>-----------</option>
                 <option value="1">Masculino</option>
                 <option value="2">Feminino</option>
@@ -61,7 +61,7 @@ require_once('menu_topo.phtml');
 
         <div class="col-md-3 mt-3">
             <label for="profissão">Profissão:</label>
-            <input type="text" id="naturalidade" class="form-control" name="profissão">
+            <input type="text" id="naturalidade" class="form-control" name="profissao">
         </div>
 
         <div class="col-md-3 mt-3">
@@ -73,7 +73,7 @@ require_once('menu_topo.phtml');
     <div class="form-row">
         <div class="col-md-12 mt-3">
             <label for="endereco">Endereço:</label>
-            <input type="text" id="nome" class="form-control" name="endereço">
+            <input type="text" id="nome" class="form-control" name="endereco">
         </div>
     </div>
 
@@ -97,25 +97,50 @@ require_once('menu_topo.phtml');
     <div class="form-row">
         <div class="col-md-12 mt-3">
             <label for="obs">Observação:</label>
-            <textarea class="form-control" id="obs" rows="6"></textarea>
+            <textarea name="obs" class="form-control" id="obs" rows="6"></textarea>
         </div>
     </div>
     <div class="row justify-content-center">
-    <button type="submit" form="cadastrar_prontuario" class="btn btn-primary mt-3">Cadastrar Prontuário</button>
+        <button type="submit" form="cadastrar_prontuario" class="btn btn-primary mt-3">Cadastrar Prontuário</button>
     </div>
 </form>
 
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    $('#cadastrar_prontuario').submit(function (e) { 
-        e.preventDefault();
-        $.ajax({
-            type: "Post",
-            url: "prontuario_cadastrado",
-            data: $(this).serialize(),
-            dataType: "json",
-            success: function (response) {
-                console.log(response)
-            }
-        });
+$('#cadastrar_prontuario').submit(function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "Post",
+        url: "prontuario_cadastrado",
+        data: $(this).serialize(),
+        dataType: "json",
+        success: function(response) {
+            //console.log(response)
+            let modalMsg = document.getElementsByClassName('modal-body');
+            $('#staticBackdropLabel').html(response.status);
+            $(modalMsg).html(response.mensagem);
+            $('#staticBackdrop').modal('show');
+        }
     });
+});
 </script>

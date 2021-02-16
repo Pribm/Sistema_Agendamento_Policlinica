@@ -54,6 +54,12 @@ class Route extends Bootstrap{
             'action' => 'autenticar'
         );
 
+        $routes['prontuario_cadastrado'] = array(
+            'route' => '/prontuario_cadastrado',
+            'controller' => 'AppController',
+            'action' => 'cadastraProntuario'
+        );
+
         $routes['cadastra_funcionario'] = array(
             'route' => '/funcionario_cadastrado',
             'controller' => 'AppController',
