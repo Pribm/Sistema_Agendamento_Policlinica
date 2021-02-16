@@ -8,7 +8,7 @@ class Route extends Bootstrap{
 
     protected function initRoutes(){
 
-        /*----------Rotas de navegação------------*/
+    /*----------Rotas de navegação------------*/
 
         $routes['nav_Home'] = array(
             'route' => '/',
@@ -17,10 +17,9 @@ class Route extends Bootstrap{
             'action' => 'index'
         );
 
-        $routes['nav_Home'] = array(
+        $routes['nav_cadastra_prontuario'] = array(
             'route' => '/cadastrar_prontuario',
             'controller' => 'AppController',
-            //as actions são os métodos contidos dentro da classe dos controladores.
             'action' => 'navCadastrarProntuario'
         );
 
@@ -53,12 +52,6 @@ class Route extends Bootstrap{
             'route' => '/autenticar',
             'controller' => 'AuthController',
             'action' => 'autenticar'
-        );
-
-        $routes['prontuario_cadastrado'] = array(
-            'route' => '/prontuario_cadastrado',
-            'controller' => 'AppController',
-            'action' => 'cadastraProntuario'
         );
 
         $routes['cadastra_funcionario'] = array(

@@ -14,8 +14,6 @@ class AppController extends Action{
 
     public function navCadastrarProntuario(){
         $this->validaAutenticacao();
-        $this->view->status = '';
-        $medicos = Container::getModel('Usuario');
         $this->render('cadastrar_prontuario', 'layout');
     }
 
