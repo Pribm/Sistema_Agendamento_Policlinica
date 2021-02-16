@@ -176,7 +176,7 @@ function editarFuncionario(id) {
     let rowNumberHTML = '<th>'+rowNumber+'</th>';
     let nomeHTML = '<td><input value="'+nomeVal+'" name="nome" type="text" id="funcionario_nome_'+id+'" class="form-control" form="form_edit_'+id+'"></td>';
     let emailHTML = '<td><input value="'+emailVal+'" name="email" type="text" id="funcionario_email_'+id+'" class="form-control" form="form_edit_'+id+'"></td>';
-    let foneHTML = '<td><input value="'+foneVal+'" name="fone" type="text" id="funcionario_telefone_'+id+'" class="form-control" form="form_edit_'+id+'"></td>';
+    let foneHTML = '<td><input value="'+foneVal+'" name="fone" type="text" id="funcionario_telefone_'+id+'" class="form-control input_phone" form="form_edit_'+id+'"></td>';
     let hiddenIdHTML = '<input type="hidden" form="form_edit_'+id+'" name="id" value="'+id+'">';
 
     
@@ -226,4 +226,11 @@ function deletar_funcionario(id) {
         listarRegistros();
     });
 }
+
+let inputFone = new Cleave('.input_phone', {
+    delimiters: ['(',')','-'],
+    numericOnly: true,
+    blocks: [0,2,5, 4]
+});
+
     </script>

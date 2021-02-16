@@ -76,6 +76,8 @@
     </div>
 
     <script>
+
+
 $(document).ready(function() {
 
     $('#medico').load("lista_funcionarios", function(response) {
@@ -187,4 +189,16 @@ function limpaCampos() {
     $('#sus').val('');
     $('#prontuario').val('');
 }
+
+let inputPaciente = new Cleave('.prontuario', {
+    numeralDecimalMark: ',',
+    delimiter: '.',
+    numeral: true,
+    numeralThousandsGroupStyle: 'thousand'
+});
+
+let inputSus = new Cleave('#sus', {
+    blocks: [3, 4, 4, 4]
+});
+
     </script>

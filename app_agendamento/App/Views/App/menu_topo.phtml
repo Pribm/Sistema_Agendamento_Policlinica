@@ -1,53 +1,34 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-    <a class="navbar-brand" href="#">
-        <img src="img/logo_cardoso_fontes.gif" width="65%" height="65%" alt="" loading="lazy">
-    </a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
-        aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+    <a class="navbar-brand" href="#"><img src="img/logo_cardoso_fontes.gif" height="60px" alt="" loading="lazy"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
     </button>
-
-    <ul class="nav collapse navbar-collapse nav-pills d-md-flex flex-md-nowrap justify-content-start justify-content-md-end mt-4 mt-md-0"
-        id="navbarToggler">
-        <li class="nav-item">
-            <a href="/agenda_paciente" class="nav-link <?php if($page == 'home'){echo 'btn-primary';}?> btn text-nowrap"
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav  ml-auto text-right">
+        <a href="/agenda_paciente" class="nav-link <?php if($page == 'home'){echo 'btn-primary text-white';}?> btn-sm align-self-center px-2"
                 value="0">Agendar Consulta</a>
-        </li>
-        <li class="nav-item">
-            <a href="/agenda_dia" class="nav-link btn <?php if($page == 'agendaDia'){echo 'btn-primary';}?> text-nowrap"
+                <a href="/cadastrar_prontuario" class="nav-link <?php if($page == 'cadastrar_prontuario'){echo 'btn-primary text-white';}?> btn-sm text-nowrap align-self-center px-2"
+                value="0">Cadastrar Prontuário</a>
+                <a href="/agenda_dia" class="nav-link btn-sm <?php if($page == 'agendaDia'){echo 'btn-primary text-white';}?> text-nowrap align-self-center px-2"
                 value="1">Visualizar Agenda do dia</a>
-        </li>
-
-        <li class="nav-item">
-            <a href="/relatorio_atendidos"
-                class="nav-link btn <?php if($page == 'relatorio'){echo 'btn-primary';}?> text-nowrap"
+                <a href="/relatorio_atendidos"
+                class="nav-link btn-sm <?php if($page == 'relatorio'){echo 'btn-primary text-white';}?> text-nowrap align-self-center px-2"
                 value="1">Relatório de atendimentos</a>
-        </li>
-
-        <?php if(isset($_SESSION['setor']) && $_SESSION['setor'] == 'Diretoria'){?>
-        <li class="nav-item">
-            <a href="/cadastra_funcionario"
-                class="nav-link btn <?php if($page == 'cadastrarFuncionario'){echo 'active';}?> text-nowrap"
+                <?php if(isset($_SESSION['setor']) && $_SESSION['setor'] == 'Diretoria'){?>
+                <a href="/cadastra_funcionario"
+                class="nav-link btn-sm <?php if($page == 'cadastrarFuncionario'){echo 'btn-primary text-white';}?> text-nowrap align-self-center px-2"
                 value="3">Cadastrar Funcionário</a>
-        </li>
-        <?php }?>
-
-        <?php if(isset($_SESSION['setor']) && $_SESSION['setor'] != 'Diretoria'){?>
-        <li class="nav-item">
-            <a href="/configurar_conta"
-                class="nav-link btn <?php if($page == 'configurarDados'){echo 'active';}?> text-nowrap"
+                <?php }?>
+                <?php if(isset($_SESSION['setor']) && $_SESSION['setor'] != 'Diretoria'){?>
+                <a href="/configurar_conta"
+                class="nav-link btn-sm <?php if($page == 'configurarDados'){echo 'btn-primary text-white';}?> text-nowrap align-self-center px-2"
                 value="3">Alterar Informaçoes pessoais</a>
-        </li>
-        <?php }?>
-
-        <li class="d-flex flex-column align-items-center mt-4">
-            <i class="fa fa-user-circle btn-lg text-primary" aria-hidden="true"></i>
-            <p class="text-primary"><?=$_SESSION['nome']?></p>
-        </li>
-        <li class="nav-item ml-4">
-            <a href="/sair" class="nav-link btn" value="4">Sair<i class="pl-2 fas fa-sign-out-alt"></i></a>
-        </li>
-    </ul>
+                <?php }?>
+                <div class="d-flex flex-column align-items-center">
+                <i class="fa fa-user-circle btn-lg text-primary" aria-hidden="true"></i>
+                <p class="text-primary"><?=$_SESSION['nome']?></p>
+                </div>
+                <a href="/sair" class="nav-link btn" value="4" class=" d-flex flex-column align-items-center"><div>Sair</div><i class="pl-2 fas fa-sign-out-alt"></i></a>
+    </div>
+    </div>
 </nav>

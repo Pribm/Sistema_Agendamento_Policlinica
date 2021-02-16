@@ -12,6 +12,13 @@ class AppController extends Action{
         $this->render('agenda_paciente', 'layout');
     }
 
+    public function navCadastrarProntuario(){
+        $this->validaAutenticacao();
+        $this->view->status = '';
+        $medicos = Container::getModel('Usuario');
+        $this->render('cadastrar_prontuario', 'layout');
+    }
+
     public function navAgendaDia(){
         $this->validaAutenticacao();
         $usuario = Container::getModel('Usuario');
@@ -62,6 +69,14 @@ class AppController extends Action{
         $this->view->setores = $funcionario->listaSetores();
         $this->view->horarios = $funcionario->listaHorarios();
         echo json_encode($funcionario->listaFuncionarios());
+    }
+
+    public function cadastraProntuario(){
+        /*echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';*/
+
+        echo json_encode($_POST, JSON_UNESCAPED_UNICODE);
     }
 
     public function insereHorarioAtendimentos(){
