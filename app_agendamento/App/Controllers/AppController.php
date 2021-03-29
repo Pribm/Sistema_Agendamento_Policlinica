@@ -3,6 +3,9 @@ namespace App\Controllers;
 use MF\Model\Container;
 use MF\Controller\Action;
 use MF\Controller\FormInputFunctions;
+use Dompdf\Dompdf;
+
+
 class AppController extends Action{
     //as funções dessa classe equivalem as actions estabelecidas dentro da rota
     public function navAgendaPaciente(){
@@ -17,11 +20,15 @@ class AppController extends Action{
         $this->render('cadastrar_prontuario', 'layout');
     }
 
+    public function navPesquisarProntuario(){
+        $this->validaAutenticacao();
+        $this->render('pesquisar_prontuario', 'layout');
+    }
+
     public function navAgendaDia(){
         $this->validaAutenticacao();
         $usuario = Container::getModel('Usuario');
-        $this->view->medicos = $usuario->listaMedicosAtivosInativos();
-        $this->view->agendamentos = $usuario->listaAgendamentos();
+        
         $this->render('agenda_dia', 'layout');
     }
 
@@ -67,35 +74,6 @@ class AppController extends Action{
         $this->view->setores = $funcionario->listaSetores();
         $this->view->horarios = $funcionario->listaHorarios();
         echo json_encode($funcionario->listaFuncionarios());
-    }
-
-    public function cadastraProntuario(){
-
-        $prontuario = Container::getModel('Prontuario');
-
-        $prontuario->__set('bairro',  $_POST['bairro']);
-        $prontuario->__set('complemento', $_POST['complemento']);
-        $prontuario->__set('endereco', $_POST['endereco']);
-        $prontuario->__set('estadoCivil', $_POST['estado_civil']);
-        $prontuario->__set('fone', $_POST['telefone']);
-        $prontuario->__set('mae', $_POST['nome_mae']);
-        $prontuario->__set('naturalidade', $_POST['naturalidade']);
-        $prontuario->__set('nome', $_POST['nome']);
-        $prontuario->__set('numero', $_POST['numero']);
-        $prontuario->__set('obs', $_POST['obs']);
-        $prontuario->__set('pai', $_POST['nome_pai']);
-        $prontuario->__set('profissao', $_POST['profissao']);
-        $prontuario->__set('prontuario', $_POST['prontuario']);
-        $prontuario->__set('sexo', $_POST['sexo']);
-        $prontuario->__set('sus', $_POST['sus']);
-
-        if(isset($_POST['nome']) && $_POST['nome'] != '' && isset($_POST['sus']) && $_POST['sus'] != '' && isset($_POST['prontuario']) && $_POST['prontuario'] != ''){
-            $response = ['dados' => $_POST, 'status' => 'sucesso', 'mensagem' => 'Registro inserido com sucesso no banco de dados!'];
-            $prontuario->inserir();
-        }else{
-            $response = ['dados' => '', 'status' => 'erro', 'mensagem' => 'Não foi possível cadastrar estr prontuário, por favor insira os campos requeridos!'];
-        }
-        echo json_encode($response, JSON_UNESCAPED_UNICODE);
     }
 
     public function insereHorarioAtendimentos(){
@@ -170,7 +148,7 @@ class AppController extends Action{
     public function acao(){
         if(isset($_GET['action']) && $_GET['action'] == 'delete'){
             $usuario = Container::getModel('Usuario');
-            $usuario->deletar($_GET['id']);
+            $usuario->deletar($_GET['id'], $_GET['dado']);
         }
         if(isset($_GET['action']) && $_GET['action'] == 'atender'){
             $consulta = Container::getModel('Consulta');
@@ -180,7 +158,6 @@ class AppController extends Action{
         }
         if(isset($_GET['action']) && $_GET['action'] == 'atualizar'){
            // print_r($_POST);
-            
             $usuario = Container::getModel('Usuario');
             $usuario->__set('nome',$_POST['nome']);
             $usuario->__set('email',$_POST['email']);
@@ -189,7 +166,6 @@ class AppController extends Action{
             $usuario->__set('id_horario',$_POST['horario']);
             $usuario->atualizar($_POST['id']);
             $this->listaFuncionarios();
-            
         }
     }
 

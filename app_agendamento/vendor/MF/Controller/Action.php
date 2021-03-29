@@ -29,5 +29,27 @@
 
             require_once '../App/Views/' .$classAtual. '/' . $this->view->page . '.phtml';
         }
+
+        protected function range_limit($current, $total, $limit = 10, $start_at = 1)
+        {
+            $middle = ceil($limit / 2);
+        
+            $current = max($start_at, min($total, $current));
+        
+            $start = $current - $middle;
+        
+            $end = $middle + $current;
+        
+            if ($start <= $start_at) {
+                $start = $start_at;
+                $end = $limit;
+        
+            } elseif ($end >= $total) {
+                $end = $total;
+                $start = $total - $limit;
+            }
+        
+            for ($i = $start; $i <= $end; $i++) yield $i;
+        }
     }
 ?>

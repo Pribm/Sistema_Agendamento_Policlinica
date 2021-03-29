@@ -23,6 +23,12 @@ class Route extends Bootstrap{
             'action' => 'navCadastrarProntuario'
         );
 
+        $routes['nav_pesquisa_prontuario'] = array(
+            'route' => '/pesquisar_prontuario',
+            'controller' => 'AppController',
+            'action' => 'navPesquisarProntuario'
+        );
+
         $routes['nav_agenda_paciente'] = array(
             'route' => '/agenda_paciente',
             'controller' => 'AppController',
@@ -56,8 +62,14 @@ class Route extends Bootstrap{
 
         $routes['prontuario_cadastrado'] = array(
             'route' => '/prontuario_cadastrado',
-            'controller' => 'AppController',
+            'controller' => 'ProntuarioController',
             'action' => 'cadastraProntuario'
+        );
+
+        $routes['realizar_pesquisa_prontuario'] = array(
+            'route' => '/realizar_pesquisa_prontuario',
+            'controller' => 'ProntuarioController',
+            'action' => 'pesquisaProntuario'
         );
 
         $routes['cadastra_funcionario'] = array(

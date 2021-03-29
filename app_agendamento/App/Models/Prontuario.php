@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use MF\Model\Model;
+use Faker\Factory;
 
 
 
@@ -55,6 +56,68 @@ class Prontuario extends Model{
         $stmt->bindValue(':sexo', $this->__get('sexo'));
         $stmt->bindValue(':sus', $this->__get('sus'));
         $stmt->execute();
+    }
+
+    public function pesquisar(){
+        $query = "SELECT * from prontuario WHERE (nome LIKE CONCAT('%', :nome, '%') OR :nome = '') AND (sus LIKE CONCAT('%', :sus, '%') OR :sus = '') AND (prontuario LIKE CONCAT('%', :prontuario, '%') OR :prontuario = '') AND (pai LIKE CONCAT('%', :pai, '%') OR :pai = '') AND (mae LIKE CONCAT('%', :mae, '%') OR :mae = '')";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':nome', $this->__get('nome'));
+        $stmt->bindValue(':sus', $this->__get('sus'));
+        $stmt->bindValue(':prontuario', $this->__get('prontuario'));
+        $stmt->bindValue(':mae', $this->__get('nome_mae'));
+        $stmt->bindValue(':pai', $this->__get('nome_pai'));
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    //pesquisar com paginação
+    public function pesquisarPorPagina($limit, $offset){
+        $query = "SELECT * from prontuario WHERE (nome LIKE CONCAT('%', :nome, '%') OR :nome = '') AND (sus LIKE CONCAT('%', :sus, '%') OR :sus = '') AND (prontuario LIKE CONCAT('%', :prontuario, '%') OR :prontuario = '') AND (pai LIKE CONCAT('%', :pai, '%') OR :pai = '') AND (mae LIKE CONCAT('%', :mae, '%') OR :mae = '') ORDER BY data_criacao DESC limit $limit offset $offset";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':nome', $this->__get('nome'));
+        $stmt->bindValue(':sus', $this->__get('sus'));
+        $stmt->bindValue(':prontuario', $this->__get('prontuario'));
+        $stmt->bindValue(':mae', $this->__get('nome_mae'));
+        $stmt->bindValue(':pai', $this->__get('nome_pai'));
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    //recuperar o numero de registros
+    public function getTotalRegistros(){
+        $query = "SELECT count(*) as total from prontuario WHERE (nome LIKE CONCAT('%', :nome, '%') OR :nome = '') AND (sus LIKE CONCAT('%', :sus, '%') OR :sus = '') AND (prontuario LIKE CONCAT('%', :prontuario, '%') OR :prontuario = '') AND (pai LIKE CONCAT('%', :pai, '%') OR :pai = '') AND (mae LIKE CONCAT('%', :mae, '%') OR :mae = '')";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':nome', $this->__get('nome'));
+        $stmt->bindValue(':sus', $this->__get('sus'));
+        $stmt->bindValue(':prontuario', $this->__get('prontuario'));
+        $stmt->bindValue(':mae', $this->__get('nome_mae'));
+        $stmt->bindValue(':pai', $this->__get('nome_pai'));
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function inserirRegistrosTeste($numero_de_registros){
+        $faker = Factory::create('pt_BR');
+        for ($i=0; $i < $numero_de_registros; $i++) { 
+            $query = "INSERT INTO prontuario (bairro, complemento, endereco, estadoCivil, fone, mae, naturalidade, nome, numero, obs, pai, profissao, prontuario, sexo, sus) VALUES (:bairro, :complemento, :endereco, :estadoCivil, :fone, :mae, :naturalidade, :nome, :numero, :obs, :pai, :profissao, :prontuario, :sexo, :sus)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':bairro', $faker->streetName());
+            $stmt->bindValue(':complemento', $faker->streetName());
+            $stmt->bindValue(':endereco', $faker->address());
+            $stmt->bindValue(':estadoCivil', $faker->numberBetween(1,3));
+            $stmt->bindValue(':fone', $faker->cellphone());
+            $stmt->bindValue(':mae', $faker->name('female'));
+            $stmt->bindValue(':naturalidade', $faker->regionAbbr());
+            $stmt->bindValue(':nome', $faker->name());
+            $stmt->bindValue(':numero', $faker->buildingNumber());
+            $stmt->bindValue(':obs', $faker->realText(120));
+            $stmt->bindValue(':pai', $faker->name('male'));
+            $stmt->bindValue(':profissao', $faker->jobTitle());
+            $stmt->bindValue(':prontuario', $faker->numberBetween(95000,99999));
+            $stmt->bindValue(':sexo', $faker->numberBetween(1,3));
+            $stmt->bindValue(':sus', $faker->cnpj(false));
+            $stmt->execute();
+        }
     }
 }
 

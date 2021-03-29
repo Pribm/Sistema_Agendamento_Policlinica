@@ -45,6 +45,15 @@ a:hover{
     background-color:rgba(145, 226, 98, 0.5);
 }
 
+.icon-primary{
+    color: #0275d8;
+}
+
+
+.icon-primary:hover{
+    color: #004b8d;
+}
+
 
 
 

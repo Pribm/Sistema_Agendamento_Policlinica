@@ -14,7 +14,7 @@
 
             $conn = new \PDO(
 
-                'mysql:dbname=agendamento_cardoso_fontes;host=127.0.0.1; charset=utf8',
+                'mysql:dbname=agendamento_cardoso_fontes;host=127.0.0.1:3307; charset=utf8',
 
                 "root", 
 

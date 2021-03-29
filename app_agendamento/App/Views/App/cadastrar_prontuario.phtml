@@ -1,4 +1,4 @@
-<?php $page = 'cadastrar_prontuario';
+<?php $page = '(Cadastro)';
 require_once('menu_topo.phtml');
 ?>
 <form class="container" id="cadastrar_prontuario">
@@ -39,8 +39,8 @@ require_once('menu_topo.phtml');
 
         <div class="col-md-2 mt-3">
             <label for="estadoCivil">Estado Civil:</label>
-            <select name="estado_civil" class="custom-select" id="estadoCivil">
-                <option selected>Estado Civil</option>
+            <select name="estado_civil" class="custom-select form-control" id="estadoCivil">
+                <option selected value="" >Estado Civil</option>
                 <option value="1">Casado(a)</option>
                 <option value="2">Solteiro(a)</option>
                 <option value="3">Viuvo(a)</option>
@@ -50,9 +50,9 @@ require_once('menu_topo.phtml');
         </div>
 
         <div class="col-md-2 mt-3">
-            <label for="estadoCivil">Sexo:</label>
-            <select name="sexo" class="custom-select" id="estadoCivil">
-                <option selected>-----------</option>
+            <label for="sexo">Sexo:</label>
+            <select name="sexo" class="custom-select form-control" id="estadoCivil">
+                <option selected value="">-----------</option>
                 <option value="1">Masculino</option>
                 <option value="2">Feminino</option>
                 <option value="3">Outro</option>
@@ -140,6 +140,10 @@ $('#cadastrar_prontuario').submit(function(e) {
             $('#staticBackdropLabel').html(response.status);
             $(modalMsg).html(response.mensagem);
             $('#staticBackdrop').modal('show');
+
+            if(response.status != 'erro'){
+                $('.form-control').val('');
+            }
         }
     });
 });

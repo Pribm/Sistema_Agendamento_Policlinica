@@ -222,7 +222,7 @@ function editarFuncionario(id) {
 
 
 function deletar_funcionario(id) {
-    $.get("/acao?action=delete&id=" + id, function(data) {
+    $.get("/acao?action=delete&id="+id+"&dado=funcionarios", function(data) {
         listarRegistros();
     });
 }

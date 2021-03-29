@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Models;
-
-
-
 use MF\Model\Model;
 
 
@@ -157,8 +154,14 @@ class Usuario extends Model{
 
 
 
-    public function deletar($id){
-        $query = "UPDATE funcionarios SET situacao = 0 WHERE funcionarios.id = :id;";
+    public function deletar($id, $table){
+
+        
+        if($table == 'funcionarios'){ // <-- seleciona as tabelas onde será alterada somente a situacao
+            $query = "UPDATE $table SET situacao = 0 WHERE $table.id = :id;";
+        }else{ // <-- seleciona as tabelas onde será deletado de fato
+            $query = "DELETE FROM $table WHERE $table.id = :id";
+        }
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
