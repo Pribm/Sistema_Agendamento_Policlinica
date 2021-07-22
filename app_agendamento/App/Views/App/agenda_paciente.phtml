@@ -1,0 +1,204 @@
+    <?php $page = 'home'; include('menu_topo.phtml') ?>
+    <div class="container mt-4">
+        <form id="agendar_paciente" method="post" action="confirma_agendamento">
+            <input name="agendado_por" type='hidden' value=<?=$_SESSION['id']?>>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Paciente</label>
+                    <input name="paciente" type="text" class="form-control" id="Paciente" placeholder="Paciente">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="sus">Cartão do SUS</label>
+                    <input type="text" name="sus" class="form-control sus" placeholder="SUS" id="sus">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-7">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Médico</label>
+                        </div>
+                        <select name="medico_id" class="custom-select" id="medico">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-md-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Horário</label>
+                        </div>
+                        <select name="horario" class="custom-select" id="horario">
+
+                        </select>
+                        <input type="hidden" name="atendimentos" id="atendimentos">
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <input name="prontuario" type="text" class="form-control prontuario" id="prontuario"
+                        placeholder="Prontuário" onsubmit="formatarCampos()">
+                </div>
+            </div>
+            <div id="calendario">
+                <div id="calendar"></div>
+                <input type="hidden" id='dia' class="dataCompleta" name="dia" value="">
+            </div>
+            <div class="form-row justify-content-center mt-4">
+                <button type="submit" form="agendar_paciente" class="btn btn-primary">Agendar Paciente</button>
+            </div>
+        </form>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" id="mensagem_modal">
+                        Add rows here
+                    </div>
+                </div>
+                <form id="form_confirmacao">
+                    <div class="modal-footer">
+                        <input type="hidden" id="save_data" name="save_data">
+                        <input type="hidden" id="status" name="status">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+                        <button id="button_confirmacao" type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+$(document).ready(function() {
+
+    $('#medico').load("lista_funcionarios", function(response) {
+        $('#medico').html('')
+        let medicos = JSON.parse(response)['medicos'];
+
+        let result = {};
+
+        for (const medico of medicos) {
+            let obj_horario = {
+                horario: medico.horario,
+                id_horario: medico.id_horario,
+                atendimentos: medico.atendimentos
+            };
+            if (result[medico.id]) { // se já existe o id nos resultados, acrescenta os horários
+                result[medico.id].horarios.push(obj_horario);
+            } else { // se não existe o id nos resultados, cria um novo
+                result[medico.id] = {
+                    nome: medico.nome,
+                    id: medico.id,
+                    horarios: [obj_horario]
+                };
+            }
+        }
+
+        result = Object.values(result);
+        //console.log(result)
+        result.forEach(r => {
+            document.getElementById('medico').innerHTML += '<option value="' + r['id'] + '">' +
+                r['nome'] + '</option>'
+        });
+
+        
+        $('#medico').change(function(e) {//toda vez que muda o médico
+            document.getElementById('horario').innerHTML = ''; //a cada vez que muda, tem que zerar os selects
+            e.preventDefault();
+            result.forEach(r => {
+                if ($(this).val() == r['id']) {//essa lógica muda os médicos horários e atendimentos
+                    for (let i = 0; i < r['horarios'].length; i++) {
+                        document.getElementById('horario').innerHTML +=
+                            '<option value="' + r['horarios'][i]['id_horario'] + '">' +
+                            r['horarios'][i]['horario'] + '</option>';
+
+                        $('#horario').change(function(e) {
+                            if ($('#horario').val() == r.horarios[i]
+                                .id_horario) {
+                                $('#atendimentos').val(r.horarios[i]
+                                    .atendimentos)
+                            }
+                        });
+                    }
+                }
+            });
+            $('#horario').change();
+        });
+
+        $('#medico').change();
+    });
+});
+
+
+$('#agendar_paciente').submit(function(e) {
+    e.preventDefault();
+    $("#save_data").val('');
+    $("#status").val('');
+    $.ajax({
+        type: "POST",
+        url: "/confirma_agendamento",
+        data: $(this).serialize(),
+        dataType: "json",
+        success: function(response) {
+            $('#mensagem_modal').html(response.mensagem);
+            $('#modelId').modal('show');
+            if (response.status != 2) {
+                $('#button_confirmacao').show();
+                $('.modal-title').html('Confirma a inserção?');
+                $('.modal-title').addClass('text-primary');
+                $("#save_data").attr('value', JSON.stringify(response.post));
+                $("#status").attr('value', response.status);
+            } else if (response.status == 2) {
+                $('#button_confirmacao').hide();
+                $('.modal-title').html('Erro no agendamento!');
+                $('.modal-title').addClass('text-danger');
+            }
+        }
+    });
+});
+
+$('#form_confirmacao').submit(function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "/agendaPaciente",
+        data: $(this).serialize(),
+        dataType: "json",
+        success: function(response) {
+            $('#mensagem_modal').html(response.mensagem);
+            $('#modelId').modal('show');
+            $('.modal-title').html('Sucesso!');
+            $('.modal-title').addClass('text-success');
+            $('#button_confirmacao').hide();
+            limpaCampos();
+        }
+    });
+});
+
+function limpaCampos() {
+    $('#Paciente').val('');
+    $('#sus').val('');
+    $('#prontuario').val('');
+}
+
+let inputPaciente = new Cleave('.prontuario', {
+    numeralDecimalMark: ',',
+    delimiter: '.',
+    numeral: true,
+    numeralThousandsGroupStyle: 'thousand'
+});
+
+let inputSus = new Cleave('#sus', {
+    blocks: [3, 4, 4, 4]
+});
+
+    </script>

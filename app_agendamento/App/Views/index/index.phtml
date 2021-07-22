@@ -1,0 +1,41 @@
+<section class="bg-primary d-flex align-items-center justify-content-center" style="min-height:100vh; background: url('../img/Pneumologia.jpg') no-repeat; background-position: center; background-size: cover;">
+    <div class="container mx-4">
+                <div class="row align-items-center bg-light rounded shadow-sm" style="min-height:50vh;">
+                    <div class="col-12 col-md-7 order-md-first order-last"><!--coluna de email-->
+                        <h1 class="my-4">Login</h1>
+                        <form action="autenticar" method="post">
+                        <div class="form-group my-2">
+                                <label for="helpId">E-mail:</label>
+                                <input type="email" class="form-control" name="email" id="helpId" aria-describedby="helpId"
+                                    placeholder="">
+                            </div>
+
+                            <div class="form-group my-2">
+                                <label for="senha">Senha:</label>
+                                <input type="password" class="form-control" name="senha" id="senha" placeholder="">
+                            </div>
+
+                            <?php if(isset($_GET['login']) && $_GET['login'] == 'erro'){?>
+                        
+                            <div class="alert alert-danger text-center" role="alert">
+                                Usuário ou senha inválidos
+                            </div>
+                        <?php } ?>
+
+                        <?php if(isset($_GET['login']) && $_GET['login'] == 'erro2'){?>
+
+                            <div class="alert alert-danger text-center" role="alert">
+                                Entre com o seu login e senha antes de acessar esta página
+                            </div>
+                        <?php }?>
+                        
+                        <button type="submit" class="btn btn-lg btn-primary my-4">Login</button>
+                        </form>
+                    </div>
+
+                    <div class="col-12 col-md-5">
+                        <img src="img/logo_cardoso_fontes.gif" width="100%" class="bg-light">
+                    </div>
+                </div>
+            </div>
+</section>

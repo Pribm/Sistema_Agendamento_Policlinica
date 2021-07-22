@@ -1,0 +1,150 @@
+<?php $page = '(Cadastro)';
+require_once('menu_topo.phtml');
+?>
+<form class="container" id="cadastrar_prontuario">
+    <div class="form-row">
+        <div class="col-md-7 mt-3">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" class="form-control" name="nome">
+        </div>
+
+        <div class="col-md-3 mt-3">
+            <label for="sus">Sus:</label>
+            <input type="text" id="sus" class="form-control" name="sus">
+        </div>
+
+        <div class="col-md-2 mt-3">
+            <label for="prontuario">Prontuário:</label>
+            <input type="text" id="prontuario" class="form-control" name="prontuario">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-6 mt-3">
+            <label for="pai">Nome do pai:</label>
+            <input type="text" id="pai" class="form-control" name="nome_pai">
+        </div>
+
+        <div class="col-md-6 mt-3">
+            <label for="mae">Nome da mãe:</label>
+            <input type="text" id="mae" class="form-control" name="nome_mae">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-2 mt-3">
+            <label for="naturalidade">Naturalidade:</label>
+            <input type="text" id="naturalidade" class="form-control" name="naturalidade">
+        </div>
+
+        <div class="col-md-2 mt-3">
+            <label for="estadoCivil">Estado Civil:</label>
+            <select name="estado_civil" class="custom-select form-control" id="estadoCivil">
+                <option selected value="" >Estado Civil</option>
+                <option value="1">Casado(a)</option>
+                <option value="2">Solteiro(a)</option>
+                <option value="3">Viuvo(a)</option>
+                <option value="4">União Estável</option>
+                <option value="5">Divorciado(a)</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 mt-3">
+            <label for="sexo">Sexo:</label>
+            <select name="sexo" class="custom-select form-control" id="estadoCivil">
+                <option selected value="">-----------</option>
+                <option value="1">Masculino</option>
+                <option value="2">Feminino</option>
+                <option value="3">Outro</option>
+            </select>
+        </div>
+
+        <div class="col-md-3 mt-3">
+            <label for="profissão">Profissão:</label>
+            <input type="text" id="naturalidade" class="form-control" name="profissao">
+        </div>
+
+        <div class="col-md-3 mt-3">
+            <label for="telefone">Telefone:</label>
+            <input type="text" id="naturalidade" class="form-control" name="telefone">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-12 mt-3">
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="nome" class="form-control" name="endereco">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-4 mt-3">
+            <label for="bairro">Bairro:</label>
+            <input type="text" id="bairro" class="form-control" name="bairro">
+        </div>
+
+        <div class="col-md-6 mt-3">
+            <label for="complemento">Complemento:</label>
+            <input type="text" id="complemento" class="form-control" name="complemento">
+        </div>
+
+        <div class="col-md-2 mt-3">
+            <label for="numero">Número:</label>
+            <input type="text" id="numero" class="form-control" name="numero">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-12 mt-3">
+            <label for="obs">Observação:</label>
+            <textarea name="obs" class="form-control" id="obs" rows="6"></textarea>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="submit" form="cadastrar_prontuario" class="btn btn-primary mt-3">Cadastrar Prontuário</button>
+    </div>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$('#cadastrar_prontuario').submit(function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "Post",
+        url: "prontuario_cadastrado",
+        data: $(this).serialize(),
+        dataType: "json",
+        success: function(response) {
+            //console.log(response)
+            let modalMsg = document.getElementsByClassName('modal-body');
+            $('#staticBackdropLabel').html(response.status);
+            $(modalMsg).html(response.mensagem);
+            $('#staticBackdrop').modal('show');
+
+            if(response.status != 'erro'){
+                $('.form-control').val('');
+            }
+        }
+    });
+});
+</script>

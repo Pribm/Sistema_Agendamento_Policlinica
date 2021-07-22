@@ -1,0 +1,19 @@
+{
+    "name": "projetos/miniframework",
+    "require": {
+        "php": ">=7.0",
+        "fakerphp/faker": "^1.13",
+        "dompdf/dompdf": "^1.0"
+    },
+    "authors": [
+        {
+            "name": "Paulo Monteiro"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\":"App/",
+            "MF\\": "vendor/MF/"
+        }
+    }
+}

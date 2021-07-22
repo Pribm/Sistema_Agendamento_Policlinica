@@ -1,0 +1,60 @@
+.allButFooter {
+    min-height: calc(100vh - 115px); 
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+.sp-replacer{
+    margin-left: 12px;
+    margin-top: 6px;
+}
+
+.calendar-sidebar{
+    background-color: rgb(32, 121, 255);
+}
+
+#fundoTela{
+    background: url("../img/Pneumologia.jpg") no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+#fundoLogin{
+    background-color: rgba(0, 99, 199, 0.315);
+}
+
+.table-hover tbody tr:hover  {
+    background-color:rgba(166, 209, 212, 0.342);
+}
+
+.cor_extra{
+    background-color:rgba(247, 237, 127, 0.5);
+}
+
+.table-hover tbody tr:hover.cor_extra  {
+    background-color:rgba(226, 213, 98, 0.5);
+}
+
+.cor_atendido{
+    background-color:rgba(137, 247, 127, 0.5);
+}
+
+.table-hover tbody tr:hover.cor_atendido  {
+    background-color:rgba(145, 226, 98, 0.5);
+}
+
+.icon-primary{
+    color: #0275d8;
+}
+
+
+.icon-primary:hover{
+    color: #004b8d;
+}
+
+
+
+
+

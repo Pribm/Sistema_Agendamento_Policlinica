@@ -1,0 +1,115 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+CREATE DATABASE IF NOT EXISTS `agendamento_cardoso_fontes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `agendamento_cardoso_fontes`;
+
+CREATE TABLE `agendamentos` (
+  `id` int(11) NOT NULL,
+  `paciente` varchar(120) NOT NULL,
+  `medico_id` int(11) NOT NULL,
+  `prontuario` varchar(10) DEFAULT NULL,
+  `sus` varchar(18) DEFAULT NULL,
+  `horario` int(11) NOT NULL,
+  `dia` date NOT NULL,
+  `agendado_por` varchar(90) DEFAULT NULL,
+  `extra` tinyint(4) DEFAULT NULL,
+  `atendimento_realizado` tinyint(4) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `agendamentos` (`id`, `paciente`, `medico_id`, `prontuario`, `sus`, `horario`, `dia`, `agendado_por`, `extra`, `atendimento_realizado`) VALUES
+(1, 'teste paciente', 4, '32.165', '321 6549 8732 1654', 1, '2021-06-18', '1', 0, 1),
+(2, 'teste paciente 2', 4, '32.165', '123 4567 8965 4654', 1, '2021-06-18', '1', 0, 1);
+
+CREATE TABLE `funcionarios` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(100) DEFAULT NULL,
+  `id_setor` int(11) DEFAULT NULL,
+  `telefone` varchar(20) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `senha` varchar(32) DEFAULT NULL,
+  `situacao` tinyint(4) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `funcionarios` (`id`, `nome`, `id_setor`, `telefone`, `email`, `senha`, `situacao`) VALUES
+(1, 'adm', 1, '2345678', 'adm@teste.com.br', 'e10adc3949ba59abbe56e057f20f883e', 1),
+(2, 'adm2Teste', 1, '(92)32122-1234', 'adm2@teste.com.br', '80177534a0c99a7e3645b52f2027a48b', 1),
+(3, 'adm3', 1, '(92)32165-4698', 'adm3@teste.com.br', '25f9e794323b453885f5181f1b624d0b', 1),
+(4, 'teste_medico', 2, '(12)32132-1321', 'medico@teste.com.br', 'e10adc3949ba59abbe56e057f20f883e', 1);
+
+CREATE TABLE `horarios` (
+  `id` int(11) NOT NULL,
+  `horario` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `horarios` (`id`, `horario`) VALUES
+(1, '12:00:00');
+
+CREATE TABLE `horario_atendimentos` (
+  `id` int(11) NOT NULL,
+  `id_horario` int(11) NOT NULL,
+  `atendimentos` int(11) NOT NULL,
+  `id_funcionario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `horario_atendimentos` (`id`, `id_horario`, `atendimentos`, `id_funcionario`) VALUES
+(1, 1, 12, 2),
+(2, 1, 12, 3),
+(3, 1, 12, 4);
+
+CREATE TABLE `setores` (
+  `id` int(11) NOT NULL,
+  `setor` varchar(80) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `setores` (`id`, `setor`) VALUES
+(1, 'Diretoria'),
+(2, 'Médico');
+
+
+ALTER TABLE `agendamentos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `medico_id` (`medico_id`);
+
+ALTER TABLE `funcionarios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_setor` (`id_setor`);
+
+ALTER TABLE `horarios`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `horario_atendimentos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_horario` (`id_horario`),
+  ADD KEY `id_funcionario` (`id_funcionario`);
+
+ALTER TABLE `setores`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `agendamentos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+ALTER TABLE `funcionarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+ALTER TABLE `horarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+ALTER TABLE `horario_atendimentos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+ALTER TABLE `setores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+
+ALTER TABLE `agendamentos`
+  ADD CONSTRAINT `agendamentos_ibfk_1` FOREIGN KEY (`medico_id`) REFERENCES `funcionarios` (`id`);
+
+ALTER TABLE `funcionarios`
+  ADD CONSTRAINT `funcionarios_ibfk_1` FOREIGN KEY (`id_setor`) REFERENCES `setores` (`id`);
+
+ALTER TABLE `horario_atendimentos`
+  ADD CONSTRAINT `horario_atendimentos_ibfk_1` FOREIGN KEY (`id_horario`) REFERENCES `horarios` (`id`),
+  ADD CONSTRAINT `horario_atendimentos_ibfk_2` FOREIGN KEY (`id_funcionario`) REFERENCES `funcionarios` (`id`);
+COMMIT;

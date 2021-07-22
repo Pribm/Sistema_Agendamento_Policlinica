@@ -1,0 +1,259 @@
+<?php  $page = 'relatorio'; include('menu_topo.phtml') ?>
+<div class="container mt-4">
+    <div class="row justify-content-center" id="chart_container">
+        <div class="col-md-8">
+            <canvas id="myChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+<form id="form_relatorio" action="filtra_relatorio" method="post">
+    <div class="container  mt-3">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="align-middle" id="seleciona_medicos">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text pr-4" for="inputGroupSelect01">Médico</label>
+                        </div>
+                        <select name="medico_1" class="custom-select col-md-10" id="medico_1">
+                            <option value=''>--------------------------------------------------</option>
+                            <?php 
+                            foreach ($this->view->medicos as $key => $medico) {
+                                echo $medico;
+                            ?>
+                            
+                            <option id=<?=$key?> value=<?=$medico['id']?>><?=$medico['nome']?></option>
+                            <?php }?>
+                        </select>
+                        <button class="btn btn-primary" id="adicionar_medico"><i class="fas fa-plus"></i></button>
+                        <input id="cor_medico_1" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-md-flex">
+                    <div class="flex-grow-1 mr-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text pr-4" for="inputGroupSelect01">Data Inicio</label>
+                            </div>
+                            <input name="data_inicio" class="form-control" type="date" id="data_inicial"
+                                value=<?php echo date('Y-m-d' , strtotime("-30 days"));?>>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 mr-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text pr-4" for="inputGroupSelect01">Data Fim</label>
+                            </div>
+                            <input name="data_fim" class="form-control" type="date" id="data_final"
+                                value=<?php echo date('Y-m-d');?>>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-md-flex mt-3">
+                    <div class="flex-grow-1">
+                        <div class="btn-group mr-3  " role="group" aria-label="Basic example" id="botoes">
+                            <button id="bar" name="tipo_grafico" class="btn btn-primary" value="bar">Colunas</button>
+                            <button id="line" name="tipo_grafico" class="btn btn-primary" value="line">Linhas</button>
+                            <button id="horizontalBar" name="tipo_grafico" class="btn btn-primary"
+                                value="horizontalBar">Barras</button>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ">
+                        <div class="form-check">
+                            <input class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                                checked value="agendamentos">
+                            <label class="form-check-label " for="Agendamentos">
+                                Visualizar Agendamentos
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                                value="atendimentos">
+                            <label class="form-check-label" for="Atendimentos">
+                                Visualizar Atendimentos
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
+                                value="extras">
+                            <label class="form-check-label" for="Extras">
+                                Visualizar Extras
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-end mt-2">
+            <button type="submit" id="submit_rel" form="form_relatorio" class="btn btn-primary" id="submeter">Mostrar
+                Relatório</button>
+        </div>
+    </div>
+</form>
+<script>
+$(document).ready(function() {
+    var medico = 1
+    const randomColor1 = Math.floor(Math.random() * 16777215).toString(16);
+    const randomColor2 = Math.floor(Math.random() * 16777215).toString(16);
+    $('#cor_medico_1').val("#" + randomColor1);
+    let opcoes = document.getElementById("medico_1").innerHTML;
+    $('#adicionar_medico').click(function(e) {
+        e.preventDefault();
+        medico += 1;
+        let input_group = $(document.createElement('div')).addClass("input-group mt-2");
+        let input_group_prepend = $(document.createElement('div')).addClass('input-group-prepend');
+        let label_input_prepend = $(document.createElement('label')).addClass('input-group-text');
+        label_input_prepend.html('Médico ' + medico);
+        input_group_prepend.append(label_input_prepend);
+        //criar o campo de seleçao
+        let select_field = $(document.createElement('select')).addClass('custom-select col-md-9');
+        select_field.html(opcoes);
+        $(select_field).attr('name', 'medico_' + medico);
+        $(select_field).attr('id', 'medico_' + medico);
+        $("#seleciona_medicos").append(input_group);
+        input_group.append(input_group_prepend);
+        input_group.append(select_field);
+        //input_group.append(select_color);
+        //cria o campo da cor
+        let coluna_cor = $(document.createElement('div'));
+        let select_color = $(document.createElement('input'));
+        $(select_color).attr('id', 'cor_medico_' + medico);
+        $(select_color).attr('name', 'cor_medico_' + medico);
+        input_group.append(select_color)
+        $('#cor_medico_2').val("#" + randomColor2);
+        for (let i = 1; i <= medico; i++) {
+            $('#cor_medico_' + i).spectrum({
+                type: "color"
+            });
+        }
+    });
+    var datasArray = []
+    $('#form_relatorio').submit(function(e) {
+        e.preventDefault();
+        datasArray.splice(0, datasArray.length)
+        myChart.data.datasets.splice(0, myChart.data.datasets.length)
+        $.ajax({
+            type: "POST",
+            url: "filtra_relatorio",
+            data: $(this).serialize(),
+            dataType: "json",
+            success: function(response) {
+                console.log(response)
+                //bug tá chamando várias vezes o mesmo gráfico
+                var chart_datas = [];
+                let dtFormat = new Intl.DateTimeFormat('pt-BR')
+                response[0]['datas'].forEach(d => {
+                    let datas = d
+                    let dia = datas.slice(8, 10)
+                    let mes = datas.slice(5, 7)
+                    let ano = datas.slice(0, 4)
+                    let datasFormatadas = dia + '/' + mes + '/' + ano
+                    datasArray.push(datasFormatadas)
+                });
+                myChart.data.labels = datasArray;
+                response.forEach(function(r, index) {
+                    myChart.data.datasets.push({
+                        label: r['label'],
+                        data: r['data'],
+                        backgroundColor: $('#cor_medico_' + (index + 1))
+                            .val()
+                    })
+                });
+                myChart.update();
+            }
+        });
+    });
+    $('#adicionar_medico').click();
+    var myVal = $('#medico_1 option:eq( 2 )').val();
+    $('#medico_1').val(myVal);
+    myVal = $('#medico_2 option:eq( 1 )').val();
+    $('#medico_2').val(myVal);
+    $('#form_relatorio').submit();
+});
+$('#bar').click(function(e) {
+    e.preventDefault();
+    myChart.destroy();
+    myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [],
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        stepSize: 1,
+                        beginAtZero: true,
+                    }
+                }]
+            }
+        }
+    });
+    $('#form_relatorio').submit();
+});
+$('#line').click(function(e) {
+    e.preventDefault();
+    myChart.destroy();
+    myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: []
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        stepSize: 1,
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    $('#form_relatorio').submit();
+});
+$('#horizontalBar').click(function(e) {
+    e.preventDefault();
+    myChart.destroy();
+    myChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: [],
+            datasets: []
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        stepSize: 1,
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    $('#form_relatorio').submit();
+});
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [],
+        datasets: []
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    stepSize: 1,
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>

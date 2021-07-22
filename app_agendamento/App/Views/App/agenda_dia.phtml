@@ -1,0 +1,249 @@
+<div>
+    <?php  $page = 'agendaDia'; include('menu_topo.phtml') ?>
+
+    <div class="row">
+        <div class="col-md-12 ">
+            <h1 class="display-4 text-center">Selecione o agendamento do dia desejado</h1>
+        </div>
+    </div>
+
+
+    <div class="container mt-4">
+
+        <form id="form_filtro" class="form-group ">
+
+            <div class="d-flex flex-wrap flex-md-nowrap justify-content-around">
+
+                <input type="text" name="paciente" placeholder="paciente" class="form-control col-12 col-md-8 mr-md-2">
+
+                <input type="text" name="prontuario" placeholder="prontuario"
+                    class="form-control flex-nowrap col-12 mt-md-0 mt-2 col-md-4 prontuario">
+            </div>
+
+
+            <div class="d-flex flex-wrap flex-md-nowrap justify-content-around mt-2">
+
+                <div class="col-md-6 ">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Médico</label>
+                        </div>
+                        <select name="medico" class="custom-select" id="medico">
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="input-group">
+
+                        <select name="horario" class="custom-select" id="horario">
+
+                        </select>
+                    </div>
+                </div>
+
+                <input class="form-control col-md-3 mb-2" name="data" id="data" type="date">
+                <button id="buscar" form="form_filtro" type="submit" class="mb-2 btn btn-sm btn-primary "><i
+                        class="fas fa-search "></i></button>
+        </form>
+    </div>
+
+
+
+    <div class="container">
+        <table class='table table-hover'>
+            <thead>
+                <tr>
+                    <th class="align-middle text-center" style="width:2%" scope="col">#</th>
+                    <th class="align-middle text-center table-info" style="width:5%" scope="col">Dia</th>
+                    <th class="align-middle text-center table-secondary" style="width:5%" scope="col">Prontuário
+                    </th>
+                    <th class="align-middle text-center table-info" style="width:35%" scope="col">Paciente</th>
+                    <th class="align-middle text-center table-secondary" style="width:20%" scope="col">Médico</th>
+                    <th class="align-middle text-center table-info" style="width:10%" scope="col">Horário</th>
+                    <th class="align-middle text-center table-secondary" style="width:15%" scope="col">Agendado por:
+                    </th>
+                    <th class="align-middle text-center table-info" style="width:10%" scope="col">Atendido</th>
+                </tr>
+            </thead>
+
+            <tbody class="" id="tabelaAgendamento" class="m-4">
+
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+    <script>
+    $(document).ready(function() {
+
+        $('#form_filtro').submit(function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '/filtra_agendamento',
+                type: 'POST',
+                data: $(this).serialize(),
+                dataType: 'json'
+            }).done(function(response) {
+                let agendamentosFiltrados = response.filtro_array;
+                //console.log(response.filtro_array);
+                $('#tabelaAgendamento').html('');
+
+
+                agendamentosFiltrados.forEach(function(agendamento, a) {
+
+                    let tr = $(document.createElement('tr'));
+
+                    var botaoAtendido;
+
+                    if (agendamento['atendimento_realizado'] == '1') {
+                        botaoAtendido = '<button type="submit" form="paciente_' +
+                            agendamento['id'] +
+                            '" class="btn btn-sm btn-success mt-3 py-3">Atendido</button>';
+                    } else {
+                        botaoAtendido = '<button type="submit" form="paciente_' +
+                            agendamento['id'] +
+                            '" class="btn btn-sm btn-danger">Não Atendido</button>';
+                    }
+
+                    let row = $('#tabelaAgendamento').append(tr);
+                    row.addClass('align-middle');
+
+                    if (agendamento['extra'] == 1) {
+                        $(tr).addClass('cor_extra');
+                        var status = ' (EXTRA)';
+                    } else {
+                        status = ''
+                    }
+
+                    let th = '<th class="align-middle">' + (a + 1) +'</th>'
+                    th += '</th><th class="align-middle">' + agendamento['dia'] + '</th>'
+                    th += '<th class="align-middle text-center">' + agendamento['prontuario'] + '</th>'
+                    th += '<th class="align-middle text-center">' + agendamento['paciente'] + status + '</th>'
+                    th += '<th class="align-middle text-center">' + agendamento['medico'] + '</th>'
+                    th += '<th class="align-middle text-center">' + agendamento['horario'] + '</th>'
+                    th += '<th class="align-middle text-center">' + agendamento['solicitante'] +'</th>'
+                    th += '<th class="align-middle text-center">'
+
+                    th += '<form id="paciente_' + agendamento['id'] +'">'
+                    th += '<input type="hidden" name="action" value="atender">'
+                    th += '<input type="hidden" name="id" value="' +agendamento['id'] + '">'
+                    th += botaoAtendido
+                    th += '</form></th>'
+
+
+                    tr.append(th);
+                    //
+                    //cria um form com um botão pra cada linha
+                    //cria um input-id e submete
+                    //faz o mesmo processo anterior de selecionar o id do form por ajax
+
+                    if (agendamento['atendimento_realizado'] != '1') {
+                        $('#paciente_' + agendamento['id']).submit(function(e) {
+                            e.preventDefault();
+                            $.ajax({
+                                type: "GET",
+                                url: "/acao",
+                                data: $(this).serialize(),
+                                dataType: "json",
+                                success: function(response) {
+                                    if (response['atendido'] ===
+                                        's') {
+                                        $('#form_filtro').submit();
+                                    }
+                                }
+                            });
+                        });
+                    } else {
+                        $('#paciente_' + agendamento['id']).submit(function(e) {
+                            return false;
+                        });
+                    }
+                });
+            });
+        });
+
+       
+
+        $('#medico').load("lista_funcionarios", function(response) {
+            document.getElementById('medico').innerHTML += '<option value="">------------------------------------------------</option>'
+            let medicos = JSON.parse(response)['medicos'];
+
+            let result = {};
+
+            for (const medico of medicos) {
+                let obj_horario = {
+                    horario: medico.horario,
+                    id_horario: medico.id_horario,
+                    atendimentos: medico.atendimentos
+                };
+                if (result[medico.id]) { // se já existe o id nos resultados, acrescenta os horários
+                    result[medico.id].horarios.push(obj_horario);
+                } else { // se não existe o id nos resultados, cria um novo
+                    result[medico.id] = {
+                        nome: medico.nome,
+                        id: medico.id,
+                        horarios: [obj_horario]
+                    };
+                }
+            }
+
+            result = Object.values(result);
+            //console.log(result)
+            result.forEach(r => {
+                document.getElementById('medico').innerHTML += '<option value="' + r['id'] +
+                    '">' +
+                    r['nome'] + '</option>'
+            });
+
+            
+
+            $('#medico').change(function(e) { //toda vez que muda o médico
+                document.getElementById('horario').innerHTML = '<option value="">------------------</option>';
+                ''; //a cada vez que muda, tem que zerar os selects
+                e.preventDefault();
+                result.forEach(r => {
+                    if ($(this).val() == r[
+                        'id']) { //essa lógica muda os médicos horários e atendimentos
+                        for (let i = 0; i < r['horarios'].length; i++) {
+                            
+                            document.getElementById('horario').innerHTML +='<option value="' + r['horarios'][i]['id_horario'] +
+                                '">' +
+                                r['horarios'][i]['horario'] + '</option>';
+
+                            $('#horario').change(function(e) {
+                                if ($('#horario').val() == r.horarios[i]
+                                    .id_horario) {
+                                    $('#atendimentos').val(r.horarios[i]
+                                        .atendimentos)
+                                }
+                            });
+                        }
+                    }
+                });
+                $('#horario').change();
+            });
+
+            $('#medico').change();
+            
+            $('#form_filtro').submit();
+        });
+ 
+    });
+
+    let inputPaciente = new Cleave('.prontuario', {
+    numeralDecimalMark: ',',
+    delimiter: '.',
+    numeral: true,
+    numeralThousandsGroupStyle: 'thousand'
+    });
+
+    let inputSus = new Cleave('#sus', {
+        blocks: [3, 4, 4, 4]
+    });
+    </script>
