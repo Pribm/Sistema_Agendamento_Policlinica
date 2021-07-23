@@ -13,23 +13,24 @@ class ProntuarioController extends Action
     {
         $prontuario = Container::getModel('Prontuario');
 
-        $prontuario->__set('bairro',  $_POST['bairro']);
-        $prontuario->__set('complemento', $_POST['complemento']);
-        $prontuario->__set('endereco', $_POST['endereco']);
-        $prontuario->__set('estadoCivil', $_POST['estado_civil']);
-        $prontuario->__set('fone', $_POST['telefone']);
-        $prontuario->__set('mae', $_POST['nome_mae']);
-        $prontuario->__set('naturalidade', $_POST['naturalidade']);
-        $prontuario->__set('nome', $_POST['nome']);
-        $prontuario->__set('numero', $_POST['numero']);
-        $prontuario->__set('obs', $_POST['obs']);
-        $prontuario->__set('pai', $_POST['nome_pai']);
-        $prontuario->__set('profissao', $_POST['profissao']);
-        $prontuario->__set('prontuario', $_POST['prontuario']);
-        $prontuario->__set('sexo', $_POST['sexo']);
-        $prontuario->__set('sus', $_POST['sus']);
-
         if (isset($_POST['nome']) && $_POST['nome'] != '' && isset($_POST['sus']) && $_POST['sus'] != '' && isset($_POST['prontuario']) && $_POST['prontuario'] != '') {
+
+            $prontuario->__set('bairro',  $_POST['bairro']);
+            $prontuario->__set('complemento', $_POST['complemento']);
+            $prontuario->__set('endereco', $_POST['endereco']);
+            $prontuario->__set('estado_civil', $_POST['estado_civil']);
+            $prontuario->__set('telefone', $_POST['telefone']);
+            $prontuario->__set('nome_mae', $_POST['nome_mae']);
+            $prontuario->__set('naturalidade', $_POST['naturalidade']);
+            $prontuario->__set('nome', $_POST['nome']);
+            $prontuario->__set('numero', $_POST['numero']);
+            $prontuario->__set('observacao', $_POST['obs']);
+            $prontuario->__set('nome_pai', $_POST['nome_pai']);
+            $prontuario->__set('profissao', $_POST['profissao']);
+            $prontuario->__set('prontuario', $_POST['prontuario']);
+            $prontuario->__set('sexo', $_POST['sexo']);
+            $prontuario->__set('sus', $_POST['sus']);
+
             $response = ['dados' => $_POST, 'status' => 'sucesso', 'mensagem' => 'Registro inserido com sucesso no banco de dados!'];
             $prontuario->inserir();
         } else {

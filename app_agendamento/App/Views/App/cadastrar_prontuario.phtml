@@ -61,19 +61,19 @@ require_once('menu_topo.phtml');
 
         <div class="col-md-3 mt-3">
             <label for="profissão">Profissão:</label>
-            <input type="text" id="naturalidade" class="form-control" name="profissao">
+            <input type="text" id="profissao" class="form-control" name="profissao">
         </div>
 
         <div class="col-md-3 mt-3">
             <label for="telefone">Telefone:</label>
-            <input type="text" id="naturalidade" class="form-control" name="telefone">
+            <input type="text" id="telefone" class="form-control" name="telefone">
         </div>
     </div>
 
     <div class="form-row">
         <div class="col-md-12 mt-3">
             <label for="endereco">Endereço:</label>
-            <input type="text" id="nome" class="form-control" name="endereco">
+            <input type="text" id="endereco" class="form-control" name="endereco">
         </div>
     </div>
 
@@ -131,7 +131,7 @@ $('#cadastrar_prontuario').submit(function(e) {
     e.preventDefault();
     $.ajax({
         type: "Post",
-        url: "prontuario_cadastrado",
+        url: "/cadastrar_prontuario",
         data: $(this).serialize(),
         dataType: "json",
         success: function(response) {

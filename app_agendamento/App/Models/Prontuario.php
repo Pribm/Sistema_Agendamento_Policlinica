@@ -16,10 +16,11 @@ class Prontuario extends Model{
     private $bairro;
     private $complemento;
     private $endereco;
+    private $naturalidade;
     private $numero;
     private $estado_civil;
     private $telefone;
-    private $obs;
+    private $observacao;
     private $profissao;
     private $prontuario;
     private $sexo;
@@ -38,19 +39,19 @@ class Prontuario extends Model{
     }
 
     public function inserir(){
-        $query = 'INSERT INTO prontuario (bairro, complemento, endereco, estadoCivil, fone, mae, naturalidade, nome, numero, obs, pai, profissao, prontuario, sexo, sus) VALUES (:bairro, :complemento, :endereco, :estadoCivil, :fone, :mae, :naturalidade, :nome, :numero, :obs, :pai, :profissao, :prontuario, :sexo, :sus)';
+        $query = 'INSERT INTO prontuario (bairro, complemento, endereco, id_estado_civil, telefone, mae, naturalidade, nome, numero, observacao, pai, profissao, prontuario, id_sexo, sus) VALUES (:bairro, :complemento, :endereco, :estadoCivil, :telefone, :mae, :naturalidade, :nome, :numero, :observacao, :pai, :profissao, :prontuario, :sexo, :sus)';
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':bairro', $this->__get('bairro'));
         $stmt->bindValue(':complemento', $this->__get('complemento'));
         $stmt->bindValue(':endereco', $this->__get('endereco'));
-        $stmt->bindValue(':estadoCivil', $this->__get('estadoCivil'));
-        $stmt->bindValue(':fone', $this->__get('fone'));
-        $stmt->bindValue(':mae', $this->__get('mae'));
+        $stmt->bindValue(':estadoCivil', $this->__get('estado_civil'));
+        $stmt->bindValue(':telefone', $this->__get('telefone'));
+        $stmt->bindValue(':mae', $this->__get('nome_mae'));
         $stmt->bindValue(':naturalidade', $this->__get('naturalidade'));
         $stmt->bindValue(':nome', $this->__get('nome'));
         $stmt->bindValue(':numero', $this->__get('numero'));
-        $stmt->bindValue(':obs', $this->__get('obs'));
-        $stmt->bindValue(':pai', $this->__get('pai'));
+        $stmt->bindValue(':observacao', $this->__get('observacao'));
+        $stmt->bindValue(':pai', $this->__get('nome_pai'));
         $stmt->bindValue(':profissao', $this->__get('profissao'));
         $stmt->bindValue(':prontuario', $this->__get('prontuario'));
         $stmt->bindValue(':sexo', $this->__get('sexo'));

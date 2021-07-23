@@ -140,7 +140,7 @@ $('#pesquisar_prontuario').submit(function(e) {
             $('.pagination').html(responses['links']); //botoes de paginacao
             responses[0].forEach(response => {
                 let tr = createRow(response.prontuario, response.nome, response.sus,
-                    response.fone, response.id);
+                    response.telefone, response.id);
                 $(tabela).append(tr);
                 $('.folha-impressao #nome').html(response.nome);
                 $('.folha-impressao #nome_pai').html(response.pai);
@@ -186,9 +186,9 @@ function imprimirProntuario() {
         dpi: 300, // Set to 300 DPI
         scale: 120, // Adjusts your resolution
         onrendered: function(canvas) {
-        var img = canvas.toDataURL("image/jpeg", 1);
+        var img = canvas.toDataURL("image/pdf", 1);
         var doc = new jsPDF('P', 'px', [w, h]);
-        doc.addImage(img, 'JPEG', 0, 0, w, h);
+        doc.addImage(img, 'JPEG', w, 0, w, h);
         doc.save('sample-file.pdf');
         $('#pdfBody').addClass('d-none');
         }

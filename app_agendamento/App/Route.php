@@ -18,7 +18,7 @@ class Route extends Bootstrap{
         );
 
         $routes['nav_cadastra_prontuario'] = array(
-            'route' => '/cadastrar_prontuario',
+            'route' => '/nav_cadastrar_prontuario',
             'controller' => 'AppController',
             'action' => 'navCadastrarProntuario'
         );
@@ -61,7 +61,7 @@ class Route extends Bootstrap{
         );
 
         $routes['prontuario_cadastrado'] = array(
-            'route' => '/prontuario_cadastrado',
+            'route' => '/cadastrar_prontuario',
             'controller' => 'ProntuarioController',
             'action' => 'cadastraProntuario'
         );
