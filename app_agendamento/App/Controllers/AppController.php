@@ -61,26 +61,56 @@ class AppController extends Action{
         $response['nome'] = $_POST['nome'];
         $response['telefone'] = $_POST['telefone'];
         $response['id_setor'] = $_POST['id_setor'];
+        
 
         $funcionario = Container::getModel('Usuario');
+
+        $atendimentoDiaHora = Container::getModel('AtendimentoDiaHora');
+        $funcionarioHorario = Container::getModel('FuncionarioHorario');
+
         $setores = Container::getModel('Setor');
         $horarios = Container::getModel('Horario');
 
         if($_POST['email'] != '' && $_POST['senha'] != '' && $_POST['nome'] != '' && $_POST['telefone'] != '' && $_POST['id_setor'] != ''){
-            /*echo '<pre>';
-            print_r($_POST);
-            echo '</pre>';*/
             $funcionario->__set('email', $_POST['email']);
             $funcionario->__set('senha', $_POST['senha']);
             $funcionario->__set('nome', $_POST['nome']);
             $funcionario->__set('telefone', $_POST['telefone']);
             $funcionario->__set('id_setor', $_POST['id_setor']);
-            $funcionario->__set('id_horario', $_POST['id_horario']);
-            $funcionario->cadastraFuncionario();
+            //$funcionario->cadastraFuncionario();
         }
+
+        foreach ($_POST['dia_semana1'] as $dia_semana) {
+            $atendimentoDiaHora->__set('id_horario', $_POST['id_horario'][0]);
+            $atendimentoDiaHora->__set('id_dia', $dia_semana);
+            $atendimentoDiaHora->__set('atendimentos', 12);
+            $atendimentoDiaHora->__set('id_funcionario', $funcionario->getLastId()['funcionario_id']);
+            //$atendimentoDiaHora->create();
+        }
+
+        foreach ($_POST['dia_semana2'] as $dia_semana) {
+            $atendimentoDiaHora->__set('id_horario', $_POST['id_horario'][1]);
+            $atendimentoDiaHora->__set('id_dia', $dia_semana);
+            $atendimentoDiaHora->__set('atendimentos', 12);
+            $atendimentoDiaHora->__set('id_funcionario', $funcionario->getLastId()['funcionario_id']);
+            //$atendimentoDiaHora->create();
+        }
+        
         $this->view->setores = $setores->read();
         $this->view->horarios = $horarios->read();
-        echo json_encode($funcionario->listaFuncionarios());
+
+        
+        $f = $atendimentoDiaHora->read();
+
+        $func = array_merge_recursive(...$f);
+        $nomes = array_unique($func['nome']);
+        $telefones = array_unique($func['telefone']);
+
+        echo '<pre>';
+        print_r($telefones);
+        echo '</pre>';
+        
+        //echo json_encode($funcionario->listaFuncionarios());
     }
 
     public function horariosDeAtendimentos(){

@@ -35,12 +35,12 @@
                                     placeholder="Insira o nome do funcionário" id='nomeCompleto'>
                             </div>
                             <div class="form-row align-items-center">
-                                <div class="form-group col-md-5">
+                                <div class="form-group col-md-6">
                                     <label for="telefone">Telefone</label>
                                     <input name="telefone" type="text" class="form-control input_phone"
                                         placeholder="Telefone" id='telefone'>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label for="setor">Setor</label>
                                     <select id="setores_select" class="form-control" name="id_setor">
                                         <?php foreach ($this->view->setores as $key => $setor) {?>
@@ -48,15 +48,81 @@
                                         <?php }?>
                                     </select>
                                 </div>
+                            </div>
 
-                                <div class="form-group col-md-2">
-                                    <label for="setor">Horário</label>
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                <h5>Primeiro Horario</h5>
 
-                                    
-                                    
+                                    <select id="horarios_select" class="form-control" name="id_horario[]" onchange='changeHora()'>
+                                        <?php foreach ($this->view->horarios as $key => $h) {?>
+                                        <option value=<?=$h['id']?>><?=$h['horario']?></option>
+                                        <?php }?>
+                                        <option value='0'>Cadastrar Horario</option>
+                                    </select>
                                 </div>
-                                <div class="col-md-1">
-                                    <button type="button" data-toggle="modal" data-target="#modalHora" class="btn btn-primary mt-3">+</button>
+                                <div class="col-md-6">
+                                    <h5>Dias de atendimento</h5>
+                                    <div class="d-flex">
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Seg</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox1" value="1">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Ter</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox2" value="2">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Qua</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox3" value="3">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Qui</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox4" value="4">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Sex</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox5" value="5">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                <h5>Segundo Horario</h5>
+
+                                    <select id="horarios_select" class="form-control" name="id_horario[]" onchange='changeHora()'>
+                                        <?php foreach ($this->view->horarios as $key => $h) {?>
+                                        <option value=<?=$h['id']?>><?=$h['horario']?></option>
+                                        <?php }?>
+                                        <option value='0'>Cadastrar Horario</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Dias de atendimento</h5>
+                                    <div class="d-flex">
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Seg</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox1" value="1">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Ter</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox2" value="2">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Qua</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox3" value="3">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Qui</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox4" value="4">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Sex</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox5" value="5">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -89,42 +155,11 @@
         <div class="modal-body">
             <div class="row align-items-end">
                 <div class="col-md-6">
-                    <h5>Inserir Horario</h5>
-
-                    <select id="horarios_select" class="form-control" name="id_horario" onchange='changeHora()'>
-                        <?php foreach ($this->view->horarios as $key => $h) {?>
-                        <option value=<?=$h['id']?>><?=$h['horario']?></option>
-                        <?php }?>
-                        <option value='0'>Cadastrar Horario</option>
-                    </select>
+                    
                     <!--<input class='form-control' type="text" placeholder='Horario' id='horarioAdicional'>-->
                 </div>
 
-                <div class="col-md-6">
-                <h5>Dias de atendimento</h5>
-                    <div class="d-flex">
-                        <div class="form-check form-check-inline d-flex flex-column">
-                        <label class="form-check-label" for="inlineCheckbox1">Seg</label>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                        </div>
-                        <div class="form-check form-check-inline d-flex flex-column">
-                        <label class="form-check-label" for="inlineCheckbox1">Ter</label>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                        </div>
-                        <div class="form-check form-check-inline d-flex flex-column">
-                        <label class="form-check-label" for="inlineCheckbox1">Qua</label>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                        </div>
-                        <div class="form-check form-check-inline d-flex flex-column">
-                        <label class="form-check-label" for="inlineCheckbox1">Qui</label>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                        </div>
-                        <div class="form-check form-check-inline d-flex flex-column">
-                        <label class="form-check-label" for="inlineCheckbox1">Sex</label>
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="modal-footer">
@@ -164,7 +199,7 @@
 
     <script>
 //essa rotina acontece quando o cadastro é realizado
-$("#form_cadastro").submit(function(e) {
+/*$("#form_cadastro").submit(function(e) {
     e.preventDefault();
     $('#form_arquivo').submit();
     $('#modalCadastro').modal('toggle');
@@ -178,7 +213,7 @@ $("#form_cadastro").submit(function(e) {
             listarRegistros();
         }
     });
-});
+});*/
 
 $(document).ready(function() {
     listarRegistros();
@@ -301,12 +336,12 @@ let inputFone = new Cleave('.input_phone', {
 function changeHora(){
     let hora = document.getElementById('horarios_select')
 
-    let input = "<input class='form-control' name='addHorario' type='text' placeholder='Horario' id='horarioAdicional'>"
+    let input = "<input class='form-control horarioAdicional' name='addHorario' type='text' placeholder='Horario'>"
     if(hora.value === '0'){
         $(hora).before(input);
         $(hora).remove();
 
-        let inputHora = new Cleave('#horarioAdicional', {
+        let inputHora = new Cleave('.horarioAdicional', {
         numericOnly: true,
         blocks: [2,2],
         delimiters: [':']

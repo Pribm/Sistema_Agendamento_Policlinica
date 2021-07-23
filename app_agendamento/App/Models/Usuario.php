@@ -54,22 +54,28 @@ class Usuario extends Model{
 
     public function cadastraFuncionario(){
 
-        $query = "INSERT INTO funcionarios (nome, id_setor, telefone, email, senha) VALUES (:nome, :id_setor, :telefone, :email, :senha);
-        INSERT INTO horario_atendimentos(id_horario, atendimentos, id_funcionario) VALUES (:id_horario,12, LAST_INSERT_ID())"; //criar uma foreign key de horário para linkar com os horários cadastrados.
+        $query = "INSERT INTO funcionarios (nome, id_setor, telefone, email, senha) VALUES (:nome, :id_setor, :telefone, :email, :senha)";
+        //INSERT INTO horario_atendimentos(id_horario, atendimentos, id_funcionario) VALUES (:id_horario,12, LAST_INSERT_ID())"; //criar uma foreign key de horário para linkar com os horários cadastrados.
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':nome', $this->__get('nome'));
         $stmt->bindValue(':id_setor', $this->__get('id_setor'));
-        $stmt->bindValue(':id_horario', $this->__get('id_horario'));
+        //$stmt->bindValue(':id_horario', $this->__get('id_horario'));
         $stmt->bindValue(':telefone', $this->__get('telefone'));
         $stmt->bindValue(':email', $this->__get('email'));
         $stmt->bindValue(':senha', md5($this->__get('senha')));
         $stmt->execute();
+    }
 
+    public function getLastId(){
+        $query = 'SELECT LAST_INSERT_ID() as funcionario_id from funcionarios';
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function listaFuncionarios(){
 
-        $query = 'SELECT F.id, F.nome, S.setor, F.telefone, F.email, ha.atendimentos, TIME_FORMAT(h.horario, "%H:%i") AS horario FROM funcionarios AS F LEFT JOIN setores AS S ON F.id_setor = S.id LEFT JOIN horario_atendimentos AS ha ON ha.id_funcionario = F.id LEFT JOIN horarios AS h ON ha.id_horario = h.id WHERE F.situacao = 1';
+        $query = 'SELECT F.id, F.nome, F.telefone, F.email, ha.atendimentos, TIME_FORMAT(h.horario, "%H:%i") AS horario , S.setor FROM funcionarios AS F LEFT JOIN setores AS S ON F.id_setor = S.id LEFT JOIN horario_atendimentos AS ha ON ha.id_funcionario = F.id LEFT JOIN horarios AS h ON ha.id_horario = h.id WHERE F.situacao = 1';
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
