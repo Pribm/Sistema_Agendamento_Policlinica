@@ -59,7 +59,7 @@
         }
 
         public function filtrar(){
-            $query = "SELECT a.extra, a.paciente, a.id, m.nome AS 'medico', a.prontuario, f.nome AS 'solicitante',a.atendimento_realizado, TIME_FORMAT(h.horario, '%H:%i') AS 'horario', DATE_FORMAT(a.dia, '%d/%m/%y') AS 'dia' FROM agendamentos AS a JOIN funcionarios AS m ON a.medico_id = m.id JOIN funcionarios AS f ON a.agendado_por = f.id JOIN horarios AS h ON a.horario = h.id WHERE (m.id = :medico OR :medico = '') AND (a.dia = :dia OR :dia = '') AND (a.prontuario = :prontuario OR :prontuario = '') AND (a.horario = :horario OR :horario = '') AND (a.paciente LIKE CONCAT('%', :paciente, '%') OR :paciente = '')";
+            $query = "SELECT a.extra, a.paciente, a.id, m.nome AS 'medico', a.prontuario, f.nome AS 'solicitante',a.atendimento_realizado, TIME_FORMAT(h.horario, '%H:%i') AS 'horario', DATE_FORMAT(a.dia, '%d/%m/%y') AS 'dia' FROM agendamentos AS a JOIN funcionarios AS m ON a.medico_id = m.id JOIN funcionarios AS f ON a.agendado_por = f.id JOIN horarios AS h ON a.horario = h.id WHERE (m.id = :medico OR :medico = '') AND (a.dia = :dia OR :dia = '') AND (a.prontuario = :prontuario OR :prontuario = '') AND (a.horario = :horario OR :horario = '') AND (a.paciente LIKE CONCAT('%', :paciente, '%') OR :paciente = '') ORDER BY a.id DESC";
             $stmt = $this->db->prepare($query);
 
             

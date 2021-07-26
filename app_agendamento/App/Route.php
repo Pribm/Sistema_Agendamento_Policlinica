@@ -73,21 +73,15 @@ class Route extends Bootstrap{
         );
 
         $routes['cadastra_funcionario'] = array(
-            'route' => '/funcionario_cadastrado',
-            'controller' => 'AppController',
-            'action' => 'cadastraFuncionario'
-        );
-
-        $routes['upload_foto'] = array(
-            'route' => '/upload_foto',
-            'controller' => 'AppController',
-            'action' => 'fazerUpload'
+            'route' => '/cadastrar_funcionario',
+            'controller' => 'FuncionarioController',
+            'action' => 'create'
         );
 
         $routes['lista_funcionarios'] = array(
             'route' => '/lista_funcionarios',
-            'controller' => 'AppController',
-            'action' => 'listaFuncionarios'
+            'controller' => 'FuncionarioController',
+            'action' => 'read'
         );
 
         $routes['confirma_agendamento'] = array(
@@ -118,6 +112,12 @@ class Route extends Bootstrap{
             'route' => '/filtra_relatorio',
             'controller' => 'AppController',
             'action' => 'filtrarRelatorio'
+        );
+
+        $routes['imprimir_prontuario'] = array(
+            'route' => '/imprimir_prontuario',
+            'controller' => 'ProntuarioController',
+            'action' => 'imprimeProntuario'
         );
 
         $routes['sair'] = array(

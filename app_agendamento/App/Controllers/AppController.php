@@ -34,12 +34,14 @@ class AppController extends Action{
 
     public function navCadastraFuncionario(){
         $this->validaAutenticacao();
-        $setores = Container::getModel('Usuario');
+        $setores = Container::getModel('Setor');
+        $horarios = Container::getModel('Horario');
+        $usuarios = Container::getModel('Usuario');
         //incluir no formulario da view os setores.
-        $this->view->setores = $setores->listaSetores();
-        $this->view->horarios = $setores->listaHorarios();
+        $this->view->setores = $setores->read();
+        $this->view->horarios = $horarios->read();
         //incluir na tabela os funcionarios cadastrados.
-        $this->view->funcionarios = $setores->listaFuncionarios();
+        $this->view->funcionarios = $usuarios->listaFuncionarios();
         $this->render('cadastra_funcionario', 'layout');
     }
 
@@ -58,7 +60,11 @@ class AppController extends Action{
         $response['nome'] = $_POST['nome'];
         $response['telefone'] = $_POST['telefone'];
         $response['id_setor'] = $_POST['id_setor'];
+
         $funcionario = Container::getModel('Usuario');
+        $setores = Container::getModel('Setor');
+        $horarios = Container::getModel('Horario');
+        
         if($_POST['email'] != '' && $_POST['senha'] != '' && $_POST['nome'] != '' && $_POST['telefone'] != '' && $_POST['id_setor'] != ''){
             /*echo '<pre>';
             print_r($_POST);
@@ -71,8 +77,9 @@ class AppController extends Action{
             $funcionario->__set('id_horario', $_POST['id_horario']);
             $funcionario->cadastraFuncionario();
         }
-        $this->view->setores = $funcionario->listaSetores();
-        $this->view->horarios = $funcionario->listaHorarios();
+
+        $this->view->setores = $setores->read();
+        $this->view->horarios = $horarios->read();
         echo json_encode($funcionario->listaFuncionarios());
     }
 
@@ -230,14 +237,6 @@ class AppController extends Action{
                 $response['atendimentos'] = $att;
         }
         echo json_encode($responses, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-    }
-
-    public function validaAutenticacao(){
-        session_start();
-        $this->view->usuario = $_SESSION['nome'];
-        if(!isset($_SESSION['id']) || $_SESSION['id'] == '' || !isset($_SESSION['nome']) || $_SESSION['nome'] == ''){
-            header('Location: /?login=erro2');
-        }
     }
 }
 ?>

@@ -30,6 +30,14 @@
             require_once '../App/Views/' .$classAtual. '/' . $this->view->page . '.phtml';
         }
 
+        protected function validaAutenticacao(){
+            session_start();
+            $this->view->usuario = $_SESSION['nome'];
+            if(!isset($_SESSION['id']) || $_SESSION['id'] == '' || !isset($_SESSION['nome']) || $_SESSION['nome'] == ''){
+                header('Location: /?login=erro2');
+            }
+        }
+
         protected function range_limit($current, $total, $limit = 10, $start_at = 1)
         {
             $middle = ceil($limit / 2);

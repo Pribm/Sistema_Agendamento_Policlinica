@@ -37,6 +37,10 @@ require_once('menu_topo.phtml');
     </div>
 </form>
 
+<form target="_blank" id='impressao' action='/imprimir_prontuario' method="POST">
+    <!--<button type='submit'>clique aqui</button>-->
+</form>
+
 <div class="container mt-5 table-responsive-sm">
     <table class="table table-bordered">
         <thead class="thead-light">
@@ -58,21 +62,9 @@ require_once('menu_topo.phtml');
 <div class="d-flex flex-wrap justify-content-center mt-5">
     <nav aria-label="Page navigation example">
         <ul class="pagination d-flex flex-wrap justify-content-center">
-            <!--
-                <li class="page-item"><a class="page-link" href="?pagina=1">Primeira</a></li>
-                <li class="page-item"><a class="page-link" href="?pagina=1">1</a></li>
-                <li class="page-item"><a class="page-link" href="?pagina=2">2</a></li>
-                <li class="page-item"><a class="page-link" href="?pagina=3">3</a></li>
-                <li class="page-item"><a class="page-link" href="?pagina=3">Ultima</a></li>-->
+
         </ul>
     </nav>
-</div>
-
-<button onclick="imprimirProntuario()">clique aqui</button>
-
-
-<div class="">
-    <?php include('../App/Views/App/prontuario.phtml')?>
 </div>
 
 
@@ -135,16 +127,14 @@ $('#pesquisar_prontuario').submit(function(e) {
         dataType: "json",
         success: function(responses) {
             let tabela = $('#tabela').select();
-            console.log(responses)
+            //console.log(responses)
             $(tabela).html('');
             $('.pagination').html(responses['links']); //botoes de paginacao
             responses[0].forEach(response => {
                 let tr = createRow(response.prontuario, response.nome, response.sus,
                     response.telefone, response.id);
+
                 $(tabela).append(tr);
-                $('.folha-impressao #nome').html(response.nome);
-                $('.folha-impressao #nome_pai').html(response.pai);
-                $('.folha-impressao #nome_mae').html(response.mae);
             });
         }
     });
@@ -157,13 +147,13 @@ $(document).ready(function() {
 
 function createRow(prontuario, nome, sus, telefone, id) {
     //criar a tr e fazer o append no tbody
+    //console.log(id)
     let tr = '<tr>'
     tr += '<td>' + prontuario + '</td>'
     tr += '<td>' + nome + '</td>'
     tr += '<td>' + sus + '</td>'
     tr += '<td>' + telefone + '</td>'
-    tr += '<td class="text-center"><i class="fa fa-print btn icon-primary" onclick="imprimirProntuario(' + id +
-        ')" aria-hidden="true"></i></td>'
+    tr += '<td class="text-center"><button class="btn icon-primary" id="botaoImpressao'+id+'" type="submit" form="impressao" name="paciente_id" value="'+id+'"><i class="fa fa-print btn icon-primary"></i></button></td>'
     tr += '<td class="text-center"><i class="fa fa-trash btn icon-primary" onclick="deleteProntuario(' + id +
         ')" aria-hidden="true"></i></td>'
     tr += '</tr>'
@@ -176,22 +166,5 @@ function deleteProntuario(id) {
     });
 }
 
-function imprimirProntuario() {
 
-    $('#pdfBody').removeClass('d-none');
-
-    var w = $('#pront').width();
-    var h = $('#pront').height();
-    html2canvas(document.getElementById("pront"), {
-        dpi: 300, // Set to 300 DPI
-        scale: 120, // Adjusts your resolution
-        onrendered: function(canvas) {
-        var img = canvas.toDataURL("image/pdf", 1);
-        var doc = new jsPDF('P', 'px', [w, h]);
-        doc.addImage(img, 'JPEG', w, 0, w, h);
-        doc.save('sample-file.pdf');
-        $('#pdfBody').addClass('d-none');
-        }
-    });
-}
 </script>

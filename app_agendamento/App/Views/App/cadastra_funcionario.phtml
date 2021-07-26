@@ -1,12 +1,12 @@
     <?php $page = 'cadastrarFuncionario'; include_once('menu_topo.phtml'); ?>
     <!-- Button trigger modal -->
     <div class="container mt-4">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCadastro">
             Cadastrar Funcionário
         </button>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+
+        <!-- Modal de cadastro-->
+        <div class="modal fade" id="modalCadastro"  role="dialog" style="z-index: 1400;">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -16,7 +16,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="form_cadastro" method="post" action="funcionario_cadastrado">
+                        <form id="form_cadastro">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputEmail4">Email</label>
@@ -32,15 +32,15 @@
                             <div class="form-group">
                                 <label for="nomeCompleto">Nome Completo</label>
                                 <input name="nome" type="text" class="form-control"
-                                    placeholder="Insira o nome do funcionário">
+                                    placeholder="Insira o nome do funcionário" id='nomeCompleto'>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-5">
+                            <div class="form-row align-items-center">
+                                <div class="form-group col-md-6">
                                     <label for="telefone">Telefone</label>
                                     <input name="telefone" type="text" class="form-control input_phone"
-                                        placeholder="Telefone">
+                                        placeholder="Telefone" id='telefone'>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label for="setor">Setor</label>
                                     <select id="setores_select" class="form-control" name="id_setor">
                                         <?php foreach ($this->view->setores as $key => $setor) {?>
@@ -48,23 +48,90 @@
                                         <?php }?>
                                     </select>
                                 </div>
+                            </div>
 
-                                <div class="form-group col-md-3">
-                                    <label for="setor">Horário</label>
-                                    <select id="horarios_select" class="form-control" name="id_horario">
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                <h5>Primeiro Horario</h5>
+
+                                    <select id="horarios_select" class="form-control" name="id_horario[]" onchange='changeHora()'>
                                         <?php foreach ($this->view->horarios as $key => $h) {?>
                                         <option value=<?=$h['id']?>><?=$h['horario']?></option>
                                         <?php }?>
+                                        <option value='0'>Cadastrar Horario</option>
                                     </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Dias de atendimento</h5>
+                                    <div class="d-flex">
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Seg</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox1" value="1">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Ter</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox2" value="2">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Qua</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox3" value="3">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Qui</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox4" value="4">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Sex</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox5" value="5">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                <h5>Segundo Horario</h5>
+
+                                    <select id="horarios_select" class="form-control" name="id_horario[]" onchange='changeHora()'>
+                                        <?php foreach ($this->view->horarios as $key => $h) {?>
+                                        <option value=<?=$h['id']?>><?=$h['horario']?></option>
+                                        <?php }?>
+                                        <option value='0'>Cadastrar Horario</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Dias de atendimento</h5>
+                                    <div class="d-flex">
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Seg</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox1" value="1">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Ter</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox2" value="2">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Qua</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox3" value="3">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Qui</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox4" value="4">
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex flex-column">
+                                        <label class="form-check-label" for="inlineCheckbox1">Sex</label>
+                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox5" value="5">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
-                        <form id="form_arquivo" enctype="multipart/form-data" method="post" action="/upload_foto">
+                        <!--<form id="form_arquivo" enctype="multipart/form-data" method="post" action="/upload_foto">
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">Foto de perfil</label>
                                 <input class="form-control" name="arquivo" type="file" id="formFile">
                             </div>
-                        </form>
+                        </form>-->
                         <button form="form_cadastro" type="submit" class="btn btn-primary">Cadastrar</button>
                     </div>
                 </div>
@@ -72,7 +139,36 @@
         </div>
     </div>
     <!----------------------Fim Modal Cadastro---------------------------------->
+    
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalHora" role="dialog" style="z-index: 1600;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row align-items-end">
+                <div class="col-md-6">
+                    
+                    <!--<input class='form-control' type="text" placeholder='Horario' id='horarioAdicional'>-->
+                </div>
+
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+    </div>
+    </div>
 
 
     <!----------------------Topo da Tabela-------------------------------------->
@@ -105,33 +201,35 @@
 //essa rotina acontece quando o cadastro é realizado
 $("#form_cadastro").submit(function(e) {
     e.preventDefault();
-    $('#form_arquivo').submit();
-    $('#exampleModal').modal('toggle');
     $.ajax({
         type: "POST",
-        url: "funcionario_cadastrado",
+        url: "cadastrar_funcionario",
         data: $(this).serialize(),
         dataType: "json",
         success: function(response) {
             listarRegistros();
+            $('#modalCadastro').modal('toggle');
+            limparCampos();
         }
     });
 });
+
 $(document).ready(function() {
     listarRegistros();
 });
 
-$('#form_arquivo').submit(function(e) {
-    e.preventDefault();
-});
-
-
 function listarRegistros() {
     
     $.getJSON("lista_funcionarios", function(response) {
+        console.log(response)
         $("#tabela").html('');
-        response['todos_funcionarios'].forEach(function(r, index) {
-            //console.log(r)
+        response.forEach(function(r, index) {
+
+            let jsonTurnos = r.turnos
+            let turnosObject = JSON.parse(jsonTurnos)
+
+            console.log(turnosObject[0].horario1_label)
+
             let editButton = '<td>'
             editButton += '<button onclick="editarFuncionario('+ r['id'] +')" id="botao_editar_' + r['id'] +
                 '" class="btn btn-sm btn-secondary edit">'
@@ -154,7 +252,7 @@ function listarRegistros() {
             row += '<td id="funcionario_email_' + r['id'] + '">' + r['email'] + '</td>'
             row += '<td id="funcionario_telefone_' + r['id'] + '">' + r['telefone'] + '</td>'
             row += '<td id="funcionario_setor_' + r['id'] + '">' + r['setor'] + '</td>'
-            row += '<td id="funcionario_horario_' + r['id'] + '" class="text-center">' + r['horario'] +
+            row += '<td id="funcionario_horario_' + r['id'] + '" class="text-center">' + turnosObject[0].horario1_label +
                 '</td>'
             row += '<td id="botoes_'+ r['id'] +'">' + editButton + deleteButton + '</td>'
             row += '</tr>';
@@ -213,13 +311,18 @@ function editarFuncionario(id) {
             data: $(this).serialize(),
             success: function(response) {
                 listarRegistros();
+
             }
         });
     });
 }
 
-
-
+function limparCampos(){
+    document.getElementById('inputEmail4').value = ''
+    document.getElementById('inputPassword4').value = ''
+    document.getElementById('nomeCompleto').value = ''
+    document.getElementById('telefone').value = ''
+}
 
 function deletar_funcionario(id) {
     $.get("/acao?action=delete&id="+id+"&dado=funcionarios", function(data) {
@@ -233,4 +336,24 @@ let inputFone = new Cleave('.input_phone', {
     blocks: [0,2,5, 4]
 });
 
-    </script>
+
+
+function changeHora(){
+    let hora = document.getElementById('horarios_select')
+
+    let input = "<input class='form-control horarioAdicional' name='addHorario' type='text' placeholder='Horario'>"
+    if(hora.value === '0'){
+        $(hora).before(input);
+        $(hora).remove();
+
+        let inputHora = new Cleave('.horarioAdicional', {
+        numericOnly: true,
+        blocks: [2,2],
+        delimiters: [':']
+        });
+    }
+}
+
+
+
+</script>
