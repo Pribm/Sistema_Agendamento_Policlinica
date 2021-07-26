@@ -15,7 +15,7 @@ class FuncionarioController extends Action{
         $horarios = Container::getModel('Horario');
         $diasSemana = Container::getModel('DiaSemana');
 
-        if($_POST['id_horario'][0]){
+        if($_POST['id_horario'][0] && $_POST['id_horario'][0] !== "0"){
 
             $labelsDia = [];
 
@@ -32,7 +32,7 @@ class FuncionarioController extends Action{
             array_push($turnos, $horario);
         }
 
-        if($_POST['id_horario'][1]){
+        if($_POST['id_horario'][1] && $_POST['id_horario'][1] !== "0"){
 
             $labelsDia = [];
 
@@ -63,7 +63,7 @@ class FuncionarioController extends Action{
     public function read(){
         $funcionario = Container::getModel('Funcionario');
         $lista = $funcionario->read();
-        echo json_encode($lista , JSON_UNESCAPED_SLASHES);
+        echo json_encode($lista , JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 
     public function update(){

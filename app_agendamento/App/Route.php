@@ -84,6 +84,12 @@ class Route extends Bootstrap{
             'action' => 'read'
         );
 
+        $routes['lista_medicos'] = array(
+            'route' => '/lista_medicos',
+            'controller' => 'MedicoController',
+            'action' => 'read'
+        );
+
         $routes['confirma_agendamento'] = array(
             'route' => '/confirma_agendamento',
             'controller' => 'AppController',

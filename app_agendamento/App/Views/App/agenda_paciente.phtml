@@ -19,7 +19,7 @@
                             <label class="input-group-text" for="inputGroupSelect01">Médico</label>
                         </div>
                         <select name="medico_id" class="custom-select" id="medico">
-
+                            
                         </select>
                     </div>
                 </div>
@@ -80,46 +80,29 @@
 
 $(document).ready(function() {
 
-    $('#medico').load("lista_funcionarios", function(response) {
+    $('#medico').load("/lista_medicos", function(response) {
         $('#medico').html('')
-        let medicos = JSON.parse(response)['medicos'];
+        
+        var medicos = JSON.parse(response);
 
-        let result = {};
-
-        for (const medico of medicos) {
-            let obj_horario = {
-                horario: medico.horario,
-                id_horario: medico.id_horario,
-                atendimentos: medico.atendimentos
-            };
-            if (result[medico.id]) { // se já existe o id nos resultados, acrescenta os horários
-                result[medico.id].horarios.push(obj_horario);
-            } else { // se não existe o id nos resultados, cria um novo
-                result[medico.id] = {
-                    nome: medico.nome,
-                    id: medico.id,
-                    horarios: [obj_horario]
-                };
-            }
-        }
-
-        result = Object.values(result);
-        //console.log(result)
-        result.forEach(r => {
-            document.getElementById('medico').innerHTML += '<option value="' + r['id'] + '">' +
-                r['nome'] + '</option>'
+        medicos.forEach(r => {
+            document.getElementById('medico').innerHTML += '<option value="'+ r.id +'">' +
+                r.nome + '</option>'
         });
 
         
         $('#medico').change(function(e) {//toda vez que muda o médico
             document.getElementById('horario').innerHTML = ''; //a cada vez que muda, tem que zerar os selects
             e.preventDefault();
-            result.forEach(r => {
-                if ($(this).val() == r['id']) {//essa lógica muda os médicos horários e atendimentos
-                    for (let i = 0; i < r['horarios'].length; i++) {
+            medicos.forEach(r => {
+                let turnos = JSON.parse(r.turnos)
+                console.log(r.id)
+                if ($(this).val() === r.id) {//essa lógica muda os médicos horários e atendimentos
+                   /* for (let i = 1; i < turnos.length; i++) {
+                        console.log(turnos[i][`horario${i}_id`])
                         document.getElementById('horario').innerHTML +=
-                            '<option value="' + r['horarios'][i]['id_horario'] + '">' +
-                            r['horarios'][i]['horario'] + '</option>';
+                            '<option value="' + turnos[i][`horario${i}_id`] + '">' +
+                            turnos[i][`horario${i}_label`] + '</option>';
 
                         $('#horario').change(function(e) {
                             if ($('#horario').val() == r.horarios[i]
@@ -128,7 +111,9 @@ $(document).ready(function() {
                                     .atendimentos)
                             }
                         });
-                    }
+                    }*/
+
+                    console.log('id selecionado É O' + r.id)
                 }
             });
             $('#horario').change();
