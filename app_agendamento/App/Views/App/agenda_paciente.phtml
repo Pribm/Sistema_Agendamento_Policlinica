@@ -96,24 +96,15 @@ $(document).ready(function() {
             e.preventDefault();
             medicos.forEach(r => {
                 let turnos = JSON.parse(r.turnos)
-                console.log(r.id)
+                
                 if ($(this).val() === r.id) {//essa lógica muda os médicos horários e atendimentos
-                   /* for (let i = 1; i < turnos.length; i++) {
-                        console.log(turnos[i][`horario${i}_id`])
+
+                    for (let i = 0; i < turnos.length; i++) {
+                        console.log(turnos[i][`horario${i+1}_id`])
                         document.getElementById('horario').innerHTML +=
-                            '<option value="' + turnos[i][`horario${i}_id`] + '">' +
-                            turnos[i][`horario${i}_label`] + '</option>';
-
-                        $('#horario').change(function(e) {
-                            if ($('#horario').val() == r.horarios[i]
-                                .id_horario) {
-                                $('#atendimentos').val(r.horarios[i]
-                                    .atendimentos)
-                            }
-                        });
-                    }*/
-
-                    console.log('id selecionado É O' + r.id)
+                            '<option value="' + turnos[i][`horario${i+1}_id`] + '">' +
+                            turnos[i][`horario${i+1}_label`] + '</option>';
+                    }
                 }
             });
             $('#horario').change();

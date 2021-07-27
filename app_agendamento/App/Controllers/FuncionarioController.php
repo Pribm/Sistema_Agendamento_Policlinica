@@ -8,7 +8,7 @@ class FuncionarioController extends Action{
 
 
     public function create(){
-        print_r($_POST);
+
         $turnos = [];
 
         $funcionario = Container::getModel('Funcionario');
@@ -49,15 +49,18 @@ class FuncionarioController extends Action{
             array_push($turnos, $horario);
         }
 
-        $funcionario->__set('email', $_POST['email']);
-        $funcionario->__set('senha', md5($_POST['senha']));
-        $funcionario->__set('nome', $_POST['nome']);
-        $funcionario->__set('telefone', $_POST['telefone']);
-        $funcionario->__set('id_setor', $_POST['id_setor']);
-        $funcionario->__set('turnos', json_encode($turnos, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-        $funcionario->create();
-
-        
+        if($_POST['email'] !== '' && $_POST['senha'] !== '' && $_POST['nome'] !== '' && $_POST['telefone'] !== '' && $_POST['id_setor'] !== '' && $_POST['id_horario'] !== ''){
+            $funcionario->__set('email', $_POST['email']);
+            $funcionario->__set('senha', md5($_POST['senha']));
+            $funcionario->__set('nome', $_POST['nome']);
+            $funcionario->__set('telefone', $_POST['telefone']);
+            $funcionario->__set('id_setor', $_POST['id_setor']);
+            $funcionario->__set('turnos', json_encode($turnos, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            $funcionario->create();
+            echo json_encode(['Sucesso' => 'Funcionário cadastrado com sucesso na base de dados']);
+        }else{
+            echo json_encode(['Erro' => 'Por favor, preencha todos os campos']);
+        }
     }
 
     public function read(){
