@@ -1,0 +1,10 @@
+[
+{"horario1_id":"2","horario1_label":"07:30",
+"dias_id":["1","2","3","4","5"],
+"dias_labels":["Segunda","Terça","Quarta","Quinta","Sexta"]}
+,
+{"horario2":"1",
+"horario2_label":"12:00",
+"dias":[{dia: "2" atendimentos: 12},{dia: "4", atendimentos: 15}],
+"dias_labels":[{dia: "Terça", atendimentos: 12},{dia:"Quinta", atendimentos: 15]}
+]
