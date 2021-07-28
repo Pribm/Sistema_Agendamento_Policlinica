@@ -32,7 +32,7 @@ class Usuario extends Model{
 
     public function autenticarUsuario(){
 
-        $query = "SELECT F.id, F.nome, S.setor, F.telefone, F.email FROM funcionarios AS F LEFT JOIN setores AS S ON F.id_setor = S.id Where F.email = :email AND F.senha = :senha";
+        $query = "SELECT F.id, F.nome, S.setor, F.telefone, F.email FROM funcionarios AS F LEFT JOIN setores AS S ON F.id_setor = S.id Where F.email = :email AND F.senha = :senha AND F.situacao = 1";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':email', $this->__get('email'));
         $stmt->bindValue(':senha', $this->__get('senha'));

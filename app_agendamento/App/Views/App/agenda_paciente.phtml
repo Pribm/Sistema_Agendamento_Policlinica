@@ -86,23 +86,18 @@
 
 
 $(document).ready(function() {
-    listamedicos()
-    $('#medico').change()
-    
+    listamedicos();
 });
 
 let lista_medicos = []
-let dias_e_horarios = []
 
 function listamedicos() {
     $.get("/lista_medicos",
         function (medicos, textStatus, response) {
             if(response.status === 200){
                 medicos.forEach((medico, index) => {
-                    let turno = JSON.parse(medico.turnos)
-                    lista_medicos.push({id : medico.id, nome : medico.nome})
-                    dias_e_horarios.push({...turno})
-
+                    let turnos = JSON.parse(medico.turnos)
+                    lista_medicos.push({selectIndex: index, id : medico.id, nome : medico.nome, turnos : turnos})
                     $('#medico').append(`<option value="${medico.id}">${medico.nome}</option>`);
                 });
             }
@@ -111,36 +106,26 @@ function listamedicos() {
     );
 }
 
-console.log(dias_e_horarios)
-
 $('#medico').change(function (e) { 
     e.preventDefault();
-    /*$.get("/lista_medicos",
-        function (medicos, textStatus, response) {
-            if(response.status === 200){
-                document.querySelector('#horario').innerHTML = ''
-                medicos.forEach(medico => {
-                    if(document.querySelector('#medico').value === medico.id){
-                        let turnos = medico.turnos;
-                        turnos = JSON.parse(turnos)
-                        turnos.forEach(turno => {
-                            $('#horario').append(`<option value='${turno.horario_id}'>${turno.horario_label}</option>`)
-                        });
-                    }
-                })
-            }
-        },
-        "json"
-    );*/
-    dias_e_horarios.map( () => {
-        return console.log('oi')
-    })
-});
-
-$('#horario').change(function (e) { 
-    e.preventDefault();
+    $('#horario').html('')
+    lista_medicos.forEach(medico => {
+        if(getSelectedMedico() === medico.selectIndex){
+            console.log(medico.nome)
+            medico.turnos.forEach(turno => {
+                $('#horario').append(`<option value="${turno.horario_id}">${turno.horario_label}</option>`);
+                return
+            })
+            
+        }
+    });
     
 });
+
+function getSelectedMedico(){
+    let medicoIndex = document.getElementById('medico').selectedIndex;
+    return medicoIndex
+}
 
 $('#agendar_paciente').submit(function(e) {
     e.preventDefault();
@@ -202,11 +187,6 @@ let inputPaciente = new Cleave('.prontuario', {
 
 let inputSus = new Cleave('#sus', {
     blocks: [3, 4, 4, 4]
-});
-
-$('#dia').change(function (e) { 
-    e.preventDefault();
-    alert('oi')
 });
 
     </script>
