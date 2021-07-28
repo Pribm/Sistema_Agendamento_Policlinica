@@ -6,5 +6,5 @@
 {"horario2":"1",
 "horario2_label":"12:00",
 "dias":[{dia: "2" atendimentos: 12},{dia: "4", atendimentos: 15}],
-"dias_labels":[{dia: "Terça", atendimentos: 12},{dia:"Quinta", atendimentos: 15]}
+"dias_labels":[{dia: "Terça", atendimentos: 12},{dia:"Quinta", atendimentos: 15}]
 ]

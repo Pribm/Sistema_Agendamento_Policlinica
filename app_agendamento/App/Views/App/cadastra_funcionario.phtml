@@ -1,12 +1,17 @@
-    <?php $page = 'cadastrarFuncionario'; include_once('menu_topo.phtml'); ?>
+    <?php $page = 'cadastrarFuncionario';
+    include_once('menu_topo.phtml'); ?>
     <!-- Button trigger modal -->
     <div class="container mt-4">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalcadastro">
             Cadastrar Funcionário
         </button>
 
+        <div style="position: absolute; bottom: 5%; left: 50%; transform: translate(-50%, -50%); z-index: 2500;" id='alertContainer'>
+            
+        </div>
+
         <!-- Modal de cadastro-->
-        <div class="modal fade" id="modalcadastro"  aria-hidden="true"  role="dialog" style="z-index: 1400;">
+        <div class="modal fade" id="modalcadastro" aria-hidden="true" role="dialog" style="z-index: 1400;">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -20,115 +25,188 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputEmail4">Email</label>
-                                    <input name="email" type="email" class="form-control" id="inputEmail4"
-                                        placeholder="Email">
+                                    <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="Email">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="inputPassword4">Senha</label>
-                                    <input name="senha" type="password" class="form-control" id="inputPassword4"
-                                        placeholder="Password">
+                                    <input name="senha" type="password" class="form-control" id="inputPassword4" placeholder="Password">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="nomeCompleto">Nome Completo</label>
-                                <input name="nome" type="text" class="form-control"
-                                    placeholder="Insira o nome do funcionário" id='nomeCompleto'>
+                                <input name="nome" type="text" class="form-control" placeholder="Insira o nome do funcionário" id='nomeCompleto'>
                             </div>
                             <div class="form-row align-items-center">
                                 <div class="form-group col-md-6">
                                     <label for="telefone">Telefone</label>
-                                    <input name="telefone" type="text" class="form-control input_phone"
-                                        placeholder="Telefone" id='telefone'>
+                                    <input name="telefone" type="text" class="form-control input_phone" placeholder="Telefone" id='telefone'>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="setor">Setor</label>
                                     <select id="setores_select" class="form-control" name="id_setor">
-                                        <?php foreach ($this->view->setores as $key => $setor) {?>
-                                        <option value=<?=$setor['id']?>><?=$setor['setor']?></option>
-                                        <?php }?>
+                                        <?php foreach ($this->view->setores as $key => $setor) { ?>
+                                            <option value=<?= $setor['id'] ?>><?= $setor['setor'] ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="row mb-2">
+                            <hr />
+
+                            <div class="row mb-2 justify-content-center">
                                 <div class="col-md-6">
-                                <h5>Primeiro Horario</h5>
-                                
-                                    <select id="horarios_select" class="form-control" name="id_horario[]" onchange='changeHora()'>
-                                    <option value='0'>------------------------</option>
-                                        <?php foreach ($this->view->horarios as $key => $h) {?>
-                                        <option value=<?=$h['id']?>><?=$h['horario']?></option>
-                                        <?php }?>
-                                        
+                                    <h5 class="text-center">Primeiro Horário</h5>
+
+                                    <select id="horarios_select mb-2" class="form-control" name="id_horario[]">
+                                        <option value='0'>------------------------</option>
+                                        <?php foreach ($this->view->horarios as $key => $h) { ?>
+                                            <option value=<?= $h['id'] ?>><?= $h['horario'] ?></option>
+                                        <?php } ?>
+
                                     </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Dias de atendimento</h5>
-                                    <div class="d-flex">
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Seg</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox1" value="1">
-                                        </div>
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Ter</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox2" value="2">
-                                        </div>
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Qua</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox3" value="3">
-                                        </div>
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Qui</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox4" value="4">
-                                        </div>
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Sex</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana1[]' id="inlineCheckbox5" value="5">
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row mb-2">
-                                <div class="col-md-6">
-                                <h5>Segundo Horario</h5>
-                                    
-                                    <select id="horarios_select" class="form-control" name="id_horario[]" onchange='changeHora()'>
-                                    <option value='0'>------------------------</option>
-                                        <?php foreach ($this->view->horarios as $key => $h) {?>
-                                        <option value=<?=$h['id']?>><?=$h['horario']?></option>
-                                        <?php }?>
-                                        
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Dias de atendimento</h5>
-                                    <div class="d-flex">
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Seg</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox1" value="1">
+                            <h5 class="text-center">Dias e número de vagas</h5>
+
+                            <div class="row d-flex flex-nowrap">
+                                <div class="d-flex flex-column align-items-center mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input onclick="EnableTextbox(this, 'inputSegunda')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="1">
+                                            </div>
                                         </div>
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Ter</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox2" value="2">
-                                        </div>
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Qua</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox3" value="3">
-                                        </div>
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Qui</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox4" value="4">
-                                        </div>
-                                        <div class="form-check form-check-inline d-flex flex-column">
-                                        <label class="form-check-label" for="inlineCheckbox1">Sex</label>
-                                            <input class="form-check-input" type="checkbox" name='dia_semana2[]' id="inlineCheckbox5" value="5">
-                                        </div>
+                                        <input type="text" id='inputSegunda' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
                                     </div>
+                                    <p>Segunda</p>
+                                </div>
+                                <div class="d-flex flex-column align-items-center mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input onclick="EnableTextbox(this, 'inputTerca')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="2">
+                                            </div>
+                                        </div>
+                                        <input type="text" id='inputTerca' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
+                                    </div>
+                                    <p>Terça</p>
+                                </div>
+                                <div class="d-flex flex-column align-items-center mb-3 mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input onclick="EnableTextbox(this, 'inputQuarta')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="3">
+                                            </div>
+                                        </div>
+                                        <input type="text" id='inputQuarta' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
+                                    </div>
+                                    <p>Quarta</p>
+                                </div>
+                                <div class="d-flex flex-column align-items-center mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input onclick="EnableTextbox(this, 'inputQuinta')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="4">
+                                            </div>
+                                        </div>
+                                        <input type="text" id='inputQuinta' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
+                                    </div>
+                                    <p>Quinta</p>
+                                </div>
+                                <div class="d-flex flex-column align-items-center mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input onclick="EnableTextbox(this, 'inputSexta')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="5">
+                                            </div>
+                                        </div>
+                                        <input type="text" id='inputSexta' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
+                                    </div>
+                                    <p>Sexta</p>
                                 </div>
                             </div>
+
+                            <hr />
+
+                            <div class="row mb-2 justify-content-center">
+                                <div class="col-md-6">
+                                    <h5 class="text-center">Segundo Horário</h5>
+
+                                    <select id="horarios_select mb-2" class="form-control" name="id_horario[]">
+                                        <option value='0'>------------------------</option>
+                                        <?php foreach ($this->view->horarios as $key => $h) { ?>
+                                            <option value=<?= $h['id'] ?>><?= $h['horario'] ?></option>
+                                        <?php } ?>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h5 class="text-center">Dias e número de vagas</h5>
+
+                            <div class="row d-flex flex-nowrap">
+                                <div class="d-flex flex-column align-items-center mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" onclick="EnableTextbox(this, 'inputSegunda2')" aria-label="Checkbox for following text input" name='dia_semana2[]' value="1">
+                                            </div>
+                                        </div>
+                                        <input id='inputSegunda2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                    </div>
+                                    <p>Segunda</p>
+                                </div>
+                                <div class="d-flex flex-column align-items-center mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input onclick="EnableTextbox(this, 'inputTerca2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="2">
+                                            </div>
+                                        </div>
+                                        <input id='inputTerca2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                    </div>
+                                    <p>Terça</p>
+                                </div>
+                                <div class="d-flex flex-column align-items-center mb-3 mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input onclick="EnableTextbox(this, 'inputQuarta2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="3">
+                                            </div>
+                                        </div>
+                                        <input id='inputQuarta2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                    </div>
+                                    <p>Quarta</p>
+                                </div>
+                                <div class="d-flex flex-column align-items-center mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input onclick="EnableTextbox(this, 'inputQuinta2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="4">
+                                            </div>
+                                        </div>
+                                        <input id='inputQuinta2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                    </div>
+                                    <p>Quinta</p>
+                                </div>
+                                <div class="d-flex flex-column align-items-center mx-2">
+                                    <div class="input-group d-flex flex-row">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input onclick="EnableTextbox(this, 'inputSexta2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="5">
+                                            </div>
+                                        </div>
+                                        <input id='inputSexta2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                    </div>
+                                    <p>Sexta</p>
+                                </div>
+                            </div>
+                            <hr/>
                         </form>
+                        <div class="d-flex justify-content-center">
                         <button form="form_cadastro" type="submit" class="btn btn-primary">Cadastrar</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -142,18 +220,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-                                style="color: Dodgerblue;"></button></i>#</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-                                style="color: Dodgerblue;"></button></i>Nome</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-                                style="color: Dodgerblue;"></button></i>E-mail</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-                                style="color: Dodgerblue;"></button></i>Telefone</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-                                style="color: Dodgerblue;"></button></i>Setor</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort"
-                                style="color: Dodgerblue;"></button></i>Horario</th>
+                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>#</th>
+                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Nome</th>
+                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>E-mail</th>
+                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Telefone</th>
+                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Setor</th>
+                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Horario</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -164,158 +236,160 @@
 
 
     <script>
-//essa rotina acontece quando o cadastro é realizado
-$("#form_cadastro").submit(function(e) {
-    e.preventDefault();
-    
-    $.ajax({
-        type: "POST",
-        url: "cadastrar_funcionario",
-        data: $(this).serialize(),
-        success: function(response) {
-            console.log(response)
-            $('#modalcadastro').modal('hide')
-            listarRegistros();
-            limparCampos();
-        }
-    });
-});
+        //essa rotina acontece quando o cadastro é realizado
+        $("#form_cadastro").submit(function(e) {
+            e.preventDefault();
 
-$(document).ready(function() {
-    listarRegistros();
-});
-
-function listarRegistros() {
-    
-    $.getJSON("lista_funcionarios", function(response) {
-        
-        $("#tabela").html('');
-        response.forEach(function(r, index) {
-
-            let jsonTurnos = r.turnos
-            
-            let editButton = '<td>'
-            editButton += '<button onclick="editarFuncionario('+ r['id'] +')" id="botao_editar_' + r['id'] +
-                '" class="btn btn-sm btn-secondary edit">'
-            editButton += '<i class="fas fa-edit"></i>'
-            editButton += '</button>'
-            editButton += '</td>'
-
-            let deleteButton = '\n' +
-                '<td>\n' +
-                '<button onclick="deletar_funcionario(' + r['id'] + ')" id="botao_delete_' + r['id'] +
-                '" class="btn btn-sm btn-primary">\n' +
-                '<i class="fas fa-trash-alt"></i>\n' +
-                '</button>\n' +
-                '</td>'
-
-            let row = '<tr id="row_funcionario_'+ r['id'] +'">'
-            row += '<th id="row_number_'+ r['id'] +'" scope="row">' + (index + 1) + '</th>'
-            row += '<td id="funcionario_nome_' + r['id'] + '">' + r['nome'] + '</td>'
-            row += '<td id="funcionario_email_' + r['id'] + '">' + r['email'] + '</td>'
-            row += '<td id="funcionario_telefone_' + r['id'] + '">' + r['telefone'] + '</td>'
-            row += '<td id="funcionario_setor_' + r['id'] + '">' + r['setor'] + '</td>'
-            row += '<td id="funcionario_horario_' + r['id'] + '" class="text-center">' + 'inserir os dados de hora' +
-                '</td>'
-            row += '<td id="botoes_'+ r['id'] +'">' + editButton + deleteButton + '</td>'
-            row += '</tr>';
-
-            $("#tabela").append(row);
-        });
-    });
-}
-
-function editarFuncionario(id) {
-
-    let nomeVal = $('#funcionario_nome_'+id).html();
-    let emailVal = $('#funcionario_email_'+id).html();
-    let foneVal = $('#funcionario_telefone_'+id).html();
-    let rowNumber = $('#row_number_'+id).html();
-    let setoresVal = $('#setores_select').html();
-    let horariosVal = $('#horarios_select').html();
-
-    let rowNumberHTML = '<th>'+rowNumber+'</th>';
-    let nomeHTML = '<td><input value="'+nomeVal+'" name="nome" type="text" id="funcionario_nome_'+id+'" class="form-control" form="form_edit_'+id+'"></td>';
-    let emailHTML = '<td><input value="'+emailVal+'" name="email" type="text" id="funcionario_email_'+id+'" class="form-control" form="form_edit_'+id+'"></td>';
-    let foneHTML = '<td><input value="'+foneVal+'" name="fone" type="text" id="funcionario_telefone_'+id+'" class="form-control input_phone" form="form_edit_'+id+'"></td>';
-    let hiddenIdHTML = '<input type="hidden" form="form_edit_'+id+'" name="id" value="'+id+'">';
-
-    
-    let setorHTML = '<td><select class="form-control" name="setor" form="form_edit_'+id+'">'+setoresVal+'</select></td>'
-    let horarioHTML = '<td><select class="form-control" name="horario" form="form_edit_'+id+'">'+horariosVal+'</select></td>';
-
-
-    let botaoHTML = '<td><input type="submit" name="action" value="atualizar" id="salvar_modificacao_'+id+'" class="form-control btn-success" form="form_edit_'+id+'"></td>';
-
-
-    $('#row_funcionario_'+id).html('');
-
-    let  form = document.createElement('form');
-    $(form).attr('id', 'form_edit_'+id);
-    //$(form).attr('method', 'post');
-    //$(form).attr('action', 'acao?action=atualizar&id='+id);
-    $('#row_funcionario_'+id).prepend(form);
-
-    let num = $('#row_funcionario_'+id).append(rowNumberHTML);
-    let nome = $('#row_funcionario_'+id).append(nomeHTML);
-    let email = $('#row_funcionario_'+id).append(emailHTML);
-    let fone = $('#row_funcionario_'+id).append(foneHTML);
-    let setor = $('#row_funcionario_'+id).append(setorHTML);
-    let horario = $('#row_funcionario_'+id).append(horarioHTML);
-    let hiddenId = $('#row_funcionario_'+id).append(hiddenIdHTML);
-    let botao = $('#row_funcionario_'+id).append(botaoHTML);
-
-    $('#form_edit_'+id).submit(function (e) { 
-        e.preventDefault();
-        
             $.ajax({
-            type: "POST",
-            url: 'acao?action=atualizar&id='+id,
-            data: $(this).serialize(),
-            success: function(response) {
+                type: "POST",
+                url: "cadastrar_funcionario",
+                data: $(this).serialize(),
+                success: function(response) {
+                    response = JSON.parse(response)
+                    if(response.Sucesso){
+                        let alert = '<div class="alert alert-success" role="alert">'
+                        alert += response.Sucesso
+                        alert += '</div>'
+
+                        $('#alertContainer').append(alert);
+                        $('#modalcadastro').modal('hide')
+                        listarRegistros();
+                        limparCampos();
+                    }else{
+                        $('#alertContainer').append('<div class="alert alert-danger" role="alert">'+response.Erro+'</div>');
+                    }
+                    setTimeout(() => {
+                        $('#alertContainer').html('');
+                    }, 2500);
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            listarRegistros();
+        });
+
+        function listarRegistros() {
+
+            $.getJSON("lista_funcionarios", function(response) {
+
+                $("#tabela").html('');
+                response.forEach(function(r, index) {
+
+                    let jsonTurnos = r.turnos
+
+                    let editButton = '<td>'
+                    editButton += '<button onclick="editarFuncionario(' + r['id'] + ')" id="botao_editar_' + r['id'] +
+                        '" class="btn btn-sm btn-secondary edit">'
+                    editButton += '<i class="fas fa-edit"></i>'
+                    editButton += '</button>'
+                    editButton += '</td>'
+
+                    let deleteButton = '\n' +
+                        '<td>\n' +
+                        '<button onclick="deletar_funcionario(' + r['id'] + ')" id="botao_delete_' + r['id'] +
+                        '" class="btn btn-sm btn-primary">\n' +
+                        '<i class="fas fa-trash-alt"></i>\n' +
+                        '</button>\n' +
+                        '</td>'
+
+                    let row = '<tr id="row_funcionario_' + r['id'] + '">'
+                    row += '<th id="row_number_' + r['id'] + '" scope="row">' + (index + 1) + '</th>'
+                    row += '<td id="funcionario_nome_' + r['id'] + '">' + r['nome'] + '</td>'
+                    row += '<td id="funcionario_email_' + r['id'] + '">' + r['email'] + '</td>'
+                    row += '<td id="funcionario_telefone_' + r['id'] + '">' + r['telefone'] + '</td>'
+                    row += '<td id="funcionario_setor_' + r['id'] + '">' + r['setor'] + '</td>'
+                    row += '<td id="funcionario_horario_' + r['id'] + '" class="text-center">' + 'inserir os dados de hora' +
+                        '</td>'
+                    row += '<td id="botoes_' + r['id'] + '">' + editButton + deleteButton + '</td>'
+                    row += '</tr>';
+
+                    $("#tabela").append(row);
+                });
+            });
+        }
+
+        function editarFuncionario(id) {
+
+            let nomeVal = $('#funcionario_nome_' + id).html();
+            let emailVal = $('#funcionario_email_' + id).html();
+            let foneVal = $('#funcionario_telefone_' + id).html();
+            let rowNumber = $('#row_number_' + id).html();
+            let setoresVal = $('#setores_select').html();
+            let horariosVal = $('#horarios_select').html();
+
+            let rowNumberHTML = '<th>' + rowNumber + '</th>';
+            let nomeHTML = '<td><input value="' + nomeVal + '" name="nome" type="text" id="funcionario_nome_' + id + '" class="form-control" form="form_edit_' + id + '"></td>';
+            let emailHTML = '<td><input value="' + emailVal + '" name="email" type="text" id="funcionario_email_' + id + '" class="form-control" form="form_edit_' + id + '"></td>';
+            let foneHTML = '<td><input value="' + foneVal + '" name="fone" type="text" id="funcionario_telefone_' + id + '" class="form-control input_phone" form="form_edit_' + id + '"></td>';
+            let hiddenIdHTML = '<input type="hidden" form="form_edit_' + id + '" name="id" value="' + id + '">';
+
+
+            let setorHTML = '<td><select class="form-control" name="setor" form="form_edit_' + id + '">' + setoresVal + '</select></td>'
+            let horarioHTML = '<td><select class="form-control" name="horario" form="form_edit_' + id + '">' + horariosVal + '</select></td>';
+
+
+            let botaoHTML = '<td><input type="submit" name="action" value="atualizar" id="salvar_modificacao_' + id + '" class="form-control btn-success" form="form_edit_' + id + '"></td>';
+
+
+            $('#row_funcionario_' + id).html('');
+
+            let form = document.createElement('form');
+            $(form).attr('id', 'form_edit_' + id);
+            //$(form).attr('method', 'post');
+            //$(form).attr('action', 'acao?action=atualizar&id='+id);
+            $('#row_funcionario_' + id).prepend(form);
+
+            let num = $('#row_funcionario_' + id).append(rowNumberHTML);
+            let nome = $('#row_funcionario_' + id).append(nomeHTML);
+            let email = $('#row_funcionario_' + id).append(emailHTML);
+            let fone = $('#row_funcionario_' + id).append(foneHTML);
+            let setor = $('#row_funcionario_' + id).append(setorHTML);
+            let horario = $('#row_funcionario_' + id).append(horarioHTML);
+            let hiddenId = $('#row_funcionario_' + id).append(hiddenIdHTML);
+            let botao = $('#row_funcionario_' + id).append(botaoHTML);
+
+            $('#form_edit_' + id).submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: 'acao?action=atualizar&id=' + id,
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        listarRegistros();
+                    }
+                });
+            });
+        }
+
+        function EnableTextbox(ObjChkId, inputId)
+        {
+
+           if (ObjChkId.checked === true){
+               document.querySelector('#'+inputId).disabled = false
+           }else{
+            document.querySelector('#'+inputId).disabled = true
+           }
+        }
+
+        function limparCampos() {
+            document.getElementById('inputEmail4').value = ''
+            document.getElementById('inputPassword4').value = ''
+            document.getElementById('nomeCompleto').value = ''
+            document.getElementById('telefone').value = ''
+            document.getElementsByClassName('form-control').value = ''
+        }
+
+        function deletar_funcionario(id) {
+            $.get("/acao?action=delete&id=" + id + "&dado=funcionarios", function(data) {
                 listarRegistros();
-            }
+            });
+        }
+
+        let inputFone = new Cleave('.input_phone', {
+            delimiters: ['(', ')', '-'],
+            numericOnly: true,
+            blocks: [0, 2, 5, 4]
         });
-    });
-}
-
-function limparCampos(){
-    document.getElementById('inputEmail4').value = ''
-    document.getElementById('inputPassword4').value = ''
-    document.getElementById('nomeCompleto').value = ''
-    document.getElementById('telefone').value = ''
-}
-
-function deletar_funcionario(id) {
-    $.get("/acao?action=delete&id="+id+"&dado=funcionarios", function(data) {
-        listarRegistros();
-    });
-}
-
-let inputFone = new Cleave('.input_phone', {
-    delimiters: ['(',')','-'],
-    numericOnly: true,
-    blocks: [0,2,5, 4]
-});
-
-
-
-function changeHora(){
-    let hora = document.getElementById('horarios_select')
-
-    let input = "<input class='form-control horarioAdicional' name='addHorario' type='text' placeholder='Horario'>"
-    if(hora.value === '0'){
-        $(hora).before(input);
-        $(hora).remove();
-
-        let inputHora = new Cleave('.horarioAdicional', {
-        numericOnly: true,
-        blocks: [2,2],
-        delimiters: [':']
-        });
-    }
-}
-
-
-
-</script>
+    </script>

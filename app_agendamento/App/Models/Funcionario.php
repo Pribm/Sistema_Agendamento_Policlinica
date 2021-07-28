@@ -33,7 +33,7 @@
         }
 
         public function read(){
-            $query = 'SELECT f.email, f.nome, f.telefone, f.turnos, s.setor FROM funcionarios AS f JOIN setores AS s ON f.id_setor = s.id WHERE situacao = 1';
+            $query = 'SELECT f.email, f.nome, f.telefone, f.turnos, s.setor FROM funcionarios AS f JOIN setores AS s ON f.id_setor = s.id WHERE situacao = 1 ORDER BY f.id DESC';
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);

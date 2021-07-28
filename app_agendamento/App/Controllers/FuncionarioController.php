@@ -17,47 +17,60 @@ class FuncionarioController extends Action{
 
         if($_POST['id_horario'][0] && $_POST['id_horario'][0] !== "0"){
 
-            $labelsDia = [];
+            $dias = [];
+            if(isset($_POST['dia_semana1'])){
+                 
+                 for ($i=0; $i < count($_POST['dia_semana1']); $i++) { 
+                    array_push($dias, ['dia' => $_POST['dia_semana1'][$i], 'label_dia' =>  $diasSemana->labelDias($_POST['dia_semana1'][$i]),'atendimentos' => $_POST['numero_vagas1'][$i]]);
+                 }
+     
+                $horario = [
+                     'horario_id' => $_POST['id_horario'][0],
+                     'horario_label' => $horarios->labelHorarios($_POST['id_horario'][0]),
+                     'dias' => $dias
+                ];
+                array_push($turnos, $horario);
 
-            foreach ($_POST['dia_semana1'] as $dia) {
-               array_push($labelsDia, $diasSemana->labelDias($dia));
             }
 
-            $horario = [
-                'horario1_id' => $_POST['id_horario'][0],
-                'horario1_label' => $horarios->labelHorarios($_POST['id_horario'][0]),
-                'dias_id' => $_POST['dia_semana1'],
-                'dias_labels' =>  $labelsDia
-            ];
-            array_push($turnos, $horario);
         }
 
         if($_POST['id_horario'][1] && $_POST['id_horario'][1] !== "0"){
 
-            $labelsDia = [];
-
-            foreach ($_POST['dia_semana2'] as $dia) {
-               array_push($labelsDia, $diasSemana->labelDias($dia));
+            $dias = [];
+            if(isset($_POST['dia_semana2'])){
+                 
+                 for ($i=0; $i < count($_POST['dia_semana2']); $i++) { 
+                    array_push($dias, ['dia' => $_POST['dia_semana2'][$i], 'label_dia' =>  $diasSemana->labelDias($_POST['dia_semana2'][$i]),'atendimentos' => $_POST['numero_vagas2'][$i]]);
+                 }
+     
+                $horario = [
+                     'horario_id' => $_POST['id_horario'][1],
+                     'horario_label' => $horarios->labelHorarios($_POST['id_horario'][1]),
+                     'dias' => $dias
+                ];
+                array_push($turnos, $horario);
             }
-
-            $horario = [
-                'horario2' => $_POST['id_horario'][1],
-                'horario2_label' => $horarios->labelHorarios($_POST['id_horario'][1]),
-                'dias' => $_POST['dia_semana2'],
-                'dias_labels' => $labelsDia
-            ];
-            array_push($turnos, $horario);
         }
 
-        if($_POST['email'] !== '' && $_POST['senha'] !== '' && $_POST['nome'] !== '' && $_POST['telefone'] !== '' && $_POST['id_setor'] !== '' && $_POST['id_horario'] !== ''){
-            $funcionario->__set('email', $_POST['email']);
-            $funcionario->__set('senha', md5($_POST['senha']));
-            $funcionario->__set('nome', $_POST['nome']);
-            $funcionario->__set('telefone', $_POST['telefone']);
-            $funcionario->__set('id_setor', $_POST['id_setor']);
-            $funcionario->__set('turnos', json_encode($turnos, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-            $funcionario->create();
-            echo json_encode(['Sucesso' => 'Funcionário cadastrado com sucesso na base de dados']);
+        if($_POST['id_setor']  !== '' && $_POST['id_setor']  === '2' && $turnos !== [] && $_POST['email'] !== '' && $_POST['senha'] !== '' && $_POST['nome'] !== '' && $_POST['telefone'] !== '' && $_POST['id_horario'] !== ''){
+                $funcionario->__set('email', $_POST['email']);
+                $funcionario->__set('senha', md5($_POST['senha']));
+                $funcionario->__set('nome', $_POST['nome']);
+                $funcionario->__set('telefone', $_POST['telefone']);
+                $funcionario->__set('id_setor', $_POST['id_setor']);
+                $funcionario->__set('turnos', json_encode($turnos, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+                $funcionario->create();
+            echo json_encode(['Sucesso' => 'Médico cadastrado com sucesso na base de dados']);
+        }
+        else if($_POST['id_setor'] !== '' && $_POST['id_setor']  !== '2' && $_POST['email'] !== '' && $_POST['senha'] !== '' && $_POST['nome'] !== '' && $_POST['telefone'] !== '' && $_POST['id_horario'] !== ''){
+                $funcionario->__set('email', $_POST['email']);
+                $funcionario->__set('senha', md5($_POST['senha']));
+                $funcionario->__set('nome', $_POST['nome']);
+                $funcionario->__set('telefone', $_POST['telefone']);
+                $funcionario->__set('id_setor', $_POST['id_setor']);
+                $funcionario->create();
+            echo json_encode(['Sucesso' => 'Funcionario cadastrado com sucesso na base de dados']);
         }else{
             echo json_encode(['Erro' => 'Por favor, preencha todos os campos']);
         }

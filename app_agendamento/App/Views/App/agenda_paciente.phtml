@@ -39,6 +39,13 @@
                         placeholder="Prontuário" onsubmit="formatarCampos()">
                 </div>
             </div>
+
+            <div class="d-flex justify-content-center">
+                <div class="alert alert-info" role="alert">
+                <span class="alert-link">Dias disponíveis neste horário: </span><span id='dias_disponiveis'>Segunda quarta sexta</span>
+                </div>
+            </div>
+
             <div id="calendario">
                 <div id="calendar"></div>
                 <input type="hidden" id='dia' class="dataCompleta" name="dia" value="">
@@ -79,41 +86,61 @@
 
 
 $(document).ready(function() {
-
-    $('#medico').load("/lista_medicos", function(response) {
-        $('#medico').html('')
-        
-        var medicos = JSON.parse(response);
-
-        medicos.forEach(r => {
-            document.getElementById('medico').innerHTML += '<option value="'+ r.id +'">' +
-                r.nome + '</option>'
-        });
-
-        
-        $('#medico').change(function(e) {//toda vez que muda o médico
-            document.getElementById('horario').innerHTML = ''; //a cada vez que muda, tem que zerar os selects
-            e.preventDefault();
-            medicos.forEach(r => {
-                let turnos = JSON.parse(r.turnos)
-                
-                if ($(this).val() === r.id) {//essa lógica muda os médicos horários e atendimentos
-
-                    for (let i = 0; i < turnos.length; i++) {
-                        console.log(turnos[i][`horario${i+1}_id`])
-                        document.getElementById('horario').innerHTML +=
-                            '<option value="' + turnos[i][`horario${i+1}_id`] + '">' +
-                            turnos[i][`horario${i+1}_label`] + '</option>';
-                    }
-                }
-            });
-            $('#horario').change();
-        });
-
-        $('#medico').change();
-    });
+    listamedicos()
+    $('#medico').change()
+    
 });
 
+let lista_medicos = []
+let dias_e_horarios = []
+
+function listamedicos() {
+    $.get("/lista_medicos",
+        function (medicos, textStatus, response) {
+            if(response.status === 200){
+                medicos.forEach((medico, index) => {
+                    let turno = JSON.parse(medico.turnos)
+                    lista_medicos.push({id : medico.id, nome : medico.nome})
+                    dias_e_horarios.push({...turno})
+
+                    $('#medico').append(`<option value="${medico.id}">${medico.nome}</option>`);
+                });
+            }
+        },
+        "json"
+    );
+}
+
+console.log(dias_e_horarios)
+
+$('#medico').change(function (e) { 
+    e.preventDefault();
+    /*$.get("/lista_medicos",
+        function (medicos, textStatus, response) {
+            if(response.status === 200){
+                document.querySelector('#horario').innerHTML = ''
+                medicos.forEach(medico => {
+                    if(document.querySelector('#medico').value === medico.id){
+                        let turnos = medico.turnos;
+                        turnos = JSON.parse(turnos)
+                        turnos.forEach(turno => {
+                            $('#horario').append(`<option value='${turno.horario_id}'>${turno.horario_label}</option>`)
+                        });
+                    }
+                })
+            }
+        },
+        "json"
+    );*/
+    dias_e_horarios.map( () => {
+        return console.log('oi')
+    })
+});
+
+$('#horario').change(function (e) { 
+    e.preventDefault();
+    
+});
 
 $('#agendar_paciente').submit(function(e) {
     e.preventDefault();

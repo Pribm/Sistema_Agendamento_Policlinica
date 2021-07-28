@@ -7,7 +7,7 @@ $(document).ready(function () {
        let inputDay = document.getElementById('dia');
        inputDay.value = newDate
        dia = new Date(formatDate(inputDay.value))
-       console.log(dia.getDay())
+       //console.log(dia.getDay())
     });
 
     $('#calendar').evoCalendar('selectDate', Date.now())
