@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Agendamento Consultas - CF</title>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/evo-calendar.css" type="text/css" />
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/all.min.css" />
@@ -19,9 +19,6 @@
     <link rel="stylesheet" type="text/css" href="css/spectrum.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script src="js/cleave.min.js"></script>
-    <script src="js/htm2canvas.js"></script> <!--gerar PDF-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/Chart.min.js"></script>
     <script src="js/Chart.bundle.min.js"></script>
@@ -32,7 +29,6 @@
 <body>
 
 <div class="allButFooter">
-
     <?= $this->content()?>
 </div>
 
@@ -50,10 +46,7 @@
 
     <script src="js/spectrum.min.js"></script> <!--cores dos gráficos-->
     <script type="text/javascript" src="../js/evo-calendar.min.js"></script>
-    <script type="text/javascript" src="../js/ajustesCalendario.js"></script>
-
-
-
+  
 </body>
 
 

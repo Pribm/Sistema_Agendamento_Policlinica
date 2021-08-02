@@ -2,9 +2,30 @@
     include_once('menu_topo.phtml'); ?>
     <!-- Button trigger modal -->
     <div class="container mt-4">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalcadastro">
-            Cadastrar Funcionário
-        </button>
+        <div class="d-flex justify-content-between">
+            <div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalcadastro">
+                Cadastrar Novo Funcionário
+                </button>
+            </div>
+            <div class="flex-grow-1 mx-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Novo Setor">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id="button-addon1">Cadastrar</button>
+                    </div>
+                    </div>
+            </div>
+
+            <div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Novo Horario">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id="button-addon1">Cadastrar</button>
+                    </div>
+                    </div>
+            </div>
+        </div>
 
         <div style="position: absolute; bottom: 5%; left: 50%; transform: translate(-50%, -50%); z-index: 2500;" id='alertContainer'>
             
@@ -25,16 +46,16 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputEmail4">Email</label>
-                                    <input name="email" type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                                    <input name="email" type="email" class="form-control" id="email" placeholder="Email">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="inputPassword4">Senha</label>
-                                    <input name="senha" type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                                    <input name="senha" type="password" class="form-control" id="password" placeholder="Password">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="nomeCompleto">Nome Completo</label>
-                                <input name="nome" type="text" class="form-control" placeholder="Insira o nome do funcionário" id='nomeCompleto'>
+                                <input name="nome" type="text" class="form-control" placeholder="Insira o nome do funcionário" id='nome'>
                             </div>
                             <div class="form-row align-items-center">
                                 <div class="form-group col-md-6">
@@ -203,9 +224,10 @@
                                 </div>
                             </div>
                             <hr/>
+                            <input id='id_func' name='id' type='hidden' value=''/>
                         </form>
                         <div class="d-flex justify-content-center">
-                        <button form="form_cadastro" type="submit" class="btn btn-primary">Cadastrar</button>
+                        <button id='submit' form="form_cadastro" type="submit" class="btn btn-primary">Cadastrar</button>
                         </div>
                     </div>
                 </div>
@@ -225,7 +247,8 @@
                     <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>E-mail</th>
                     <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Telefone</th>
                     <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Setor</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Horario</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -258,9 +281,6 @@
                     }else{
                         $('#alertContainer').append('<div class="alert alert-danger" role="alert">'+response.Erro+'</div>');
                     }
-                    setTimeout(() => {
-                        $('#alertContainer').html('');
-                    }, 2500);
                 }
             });
         });
@@ -299,8 +319,6 @@
                     row += '<td id="funcionario_email_' + r['id'] + '">' + r['email'] + '</td>'
                     row += '<td id="funcionario_telefone_' + r['id'] + '">' + r['telefone'] + '</td>'
                     row += '<td id="funcionario_setor_' + r['id'] + '">' + r['setor'] + '</td>'
-                    row += '<td id="funcionario_horario_' + r['id'] + '" class="text-center">' + 'inserir os dados de hora' +
-                        '</td>'
                     row += '<td id="botoes_' + r['id'] + '">' + editButton + deleteButton + '</td>'
                     row += '</tr>';
 
@@ -310,57 +328,41 @@
         }
 
         function editarFuncionario(id) {
+            $('#modalcadastro').modal('toggle')
+            $('#id_func').val(id);
 
-            let nomeVal = $('#funcionario_nome_' + id).html();
-            let emailVal = $('#funcionario_email_' + id).html();
-            let foneVal = $('#funcionario_telefone_' + id).html();
-            let rowNumber = $('#row_number_' + id).html();
-            let setoresVal = $('#setores_select').html();
-            let horariosVal = $('#horarios_select').html();
+            $.get("/lista_funcionarios", {id : id},
+                function (response, textStatus, jqXHR) {
+                   $('#email').val(response.email);
+                   $('#nome').val(response.nome);
+                   $('#telefone').val(response.telefone);
+                   $('#setores_select').val(response.id_setor)
+                },
+                "json"
+            );
 
-            let rowNumberHTML = '<th>' + rowNumber + '</th>';
-            let nomeHTML = '<td><input value="' + nomeVal + '" name="nome" type="text" id="funcionario_nome_' + id + '" class="form-control" form="form_edit_' + id + '"></td>';
-            let emailHTML = '<td><input value="' + emailVal + '" name="email" type="text" id="funcionario_email_' + id + '" class="form-control" form="form_edit_' + id + '"></td>';
-            let foneHTML = '<td><input value="' + foneVal + '" name="fone" type="text" id="funcionario_telefone_' + id + '" class="form-control input_phone" form="form_edit_' + id + '"></td>';
-            let hiddenIdHTML = '<input type="hidden" form="form_edit_' + id + '" name="id" value="' + id + '">';
+            let botaoModal = $('#submit').select()
+            botaoModal.html('Alterar')
+            botaoModal.addClass('btn-success');
 
-
-            let setorHTML = '<td><select class="form-control" name="setor" form="form_edit_' + id + '">' + setoresVal + '</select></td>'
-            let horarioHTML = '<td><select class="form-control" name="horario" form="form_edit_' + id + '">' + horariosVal + '</select></td>';
-
-
-            let botaoHTML = '<td><input type="submit" name="action" value="atualizar" id="salvar_modificacao_' + id + '" class="form-control btn-success" form="form_edit_' + id + '"></td>';
-
-
-            $('#row_funcionario_' + id).html('');
-
-            let form = document.createElement('form');
-            $(form).attr('id', 'form_edit_' + id);
-            //$(form).attr('method', 'post');
-            //$(form).attr('action', 'acao?action=atualizar&id='+id);
-            $('#row_funcionario_' + id).prepend(form);
-
-            let num = $('#row_funcionario_' + id).append(rowNumberHTML);
-            let nome = $('#row_funcionario_' + id).append(nomeHTML);
-            let email = $('#row_funcionario_' + id).append(emailHTML);
-            let fone = $('#row_funcionario_' + id).append(foneHTML);
-            let setor = $('#row_funcionario_' + id).append(setorHTML);
-            let horario = $('#row_funcionario_' + id).append(horarioHTML);
-            let hiddenId = $('#row_funcionario_' + id).append(hiddenIdHTML);
-            let botao = $('#row_funcionario_' + id).append(botaoHTML);
-
-            $('#form_edit_' + id).submit(function(e) {
-                e.preventDefault();
-
-                $.ajax({
-                    type: "POST",
-                    url: 'acao?action=atualizar&id=' + id,
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        listarRegistros();
-                    }
+            
+            if($('#id_func').val() !== ''){
+                $('#form_cadastro').submit(function (e) { 
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "cadastrar_funcionario",
+                        data: $(this).serialize(),
+                        dataType: "json",
+                        success: function (response) {
+                            $('#id_func').val('');
+                            setTimeout(() => {
+                                $('#alertContainer').html('');
+                            }, 2500);
+                        }
+                    });   
                 });
-            });
+            }
         }
 
         function EnableTextbox(ObjChkId, inputId)

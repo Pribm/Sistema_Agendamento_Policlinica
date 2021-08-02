@@ -88,6 +88,7 @@ class AppController extends Action{
     }
 
     public function listaFuncionarios(){
+        $this->validaAutenticacao();
         $funcionario = Container::getModel('Usuario');
         $response['todos_funcionarios'] = $funcionario->listaFuncionarios();
         $response['medicos'] = $funcionario->listaMedicos();
@@ -95,6 +96,7 @@ class AppController extends Action{
     }
 
     public function fazerUpload(){
+        $this->validaAutenticacao();
         $formatos_permitidos = array('gif', 'jpg', 'jpeg', 'png');
         $extensao = pathinfo($_FILES['arquivo']['name'], PATHINFO_EXTENSION );
         if(in_array($extensao, $formatos_permitidos)){
@@ -153,6 +155,7 @@ class AppController extends Action{
     }
 
     public function acao(){
+        $this->validaAutenticacao();
         if(isset($_GET['action']) && $_GET['action'] == 'delete'){
             $usuario = Container::getModel('Usuario');
             $usuario->deletar($_GET['id'], $_GET['dado']);
@@ -190,6 +193,7 @@ class AppController extends Action{
     }
 
     public function filtrarRelatorio(){
+        $this->validaAutenticacao();
         $dates = FormInputFunctions::getDatesFromRange(date($_POST['data_inicio']), date($_POST['data_fim']));
         $atendidos = Container::getModel('Relatorio_Atendidos');
         //cria os arrays necessários

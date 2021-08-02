@@ -4,7 +4,8 @@
         "php": ">=7.0",
         "fakerphp/faker": "^1.13",
         "dompdf/dompdf": "^1.0",
-        "mpdf/mpdf": "^8.0"
+        "mpdf/mpdf": "^8.0",
+        "yidas/pagination": "^1.0"
     },
     "authors": [
         {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d6842938a3264a06e0490f5b8c3440b",
+    "content-hash": "c55718e17164eca17b89b764359d1707",
     "packages": [
         {
             "name": "dompdf/dompdf",
@@ -568,6 +568,47 @@
                 }
             ],
             "time": "2021-02-11T11:37:01+00:00"
+        },
+        {
+            "name": "yidas/pagination",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yidas/php-pagination.git",
+                "reference": "b340639a535227891cb8f52b79877a95e6586702"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yidas/php-pagination/zipball/b340639a535227891cb8f52b79877a95e6586702",
+                "reference": "b340639a535227891cb8f52b79877a95e6586702",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "yidas\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP Paginator with Pager Widget (pure PHP, CI, Yii, Laravel support)",
+            "homepage": "https://github.com/yidas/php-pagination",
+            "keywords": [
+                "codeigniter",
+                "linkpager",
+                "pagination",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/yidas/php-pagination/issues",
+                "source": "https://github.com/yidas/php-pagination"
+            },
+            "time": "2018-12-22T08:33:24+00:00"
         }
     ],
     "packages-dev": [],

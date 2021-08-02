@@ -1,7 +1,7 @@
-    <?php $page = 'home'; include('menu_topo.phtml') ?>
+    <?php $page = 'home'; include('menu_topo.phtml'); ?>
     <div class="container mt-4">
         <form id="agendar_paciente" method="post" action="confirma_agendamento">
-            <input name="agendado_por" type='hidden' value=<?=$_SESSION['id']?>>
+            <input name="agendado_por" type='hidden' value=<?= $_SESSION['id'] ?>>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputEmail4">Paciente</label>
@@ -19,7 +19,7 @@
                             <label class="input-group-text" for="inputGroupSelect01">Médico</label>
                         </div>
                         <select name="medico_id" class="custom-select" id="medico">
-                            
+
                         </select>
                     </div>
                 </div>
@@ -35,20 +35,20 @@
                     </div>
                 </div>
                 <div class="form-group col-md-3">
-                    <input name="prontuario" type="text" class="form-control prontuario" id="prontuario"
-                        placeholder="Prontuário" onsubmit="formatarCampos()">
+                    <input name="prontuario" type="text" class="form-control prontuario" id="prontuario" placeholder="Prontuário" onsubmit="formatarCampos()">
                 </div>
             </div>
 
             <div class="d-flex justify-content-center">
-                <div class="alert alert-info" role="alert">
-                <span class="alert-link">Dias disponíveis neste horário: </span><span id='dias_disponiveis'>Segunda quarta sexta</span>
+                <div class="alert alert-info" role="alert" id='alert-dias'>
+                    <span class="alert-link">Dias disponíveis neste horário: </span><span id='dias_disponiveis'>Segunda quarta sexta</span>
+                    <input type="hidden" id='dia_semana' />
                 </div>
             </div>
 
             <div id="calendario">
                 <div id="calendar"></div>
-                <input type="hidden" id='dia' class="dataCompleta" name="dia" value="">
+                <input type="hidden" id='dia' class="dataCompleta" name="dia">
             </div>
             <div class="form-row justify-content-center mt-4">
                 <button type="submit" form="agendar_paciente" class="btn btn-primary">Agendar Paciente</button>
@@ -82,111 +82,166 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="../js/ajustesCalendario.js"></script>
+
     <script>
+        $(window).on("load", function() {
+            listamedicos()
+        });
 
 
-$(document).ready(function() {
-    listamedicos();
-});
+        let lista_medicos = []
 
-let lista_medicos = []
+        function listamedicos() {
+            $.get("/lista_medicos",
+                function(medicos, textStatus, response) {
+                    (medicos.map(function(medico, index) {
+                        medico.turnos = JSON.parse(medico.turnos)
+                    }))
+                    lista_medicos = medicos
+                    const diasDivArray = document.querySelectorAll('.day')
 
-function listamedicos() {
-    $.get("/lista_medicos",
-        function (medicos, textStatus, response) {
-            if(response.status === 200){
-                medicos.forEach((medico, index) => {
-                    let turnos = JSON.parse(medico.turnos)
-                    lista_medicos.push({selectIndex: index, id : medico.id, nome : medico.nome, turnos : turnos})
-                    $('#medico').append(`<option value="${medico.id}">${medico.nome}</option>`);
-                });
-            }
-        },
-        "json"
-    );
-}
+                    medicos.forEach(function(medico, index) {
+                        $('#medico').append(`<option value='${medico.id}'>${medico.nome}</option>`)
+                        if (medico.id === document.querySelector('#medico').value) {
+                            medico.turnos.forEach(function(turno, index) {
+                                $('#horario').append(`<option value='${turno.horario_id}'>${turno.horario_label}</option>`)
+                                if (turno.horario_id === document.getElementById('horario').value) {
 
-$('#medico').change(function (e) { 
-    e.preventDefault();
-    $('#horario').html('')
-    lista_medicos.forEach(medico => {
-        if(getSelectedMedico() === medico.selectIndex){
-            console.log(medico.nome)
-            medico.turnos.forEach(turno => {
-                $('#horario').append(`<option value="${turno.horario_id}">${turno.horario_label}</option>`);
-                return
+                                    let diasSemanaMedico = []
+                                    turno.dias.forEach((dia, index) => {
+                                        diasSemanaMedico.push(parseInt(dia.dia))
+                                    });
+
+                                    let diasDisponiveis = [...diasDivArray].filter(n => diasSemanaMedico.indexOf(formatDate(n.dataset.dateVal).getDay()) > -1)
+
+                                    diasDivArray.forEach(node => node.style = 'pointer-events: none;')
+                                    diasDisponiveis.forEach(node => node.style = 'background-color : #6aa0f1;   color: white;')
+                                }
+                            })
+                        }
+                    })
+                },
+                "json"
+            );
+        }
+
+        $('#medico').change(function(e) {
+            e.preventDefault();
+            $('#horario').html('')
+            $('#dias_disponiveis').html('')
+            lista_medicos.forEach(function(medico, index) {
+                if (medico.id === document.querySelector('#medico').value) {
+                    const diasDivArray = document.querySelectorAll('.day')
+                    medico.turnos.forEach(function(turno, index) {
+                        $('#horario').append(`<option value='${turno.horario_id}'>${turno.horario_label}</option>`)
+                        if (turno.horario_id === document.getElementById('horario').value) {
+                            let diasSemanaMedico = []
+                            turno.dias.forEach((dia, index) => {
+                                diasSemanaMedico.push(parseInt(dia.dia))
+                            });
+
+                            let diasDisponiveis = [...diasDivArray].filter(n => diasSemanaMedico.indexOf(formatDate(n.dataset.dateVal).getDay()) > -1)
+
+                            diasDivArray.forEach(node => node.style = 'pointer-events: none;')
+                            diasDisponiveis.forEach(node => node.style = 'background-color : #6aa0f1;  color: white;')
+                        }
+                    })
+                }
             })
-            
+        });
+
+        $('#calendar').on('selectMonth', function(event, month, newMonth, ){
+            mostraDiasDisponiveis()
+        })
+
+        $('#horario').change(function(e) {
+            e.preventDefault();
+            mostraDiasDisponiveis()
+        });
+
+        function mostraDiasDisponiveis(){
+            $('#dias_disponiveis').html('')
+            const diasDivArray = document.querySelectorAll('.day')
+            lista_medicos.forEach(function(medico, index) {
+                if (medico.id === document.querySelector('#medico').value) {
+                    medico.turnos.forEach(function(turno, index) {
+                        if (turno.horario_id === document.getElementById('horario').value) {
+                            let diasSemanaMedico = []
+                            turno.dias.forEach((dia, index) => {
+                                diasSemanaMedico.push(parseInt(dia.dia))
+                            });
+
+                            let diasDisponiveis = [...diasDivArray].filter(n => diasSemanaMedico.indexOf(formatDate(n.dataset.dateVal).getDay()) > -1)
+                            diasDivArray.forEach(node => node.style = 'pointer-events: none;')
+                            diasDisponiveis.forEach(node => node.style = 'background-color : #6aa0f1;  color: white;')
+                        }
+                    })
+                }
+            })
         }
-    });
-    
-});
 
-function getSelectedMedico(){
-    let medicoIndex = document.getElementById('medico').selectedIndex;
-    return medicoIndex
-}
+        $('#agendar_paciente').submit(function(e) {
+            e.preventDefault();
+            $("#save_data").val('');
+            $("#status").val('');
+            $.ajax({
+                type: "POST",
+                url: "/confirma_agendamento",
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function(response) {
+                    $('#mensagem_modal').html(response.mensagem);
+                    $('#modelId').modal('show');
+                    if (response.status != 2) {
+                        $('#button_confirmacao').show();
+                        $('.modal-title').html('Confirma a inserção?');
+                        $('.modal-title').addClass('text-primary');
+                        $("#save_data").attr('value', JSON.stringify(response.post));
+                        $("#status").attr('value', response.status);
+                        mostraDiasDisponiveis()
+                    } else if (response.status == 2) {
+                        $('#button_confirmacao').hide();
+                        $('.modal-title').html('Erro no agendamento!');
+                        $('.modal-title').addClass('text-danger');
+                        mostraDiasDisponiveis()
+                    }
+                }
+            });
+        });
 
-$('#agendar_paciente').submit(function(e) {
-    e.preventDefault();
-    $("#save_data").val('');
-    $("#status").val('');
-    $.ajax({
-        type: "POST",
-        url: "/confirma_agendamento",
-        data: $(this).serialize(),
-        dataType: "json",
-        success: function(response) {
-            $('#mensagem_modal').html(response.mensagem);
-            $('#modelId').modal('show');
-            if (response.status != 2) {
-                $('#button_confirmacao').show();
-                $('.modal-title').html('Confirma a inserção?');
-                $('.modal-title').addClass('text-primary');
-                $("#save_data").attr('value', JSON.stringify(response.post));
-                $("#status").attr('value', response.status);
-            } else if (response.status == 2) {
-                $('#button_confirmacao').hide();
-                $('.modal-title').html('Erro no agendamento!');
-                $('.modal-title').addClass('text-danger');
-            }
+        $('#form_confirmacao').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/agendaPaciente",
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function(response) {
+                    $('#mensagem_modal').html(response.mensagem);
+                    $('#modelId').modal('show');
+                    $('.modal-title').html('Sucesso!');
+                    $('.modal-title').addClass('text-success');
+                    $('#button_confirmacao').hide();
+                    limpaCampos();
+                }
+            });
+        });
+
+        function limpaCampos() {
+            $('#Paciente').val('');
+            $('#sus').val('');
+            $('#prontuario').val('');
         }
-    });
-});
 
-$('#form_confirmacao').submit(function(e) {
-    e.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: "/agendaPaciente",
-        data: $(this).serialize(),
-        dataType: "json",
-        success: function(response) {
-            $('#mensagem_modal').html(response.mensagem);
-            $('#modelId').modal('show');
-            $('.modal-title').html('Sucesso!');
-            $('.modal-title').addClass('text-success');
-            $('#button_confirmacao').hide();
-            limpaCampos();
-        }
-    });
-});
+        let inputPaciente = new Cleave('.prontuario', {
+            numeralDecimalMark: ',',
+            delimiter: '.',
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand'
+        });
 
-function limpaCampos() {
-    $('#Paciente').val('');
-    $('#sus').val('');
-    $('#prontuario').val('');
-}
-
-let inputPaciente = new Cleave('.prontuario', {
-    numeralDecimalMark: ',',
-    delimiter: '.',
-    numeral: true,
-    numeralThousandsGroupStyle: 'thousand'
-});
-
-let inputSus = new Cleave('#sus', {
-    blocks: [3, 4, 4, 4]
-});
-
+        let inputSus = new Cleave('#sus', {
+            blocks: [3, 4, 4, 4]
+        });
     </script>

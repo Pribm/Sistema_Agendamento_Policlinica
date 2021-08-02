@@ -11,6 +11,10 @@ class ComposerStaticInit3345c735e47978480fa28b5e1a2ad2f1
     );
 
     public static $prefixLengthsPsr4 = array (
+        'y' => 
+        array (
+            'yidas\\' => 6,
+        ),
         's' => 
         array (
             'setasign\\Fpdi\\' => 14,
@@ -45,6 +49,10 @@ class ComposerStaticInit3345c735e47978480fa28b5e1a2ad2f1
     );
 
     public static $prefixDirsPsr4 = array (
+        'yidas\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yidas/pagination/src',
+        ),
         'setasign\\Fpdi\\' => 
         array (
             0 => __DIR__ . '/..' . '/setasign/fpdi/src',

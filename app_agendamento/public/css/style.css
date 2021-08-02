@@ -15,6 +15,12 @@ a:hover{
     background-color: rgb(32, 121, 255);
 }
 
+.calendar-active{
+    background-color: #1555b4 !important;
+    color: white !important;
+    border: none !important;
+}
+
 #fundoTela{
     background: url("../img/Pneumologia.jpg") no-repeat;
     background-size: cover;

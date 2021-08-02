@@ -1,6 +1,8 @@
 <?php
 
     namespace MF\Controller;
+    use Dompdf\Dompdf;
+    use Dompdf\Options;
 
     abstract class Action{
 
@@ -41,23 +43,32 @@
         protected function range_limit($current, $total, $limit = 10, $start_at = 1)
         {
             $middle = ceil($limit / 2);
-        
             $current = max($start_at, min($total, $current));
-        
             $start = $current - $middle;
-        
             $end = $middle + $current;
-        
             if ($start <= $start_at) {
                 $start = $start_at;
                 $end = $limit;
-        
             } elseif ($end >= $total) {
                 $end = $total;
                 $start = $total - $limit;
             }
-        
             for ($i = $start; $i <= $end; $i++) yield $i;
+        }
+
+        protected function imprimir($htmlContent){
+            $this->validaAutenticacao();
+            $domPdf = new Dompdf();
+            $options = new Options();
+            $options->setChroot(dirname(dirname(__DIR__)));
+            $options->set('isRemoteEnabled', true);
+            $domPdf = new Dompdf($options);
+            $domPdf->loadHtml($htmlContent);
+            $domPdf->render();
+            header('Content-type: application/pdf');
+            echo $domPdf->output();
+            //$prontuario = Container::getModel('Prontuario');
+            //$prontuario->inserirRegistrosTeste(50);
         }
     }
 ?>

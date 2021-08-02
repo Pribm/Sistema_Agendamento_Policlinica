@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '51f2717958f80f523500bd22652fd1322bedae45',
+    'reference' => '475ef7566012797d89e025f2d8f5c4ac2f5c30fd',
     'name' => 'projetos/miniframework',
   ),
   'versions' => 
@@ -111,7 +111,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '51f2717958f80f523500bd22652fd1322bedae45',
+      'reference' => '475ef7566012797d89e025f2d8f5c4ac2f5c30fd',
     ),
     'psr/log' => 
     array (
@@ -139,6 +139,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '6231e315f73e4f62d72b73f3d6d78ff0eed93c31',
+    ),
+    'yidas/pagination' => 
+    array (
+      'pretty_version' => '1.0.6',
+      'version' => '1.0.6.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'b340639a535227891cb8f52b79877a95e6586702',
     ),
   ),
 );

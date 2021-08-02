@@ -7,6 +7,7 @@ use MF\Controller\Action;
     class HorariosController extends Action{
         
         public function addHorario(){
+            $this->validaAutenticacao();
             $horario = Container::getModel('Horario');
             $horario->__set('horario', $_POST['horario']);
             $horario->create();

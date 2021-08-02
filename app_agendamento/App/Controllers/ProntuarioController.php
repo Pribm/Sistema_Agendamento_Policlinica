@@ -53,6 +53,7 @@ class ProntuarioController extends Action
 
     public function pesquisaProntuario()
     {
+        $this->validaAutenticacao();
         $pagina_atual  = isset($_POST['pagina']) ? $_POST['pagina'] : 1;
 
         $limite_da_paginacao  = 5;
@@ -85,7 +86,7 @@ class ProntuarioController extends Action
     }
 
     public function pdfContent(){
-
+        $this->validaAutenticacao();
         $prontuario = Container::getModel('Prontuario');
         
         if(isset($_POST['paciente_id'])){
@@ -179,7 +180,7 @@ class ProntuarioController extends Action
     }
 
     public function imprimeProntuario(){
-
+        $this->validaAutenticacao();
         $domPdf = new Dompdf();
 
         $options = new Options();

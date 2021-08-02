@@ -90,6 +90,38 @@ class Route extends Bootstrap{
             'action' => 'read'
         );
 
+        //AGENDA CONTROLLER --------------------|
+        $routes['filtra_agenda'] = array(
+            'route' => '/filtra_agenda',
+            'controller' => 'AgendaController',
+            'action' => 'read'
+        );
+
+        $routes['agenda_pagination'] = array(
+            'route' => '/agenda_pagination',
+            'controller' => 'AgendaController',
+            'action' => 'pagination'
+        );
+
+        $routes['atende_paciente'] = array(
+            'route' => '/atender_paciente',
+            'controller' => 'AgendaController',
+            'action' => 'update'
+        );
+
+        $routes['cancela_agendamento'] = array(
+            'route' => '/cancelar_agendamento',
+            'controller' => 'AgendaController',
+            'action' => 'delete'
+        );
+
+        $routes['conta_agendamentos'] = array(
+            'route' => '/contar_agendamentos',
+            'controller' => 'AgendaController',
+            'action' => 'count'
+        );
+        //FIM AGENDA CONTROLLER --------------
+
         $routes['confirma_agendamento'] = array(
             'route' => '/confirma_agendamento',
             'controller' => 'AppController',

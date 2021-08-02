@@ -14,7 +14,7 @@
 
             $conn = new \PDO(
 
-                'mysql:dbname=agendamento_cardoso_fontes;host=127.0.0.1:3025; charset=utf8',
+                'mysql:dbname=agendamento_cardoso_fontes;host=127.0.0.1:3306; charset=utf8',
 
                 "root", 
 
@@ -29,9 +29,7 @@
             return $conn;
 
         } catch (\PDOException $e) {
-
             error_log($e);
-
         }
 
     }
