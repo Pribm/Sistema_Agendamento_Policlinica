@@ -1,4 +1,5 @@
-    <?php $page = 'home'; include('menu_topo.phtml'); ?>
+    <?php $page = 'home';
+    include('menu_topo.phtml'); ?>
     <div class="container mt-4">
         <form id="agendar_paciente" method="post" action="confirma_agendamento">
             <input name="agendado_por" type='hidden' value=<?= $_SESSION['id'] ?>>
@@ -39,12 +40,10 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-center">
-                <div class="alert alert-info" role="alert" id='alert-dias'>
-                    <span class="alert-link">Dias disponíveis neste horário: </span><span id='dias_disponiveis'>Segunda quarta sexta</span>
-                    <input type="hidden" id='dia_semana' />
-                </div>
+            <div class="d-flex justify-content-center" id='dias_disponiveis'>
+
             </div>
+            <input type="hidden" id='dia_semana' />
 
             <div id="calendario">
                 <div id="calendar"></div>
@@ -107,13 +106,26 @@
                             medico.turnos.forEach(function(turno, index) {
                                 $('#horario').append(`<option value='${turno.horario_id}'>${turno.horario_label}</option>`)
                                 if (turno.horario_id === document.getElementById('horario').value) {
-
                                     let diasSemanaMedico = []
                                     turno.dias.forEach((dia, index) => {
                                         diasSemanaMedico.push(parseInt(dia.dia))
                                     });
 
                                     let diasDisponiveis = [...diasDivArray].filter(n => diasSemanaMedico.indexOf(formatDate(n.dataset.dateVal).getDay()) > -1)
+
+                                    turno.dias.filter(function(dia) {
+                                        let div = diasDisponiveis.filter(div => parseInt(formatDate(div.dataset.dateVal).getDay()) === parseInt(dia.dia))
+                                        $(div).attr('atendimentos', parseInt(dia.atendimentos));
+                                    })
+
+                                    diasDisponiveis.forEach(function(node){
+                                        countAtendimentos(medico.id, node.dataset.dateVal, function (count) {
+                                            node.attributes.atendimentos.value = parseInt(node.attributes.atendimentos.value) - parseInt(count)
+                                            if(parseInt(node.attributes.atendimentos.value) <= 0) {
+                                                node.style = 'background-color: #de7e6a; color: white; pointer-events: none;'
+                                            }
+                                        })
+                                    })
 
                                     diasDivArray.forEach(node => node.style = 'pointer-events: none;')
                                     diasDisponiveis.forEach(node => node.style = 'background-color : #6aa0f1;   color: white;')
@@ -143,15 +155,32 @@
 
                             let diasDisponiveis = [...diasDivArray].filter(n => diasSemanaMedico.indexOf(formatDate(n.dataset.dateVal).getDay()) > -1)
 
+                            turno.dias.filter(function(dia) {
+                                let div = diasDisponiveis.filter(div => parseInt(formatDate(div.dataset.dateVal).getDay()) === parseInt(dia.dia))
+                                $(div).attr('atendimentos', dia.atendimentos);
+                            })
+
+                            diasDisponiveis.forEach(function(node){
+                                countAtendimentos(medico.id, node.dataset.dateVal, function (count) {
+                                    node.attributes.atendimentos.value = parseInt(node.attributes.atendimentos.value) - parseInt(count)
+                                    if(parseInt(node.attributes.atendimentos.value) <= 0) {
+                                        node.style = 'background-color: #de7e6a; color: white; pointer-events: none;'
+                                    }
+                                })
+                            })
+
                             diasDivArray.forEach(node => node.style = 'pointer-events: none;')
                             diasDisponiveis.forEach(node => node.style = 'background-color : #6aa0f1;  color: white;')
+
+                            //Deixa o dia em vermelho, caso o valor fique abaixo de zero
+                            desabilitarAtendimentosAbaixoDeZero(diasDisponiveis)
                         }
                     })
                 }
             })
         });
 
-        $('#calendar').on('selectMonth', function(event, month, newMonth, ){
+        $('#calendar').on('selectMonth', function(event, month, newMonth, ) {
             mostraDiasDisponiveis()
         })
 
@@ -160,7 +189,7 @@
             mostraDiasDisponiveis()
         });
 
-        function mostraDiasDisponiveis(){
+        function mostraDiasDisponiveis() {
             $('#dias_disponiveis').html('')
             const diasDivArray = document.querySelectorAll('.day')
             lista_medicos.forEach(function(medico, index) {
@@ -171,12 +200,43 @@
                             turno.dias.forEach((dia, index) => {
                                 diasSemanaMedico.push(parseInt(dia.dia))
                             });
-
                             let diasDisponiveis = [...diasDivArray].filter(n => diasSemanaMedico.indexOf(formatDate(n.dataset.dateVal).getDay()) > -1)
+
+                            diasDisponiveis.forEach(function(node){
+                                countAtendimentos(medico.id, node.dataset.dateVal, function (count) {
+                                    node.attributes.atendimentos.value = parseInt(node.attributes.atendimentos.value) - parseInt(count)
+                                    if(parseInt(node.attributes.atendimentos.value) <= 0) {
+                                        node.style = 'background-color: #de7e6a; color: white; pointer-events: none;'
+                                    }
+                                })
+                            })
+
                             diasDivArray.forEach(node => node.style = 'pointer-events: none;')
                             diasDisponiveis.forEach(node => node.style = 'background-color : #6aa0f1;  color: white;')
                         }
                     })
+                }
+            })
+        }
+
+        function countAtendimentos(medico_id, dia, handleData){
+             $.ajax({
+                    type: "get",
+                    url: "contar_agendamentos",
+                    data: {dia:dia, medico_id: medico_id},
+                    dataType: "json",
+                    success: function (response) {
+                        handleData(parseInt(response[0]))
+                    }
+            });
+        }
+
+        function desabilitarAtendimentosAbaixoDeZero(nodes) {
+            nodes.forEach(function(node) {
+                if (typeof node.attributes.atendimentos !== 'undefined') {
+                    if (node.attributes.atendimentos.value <= 0) {
+                        $(node).addClass('bg-danger');
+                    }
                 }
             })
         }
