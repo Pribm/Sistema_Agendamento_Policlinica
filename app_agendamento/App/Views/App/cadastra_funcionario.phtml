@@ -2,29 +2,25 @@
     include_once('menu_topo.phtml'); ?>
     <!-- Button trigger modal -->
     <div class="container mt-4">
-        <div class="d-flex justify-content-between">
-            <div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalcadastro">
-                Cadastrar Novo Funcionário
+        <div class="d-flex justify-content-start">
+            <div class="mx-2">
+                <button onclick="limparCampos()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalcadastro">
+                    Cadastrar Novo Funcionário
                 </button>
             </div>
-            <div class="flex-grow-1 mx-4">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Novo Setor">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" id="button-addon1">Cadastrar</button>
-                    </div>
-                    </div>
+
+            <div class="mx-2">
+                <button type="button" class="btn btn-primary" id='cadastraHorarios' onclick="cadastraHorarios()">
+                    Cadastrar Horarios
+                </button>
             </div>
 
-            <div>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Novo Horario">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" id="button-addon1">Cadastrar</button>
-                    </div>
-                    </div>
+            <div class="mx-2">
+                <button type="button" class="btn btn-primary" onclick="cadastraSetores()">
+                    Cadastrar Setores
+                </button>
             </div>
+
         </div>
 
         <div style="position: absolute; bottom: 5%; left: 50%; transform: translate(-50%, -50%); z-index: 2500;" id='alertContainer'>
@@ -236,17 +232,38 @@
     </div>
     <!----------------------Fim Modal Cadastro---------------------------------->
 
+    <div class="modal fade" id="modalGeral" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModal">Modal title</h5>
+            </div>
+            <div class="modal-body" id='modalGeralBody'>
+                <div id='modalGeralInputField'>
+
+                </div>
+                <div id='modalGeralTable'>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="document.location.reload(true)">Salvar</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
 
     <!----------------------Topo da Tabela-------------------------------------->
-    <div class="container mt-4">
+    <div class="container table-responsive mt-4">
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>#</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Nome</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>E-mail</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Telefone</th>
-                    <th scope="col"><button class="btn btn-sm"><i class="fa fa-fw fa-sort" style="color: Dodgerblue;"></button></i>Setor</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Setor</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -273,8 +290,9 @@
                         let alert = '<div class="alert alert-success" role="alert">'
                         alert += response.Sucesso
                         alert += '</div>'
-
                         $('#alertContainer').append(alert);
+                        
+                        setTimeout(()=> {$('#alertContainer').html('')}, 1500)
                         $('#modalcadastro').modal('hide')
                         listarRegistros();
                         limparCampos();
@@ -365,6 +383,117 @@
             }
         }
 
+        function cadastraHorarios(){
+            let input = `<div class="input-group mb-3">`
+            input+=`<input type="text" id="horarioInput" class="form-control horarioInput" placeholder="Horário">`
+            input+=`<div class="input-group-append">`
+            input+=`<button class="btn btn-outline-primary" type="button" onclick='insereHora()'>Cadastrar</button>`
+            input+='</div>'
+            input+='</div>'
+            $('#modalGeralInputField').html(input)
+            let inputHora = new Cleave('.horarioInput', {
+                time: true,
+                timePattern: ['h', 'm']
+            });
+
+            $('#titleModal').html('Cadastrar Horario');
+
+            horariosTable()
+            $('#modalGeral').modal('toggle')
+        }
+
+        function insereHora(){
+            $.ajax({
+                type: "post",
+                url: "/cadastra_horario",
+                data: {horario: ($('#horarioInput').val()+':00')},
+                dataType: "json",
+                success: function (response) {
+                    horariosTable()
+                }
+            });
+        }
+
+        function horariosTable(){
+            $.get("get_horarios",
+                function (data, textStatus, jqXHR) {
+                        let table = `<table class="table">`
+                        table+='<thead>'
+                        table+='<tr>'
+                        table+='<th class="text-center">#</th>'
+                        table+='<th class="text-center">Horario</th>'
+                        table+='<th class="text-center"></th>'
+                        table+='</tr>'
+                        table+='</thead>'
+                        table+='<tbody>'
+                    data.horarios.forEach((horario, index) => {
+                        table+=`<tr>`
+                        table+=`<td scope="row" class="text-center">${index+1}</td>`
+                        table+=`<td class="text-center">${horario.horario}</td>`
+                        table+=`<td class="text-center"><button class="btn btn-primary" onclick='deletar_horario(${horario.id})'>Apagar</button></td>`
+                        table+=`</tr>`
+                    });
+                    table+='</tbody>'
+                    table+='</table>'
+                    $('#modalGeralTable').html(table)
+                },
+                "json"
+            );
+        }
+
+        function cadastraSetores(){
+            $('#titleModal').html('Cadastrar Setor');
+            let input = `<div class="input-group mb-3">`
+            input+=`<input type="text" id="setorInput" class="form-control setorInput" placeholder="Setor">`
+            input+=`<div class="input-group-append">`
+            input+=`<button class="btn btn-outline-primary" type="button" onclick='insereSetor()'>Cadastrar</button>`
+            input+='</div>'
+            input+='</div>'
+            $('#modalGeralInputField').html(input)
+            setoresTable()
+            $('#modalGeral').modal('toggle')
+        }
+
+        function setoresTable(){
+            $.get("get_setores",
+                function (data, textStatus, jqXHR) {
+                        let table = `<table class="table">`
+                        table+='<thead>'
+                        table+='<tr>'
+                        table+='<th class="text-center">#</th>'
+                        table+='<th class="text-center">Setores</th>'
+                        table+='<th class="text-center"></th>'
+                        table+='</tr>'
+                        table+='</thead>'
+                        table+='<tbody>'
+                    data.forEach((setor, index) => {
+                        table+=`<tr>`
+                        table+=`<td scope="row" class="text-center">${index+1}</td>`
+                        table+=`<td class="text-center">${setor.setor}</td>`
+                        table+=`<td class="text-center"><button class="btn btn-primary" onclick='deletar_setor(${setor.id})'>Apagar</button></td>`
+                        table+=`</tr>`
+                    });
+                    table+='</tbody>'
+                    table+='</table>'
+                    $('#modalGeralTable').html(table)
+                },
+                "json"
+            );
+        }
+
+        function insereSetor(){
+            $.ajax({
+                type: "post",
+                url: "/cadastra_setor",
+                data: {setor: ($('#setorInput').val())},
+                dataType: "json",
+                success: function (response) {
+                    setoresTable()
+                    $('#setorInput').val('');
+                }
+            });
+        }
+
         function EnableTextbox(ObjChkId, inputId)
         {
 
@@ -376,9 +505,9 @@
         }
 
         function limparCampos() {
-            document.getElementById('inputEmail4').value = ''
-            document.getElementById('inputPassword4').value = ''
-            document.getElementById('nomeCompleto').value = ''
+            document.getElementById('email').value = ''
+            document.getElementById('password').value = ''
+            document.getElementById('nome').value = ''
             document.getElementById('telefone').value = ''
             document.getElementsByClassName('form-control').value = ''
         }
@@ -386,6 +515,28 @@
         function deletar_funcionario(id) {
             $.get("/acao?action=delete&id=" + id + "&dado=funcionarios", function(data) {
                 listarRegistros();
+            });
+        }
+
+        function deletar_horario(id) {
+            $.ajax({
+                type: "get",
+                url: `/delete_horario?action=delete&id=${id}`,
+                dataType: "json",
+                success: function (response) {
+                    horariosTable()
+                }
+            });
+        }
+
+        function deletar_setor(id) {
+            $.ajax({
+                type: "get",
+                url: `/delete_setor?action=delete&id=${id}`,
+                dataType: "json",
+                success: function (response) {
+                    setoresTable()
+                }
             });
         }
 

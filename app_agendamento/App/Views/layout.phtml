@@ -28,26 +28,26 @@
 
 <body>
 
-<div class="allButFooter">
-    <?= $this->content()?>
-</div>
+    <div class="allButFooter">
+        <?= $this->content()?>
+    </div>
 
 
 
-    <?php if(isset($_SESSION['nome'])){?>
+        <?php if(isset($_SESSION['nome'])){?>
 
-    <footer class="bg-primary text-center text-white mt-4 p-4">
+        <footer class="bg-primary text-center text-white mt-4 p-4">
 
-    &#169; Aplicação desenvolvida por <br> Paulo Vinícius Ribeiro Monteiro - 2021
+        &#169; Aplicação desenvolvida por <br> Paulo Vinícius Ribeiro Monteiro - 2021
 
-    </footer>
+        </footer>
 
-    <?php }?>
-
-    <script src="js/spectrum.min.js"></script> <!--cores dos gráficos-->
-    <script type="text/javascript" src="../js/evo-calendar.min.js"></script>
-  
-</body>
+        <?php }?>
+        <script src="js/components.js"></script>
+        <script src="js/spectrum.min.js"></script> <!--cores dos gráficos-->
+        <script type="text/javascript" src="../js/evo-calendar.min.js"></script>
+    
+    </body>
 
 
 

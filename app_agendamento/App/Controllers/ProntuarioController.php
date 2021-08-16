@@ -14,7 +14,9 @@ class ProntuarioController extends Action
     {
         $this->validaAutenticacao();
         $prontuario = Container::getModel('Prontuario');
-
+        /*if(isset($_GET['teste'])){
+            $prontuario->inserirRegistrosTeste(2000);
+        }*/
         if (isset($_POST['nome']) && $_POST['nome'] != '' && isset($_POST['sus']) && $_POST['sus'] != '' && isset($_POST['prontuario']) && $_POST['prontuario'] != '') {
 
             $prontuario->__set('bairro',  $_POST['bairro']);
@@ -68,7 +70,7 @@ class ProntuarioController extends Action
 
         $limite_de_links = 10;
         $ultima_pagina  = ceil($prontuario->getTotalRegistros()['total'] / $limite_da_paginacao);
-        $ultimo_registro = ceil($prontuario->getTotalRegistros()['total']);
+        $ultimo_registro = $prontuario->getTotalRegistros()['total'];
 
         $links[] =  "<button onclick='changePage(1)' class='page-link'>Primeira</button>";
 
@@ -194,7 +196,7 @@ class ProntuarioController extends Action
         
         
         //$prontuario = Container::getModel('Prontuario');
-        //$prontuario->inserirRegistrosTeste(50);
+        //
     }
 
 }

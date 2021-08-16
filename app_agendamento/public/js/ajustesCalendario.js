@@ -2,9 +2,11 @@ $(document).ready(function () {
     $('#calendar').evoCalendar({
         'language': 'pt', 'eventListToggler': false, 'eventDisplayDefault': false, 'todayHighlight': true, 'format': 'yyyymmdd'
     })
+
     $('#calendar').on('selectDate', function (event, newDate, oldDate) {
        let inputDay = document.getElementById('dia');
        inputDay.value = newDate
+       loader(true)
 
        document.querySelector('#dia_semana').value = formatDate(inputDay.value).getDay();
        $('#dias_disponiveis').html('')
@@ -25,10 +27,11 @@ $(document).ready(function () {
                                 data: {dia:newDate, medico_id: medicoSelecionado},
                                 dataType: "json",
                                 success: function (response) {
+                                    loader(false)
                                     let atendimentosTotais = (parseInt(dia.atendimentos) - parseInt(response[0]))
                                     $('#dias_disponiveis').html(`<p class='font-weight-bold text-uppercase text-success'>${dia.label_dia}-feira, ${atendimentosTotais} atendimentos</p>`)
                                     if (atendimentosTotais <= 0){
-                                        $('#dias_disponiveis').html(`<p class='font-weight-bold text-uppercase text-danger'>${dia.label_dia}-feira, ${atendimentosTotais} atendimentos</p>`)
+                                        $('#dias_disponiveis').html(`<p class='font-weight-bold text-uppercase text-danger'>${dia.label_dia}-feira, ${(atendimentosTotais <= 0) ? 0 : ''} atendimentos ${(atendimentosTotais < 0) ? Math.abs(atendimentosTotais)+' Extras' : ''}</p>`)
                                     }
                                 }
                             });

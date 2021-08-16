@@ -26,6 +26,8 @@ class Prontuario extends Model{
     private $sexo;
     private $sus;
     private $aberto_por;
+    private $limit;
+    private $offset;
 
 
 

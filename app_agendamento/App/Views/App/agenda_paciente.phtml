@@ -1,6 +1,6 @@
     <?php $page = 'home';
     include('menu_topo.phtml'); ?>
-    <div class="container mt-4">
+    <div class="container mt-4" id='body_agendamento'>
         <form id="agendar_paciente" method="post" action="confirma_agendamento">
             <input name="agendado_por" type='hidden' value=<?= $_SESSION['id'] ?>>
             <div class="form-row">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="form-group col-md-3">
-                    <input name="prontuario" type="text" class="form-control prontuario" id="prontuario" placeholder="Prontuário" onsubmit="formatarCampos()">
+                    <input name="prontuario" type="text" class="form-control prontuario" id="prontuario" placeholder="Prontuário">
                 </div>
             </div>
 
@@ -48,18 +48,21 @@
             <div id="calendario">
                 <div id="calendar"></div>
                 <input type="hidden" id='dia' class="dataCompleta" name="dia">
+                <input type="hidden" name="extra" value='0'>
             </div>
+            <input type="hidden" id="id" name="id" value=''>
+            <input id='page' type="hidden" name="page" value='1'>
             <div class="form-row justify-content-center mt-4">
                 <button type="submit" form="agendar_paciente" class="btn btn-primary">Agendar Paciente</button>
             </div>
         </form>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal fade" id="modalAgenda" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+                    <h5 class="modal-title" id='modal-title'>Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -71,10 +74,8 @@
                 </div>
                 <form id="form_confirmacao">
                     <div class="modal-footer">
-                        <input type="hidden" id="save_data" name="save_data">
                         <input type="hidden" id="status" name="status">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
-                        <button id="button_confirmacao" type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </form>
             </div>
@@ -122,10 +123,18 @@
                                         countAtendimentos(medico.id, node.dataset.dateVal, function (count) {
                                             node.attributes.atendimentos.value = parseInt(node.attributes.atendimentos.value) - parseInt(count)
                                             if(parseInt(node.attributes.atendimentos.value) <= 0) {
-                                                node.style = 'background-color: #de7e6a; color: white; pointer-events: none;'
+                                                node.style = 'background-color: #de7e6a; color: white; '
                                             }
                                         })
                                     })
+
+                                    let diaAtual = document.getElementsByClassName('calendar-today')[0]
+
+                                    if(diasDisponiveis.indexOf(diaAtual) === -1){
+                                        $(diasDisponiveis[0]).click()
+                                    }else{
+                                        $('.calendar-today').click();
+                                    }
 
                                     diasDivArray.forEach(node => node.style = 'pointer-events: none;')
                                     diasDisponiveis.forEach(node => node.style = 'background-color : #6aa0f1;   color: white;')
@@ -164,10 +173,18 @@
                                 countAtendimentos(medico.id, node.dataset.dateVal, function (count) {
                                     node.attributes.atendimentos.value = parseInt(node.attributes.atendimentos.value) - parseInt(count)
                                     if(parseInt(node.attributes.atendimentos.value) <= 0) {
-                                        node.style = 'background-color: #de7e6a; color: white; pointer-events: none;'
+                                        node.style = 'background-color: #de7e6a; color: white;'
                                     }
                                 })
                             })
+
+                            let diaAtual = document.getElementsByClassName('calendar-today')[0]
+
+                            if(diasDisponiveis.indexOf(diaAtual) === -1){
+                                $(diasDisponiveis[0]).click()
+                            }else{
+                                $('.calendar-today').click();
+                            }
 
                             diasDivArray.forEach(node => node.style = 'pointer-events: none;')
                             diasDisponiveis.forEach(node => node.style = 'background-color : #6aa0f1;  color: white;')
@@ -180,7 +197,7 @@
             })
         });
 
-        $('#calendar').on('selectMonth', function(event, month, newMonth, ) {
+        $('#calendar').on('selectMonth', function(event, month, newMonth ) {
             mostraDiasDisponiveis()
         })
 
@@ -202,14 +219,28 @@
                             });
                             let diasDisponiveis = [...diasDivArray].filter(n => diasSemanaMedico.indexOf(formatDate(n.dataset.dateVal).getDay()) > -1)
 
+                            turno.dias.filter(function(dia) {
+                                let div = diasDisponiveis.filter(div => parseInt(formatDate(div.dataset.dateVal).getDay()) === parseInt(dia.dia))
+                                $(div).attr('atendimentos', parseInt(dia.atendimentos));
+                            })
+
+
                             diasDisponiveis.forEach(function(node){
                                 countAtendimentos(medico.id, node.dataset.dateVal, function (count) {
                                     node.attributes.atendimentos.value = parseInt(node.attributes.atendimentos.value) - parseInt(count)
                                     if(parseInt(node.attributes.atendimentos.value) <= 0) {
-                                        node.style = 'background-color: #de7e6a; color: white; pointer-events: none;'
+                                        node.style = 'background-color: #de7e6a; color: white;'
                                     }
                                 })
                             })
+
+                            let diaAtual = document.getElementsByClassName('calendar-today')[0]
+
+                            if(diasDisponiveis.indexOf(diaAtual) === -1){
+                                $(diasDisponiveis[0]).click()
+                            }else{
+                                $('.calendar-today').click();
+                            }
 
                             diasDivArray.forEach(node => node.style = 'pointer-events: none;')
                             diasDisponiveis.forEach(node => node.style = 'background-color : #6aa0f1;  color: white;')
@@ -220,12 +251,14 @@
         }
 
         function countAtendimentos(medico_id, dia, handleData){
+            loader(true)
              $.ajax({
                     type: "get",
                     url: "contar_agendamentos",
                     data: {dia:dia, medico_id: medico_id},
                     dataType: "json",
                     success: function (response) {
+                        loader(false)
                         handleData(parseInt(response[0]))
                     }
             });
@@ -241,57 +274,112 @@
             })
         }
 
-        $('#agendar_paciente').submit(function(e) {
+        $('#agendar_paciente').submit(function (e) { 
             e.preventDefault();
-            $("#save_data").val('');
-            $("#status").val('');
+            loader(true)
             $.ajax({
-                type: "POST",
-                url: "/confirma_agendamento",
+                type: "post",
+                url: "/agendar_paciente",
                 data: $(this).serialize(),
                 dataType: "json",
-                success: function(response) {
-                    $('#mensagem_modal').html(response.mensagem);
-                    $('#modelId').modal('show');
-                    if (response.status != 2) {
-                        $('#button_confirmacao').show();
-                        $('.modal-title').html('Confirma a inserção?');
-                        $('.modal-title').addClass('text-primary');
-                        $("#save_data").attr('value', JSON.stringify(response.post));
-                        $("#status").attr('value', response.status);
+                success: function (response) {
+                    loader(false)
+                    if(response.pacientes){
+                        $('#modal-title').html(response.mensagem)
+                        modalPacientes(response)
+                        $('#modalAgenda').modal('show');
+                    }
+
+                    if(response.sucesso){
+                        showAlert(response.sucesso, 'success')
                         mostraDiasDisponiveis()
-                    } else if (response.status == 2) {
-                        $('#button_confirmacao').hide();
-                        $('.modal-title').html('Erro no agendamento!');
-                        $('.modal-title').addClass('text-danger');
+                        limpaCampos()
+                    }
+                    if(response.erro){
+                        showAlert(response.erro, 'danger')
                         mostraDiasDisponiveis()
                     }
                 }
             });
         });
 
-        $('#form_confirmacao').submit(function(e) {
+        $('#Paciente').change(function (e) { 
             e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "/agendaPaciente",
-                data: $(this).serialize(),
-                dataType: "json",
-                success: function(response) {
-                    $('#mensagem_modal').html(response.mensagem);
-                    $('#modelId').modal('show');
-                    $('.modal-title').html('Sucesso!');
-                    $('.modal-title').addClass('text-success');
-                    $('#button_confirmacao').hide();
-                    limpaCampos();
-                }
-            });
+            $('#id').val('');
         });
+
+        $('#sus').change(function (e) { 
+            e.preventDefault();
+            $('#id').val('');
+        });
+
+        $('#prontuario').change(function (e) { 
+            e.preventDefault();
+            $('#id').val('');
+        });
+
+        function modalPacientes(list){
+            let table = `<table class='table-hover'>`
+                        table+= `<thead>`
+                        table+= `<tr>`
+                        table+= `<th>Nome</th>`
+                        table+= `<th>Prontuario</th>`
+                        table+= `<th>Sus</th>`
+                        table+= `</tr>`
+                        table+= `</thead>`
+                        table+= `<tbody id='tabela_pacientes'>`
+                        list.pacientes.forEach(function (item) {
+                            let nome = `<td>${item.nome}</td>`
+                            let prontuario = `<td>${item.prontuario}</td>`
+                            let sus = `<td>${item.sus}</td>`
+                            let tr = `<tr onclick='selectProntuario(${item.id},"${item.nome}","${item.prontuario}","${item.sus}")'>${nome} ${prontuario} ${sus}</tr>`
+
+                            table+= tr
+                        })
+                        table+= `</tbody>`
+                        table+= `</table>`
+                        table+= `<ul class="pagination mt-4">`
+                        list.links.forEach(function (link){
+                            table+= link
+                        })
+                        table+=`</ul>`
+                        
+                        $('#mensagem_modal').html(table);
+        }
+
+        function changePage(id) {
+            $('#page').val(id);
+            $('#agendar_paciente').submit();
+        }
+
+        function selectProntuario(id, nome, prontuario, sus){
+            $('#Paciente').val(nome);
+            $('#sus').val(sus);
+            $('#prontuario').val(prontuario);
+            $('#id').val(id);
+            $('#mensagem_modal').html('');
+            $('#modalAgenda').modal('hide');
+        }
 
         function limpaCampos() {
             $('#Paciente').val('');
             $('#sus').val('');
             $('#prontuario').val('');
+            $('#id').val('');
+        }
+
+        function showAlert(message, className){
+            let alert = `<div class='d-flex justify-content-center position-fixed fixed-top mt-5'>`
+            alert+=`<div class="alert alert-${className} mt-5" role="alert" id='alert'>`
+            alert += message
+            alert += `</div>`
+            alert += `</div>`
+
+            $('#body_agendamento').append(alert);
+
+            setTimeout(() => {
+                $('#alert').alert('close')
+            }, 3000);
         }
 
         let inputPaciente = new Cleave('.prontuario', {

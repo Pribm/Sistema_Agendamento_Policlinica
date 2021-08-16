@@ -52,14 +52,15 @@ include('menu_topo.phtml') ?>
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Dia</th>
-                    <th>Prontuario</th>
-                    <th>Paciente</th>
-                    <th>Medico</th>
-                    <th>Horario</th>
-                    <th>Agendado por:</th>
-                    <th>Atendimento</th>
-                    <th>Cancelamento</th>
+                    <th class="align-middle" scope="col">#</th>
+                    <th class="align-middle">Dia</th>
+                    <th class="align-middle">Prontuario</th>
+                    <th class="align-middle">Paciente</th>
+                    <th class="align-middle">Medico</th>
+                    <th class="align-middle">Horario</th>
+                    <th class="align-middle">Funcionario</th>
+                    <th class="align-middle">Atendimento</th>
+                    <th class="align-middle">Cancelamento</th>
                 </tr>
             </thead>
             <tbody id='relatorio_agendados'>
@@ -98,26 +99,6 @@ include('menu_topo.phtml') ?>
     </div>
 </div>
 
-<!-- Toast --->
-
-<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="height: 200px;">
-
-    <!-- Then put toasts within -->
-    <div id='liveToast' class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <img src="..." class="rounded mr-2" alt="...">
-            <strong class="mr-auto">Bootstrap</strong>
-            <small>11 mins ago</small>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            Hello, world! This is a toast message.
-        </div>
-    </div>
-</div>
-
 
 
 <script>
@@ -135,8 +116,9 @@ include('menu_topo.phtml') ?>
         e.preventDefault();
         $('#horario').select().html('');
         let medicoSelecionado = document.getElementById('medico').selectedIndex
-        let horarios = JSON.parse(medicos[medicoSelecionado].turnos)
+        
         if (medicoSelecionado !== 0) {
+            let horarios = JSON.parse(medicos[medicoSelecionado-1].turnos)
             horarios.map(option => $('#horario').append(`<option value='${option.horario_id}'>${option.horario_label}</option>`))
         } else {
             $('#horario').append(`<option value=''>---------------</option>`);
@@ -163,8 +145,9 @@ include('menu_topo.phtml') ?>
 
     $('#formBusca').submit(function(e) {
         e.preventDefault()
+        loader(true)
         $('#relatorio_agendados').html('')
-
+        
         $.ajax({
             type: "post",
             url: "/filtra_agenda",
@@ -173,7 +156,9 @@ include('menu_topo.phtml') ?>
             success: function(response) {
                 renderRow(response.agendamentos)
                 $('#pagination').html(response.links);
+
                 $('#page').val(1);
+                loader(false)
             }
         });
     });
@@ -181,7 +166,6 @@ include('menu_topo.phtml') ?>
     function deletarAgendamento(id) {
 
         var confirmado = false
-        console.log(confirmado)
 
         $('#modalConfirmacao .modal-body').html('Tem certeza de que quer cancelar esta consulta? Essa Alteração não pode ser desfeita.')
         $('#modalConfirmacaoLabel').html('Confirma a Exclusão do Agendamento?')
@@ -189,7 +173,6 @@ include('menu_topo.phtml') ?>
 
         $('#botaoExclusao').click(function(e) {
             confirmado = true
-            console.log(confirmado)
             $('#modalConfirmacao').modal('hide')
 
             if (confirmado == true) {
@@ -199,7 +182,6 @@ include('menu_topo.phtml') ?>
                     data: 'action=delete&id=' + id,
                     dataType: "json",
                     success: function(response) {
-                        $('#liveToast').toast('show')
                         $('#formBusca').submit();
                         confirmado = false
                     }
@@ -210,38 +192,43 @@ include('menu_topo.phtml') ?>
 
 
     function atualizarAgendamento(id) {
+        loader(true)
         $.ajax({
             type: "get",
-            url: "atender_paciente",
+            url: "/atender_paciente",
             data: {
                 action: 'atender',
                 id: id
             },
             dataType: "json",
             success: function(response) {
-                $('#formBusca').submit();
+                $('#formBusca').submit()
+                loader(false)
             }
         });
     }
 
     function renderRow(dataList) {
-        dataList.forEach(data => {
-            let tr = '<tr>'
-            tr += `<td>${data.dia}</td>`
-            tr += `<td>${data.prontuario}</td>`
-            tr += `<td>${data.paciente}</td>`
-            tr += `<td>${data.medico}</td>`
-            tr += `<td>${data.horario}</td>`
-            tr += `<td>${data.agendado_por}</td>`
-            tr += `<td>`
+        dataList.forEach((data, index) => {
+            let tr = '<tr class="indice-agendamento">'
+            tr += `<td class="align-middle">${index+1}</td>`
+            tr += `<td class="align-middle">${data.dia}</td>`
+            tr += `<td class="align-middle">${data.prontuario}</td>`
+            tr += `<td class="align-middle">${data.paciente}</td>`
+            tr += `<td class="align-middle">${data.medico}</td>`
+            tr += `<td class="align-middle">${data.horario}</td>`
+            tr += `<td class="align-middle">${data.agendado_por}</td>`
+            tr += `<td class="align-middle">`
             tr += `<button onclick='atualizarAgendamento(${data.id})' class='btn btn-${(data.atendimento_realizado !== "0") ? "info" : "success"}'>`
             tr += (data.atendimento_realizado !== "0") ? "Atendido" : "Atender"
             tr += `</button></td>`
-            tr += `<td><button onclick='deletarAgendamento(${data.id})' class='btn btn-danger'>Cancelar</button></td>`
+            tr += `<td class="align-middle"><button onclick='deletarAgendamento(${data.id})' class='btn btn-danger'>Cancelar</button></td>`
 
             tr += '</tr>'
             $('#relatorio_agendados').append(tr);
         })
+
+        
     }
 
     function renderPagination(dataList) {

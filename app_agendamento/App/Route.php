@@ -91,6 +91,12 @@ class Route extends Bootstrap{
         );
 
         //AGENDA CONTROLLER --------------------|
+        $routes['agendar_paciente'] = array(
+            'route' => '/agendar_paciente',
+            'controller' => 'AgendaController',
+            'action' => 'create'
+        );
+
         $routes['filtra_agenda'] = array(
             'route' => '/filtra_agenda',
             'controller' => 'AgendaController',
@@ -118,11 +124,11 @@ class Route extends Bootstrap{
         $routes['conta_agendamentos'] = array(
             'route' => '/contar_agendamentos',
             'controller' => 'AgendaController',
-            'action' => 'count'
+            'action' => 'countAgendamentos'
         );
         //FIM AGENDA CONTROLLER --------------
 
-        $routes['confirma_agendamento'] = array(
+        /*$routes['confirma_agendamento'] = array(
             'route' => '/confirma_agendamento',
             'controller' => 'AppController',
             'action' => 'confirmacaoAgendamento'
@@ -132,7 +138,54 @@ class Route extends Bootstrap{
             'route' => '/agendaPaciente',
             'controller' => 'AppController',
             'action' => 'agendaPaciente'
+        );*/
+
+        //----Horarios controller----------------//
+
+        $routes['create_horario'] = array(
+            'route' => '/cadastra_horario',
+            'controller' => 'HorariosController',
+            'action' => 'create'
         );
+
+        $routes['get_horario'] = array(
+            'route' => '/get_horarios',
+            'controller' => 'HorariosController',
+            'action' => 'read'
+        );
+
+        $routes['delete_horario'] = array(
+            'route' => '/delete_horario',
+            'controller' => 'HorariosController',
+            'action' => 'delete'
+        );
+
+
+        //----Fim horario controller------------//
+
+
+        //----Horarios controller----------------//
+
+        $routes['create_setor'] = array(
+            'route' => '/cadastra_setor',
+            'controller' => 'SetorController',
+            'action' => 'create'
+        );
+
+        $routes['get_setor'] = array(
+            'route' => '/get_setores',
+            'controller' => 'SetorController',
+            'action' => 'read'
+        );
+
+        $routes['delete_setor'] = array(
+            'route' => '/delete_setor',
+            'controller' => 'SetorController',
+            'action' => 'delete'
+        );
+
+
+        //----Fim horario controller------------//
 
         $routes['acao'] = array(
             'route' => '/acao',

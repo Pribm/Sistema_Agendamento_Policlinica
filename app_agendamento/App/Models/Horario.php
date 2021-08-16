@@ -15,14 +15,14 @@
         }
 
         public function read(){
-            $query = "SELECT id, TIME_FORMAT(horario, '%H:%i') AS horario FROM horarios";
+            $query = "SELECT id, TIME_FORMAT(horario, '%H:%i') AS horario FROM horarios WHERE deletado != 1";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         public function labelHorarios($id){
-            $query = "SELECT TIME_FORMAT(horario, '%H:%i') AS horario FROM horarios WHERE id =".$id;
+            $query = "SELECT TIME_FORMAT(horario, '%H:%i') AS horario FROM horarios WHERE deletado != 1 AND id =".$id;
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             return $stmt->fetch()['horario'];
@@ -32,8 +32,12 @@
 
         }
 
-        public function delete($id){
-
+        public function delete(){
+            $query = 'UPDATE horarios SET deletado = 1 WHERE id = :id';
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            return $this->read();
         }
 
         public function __get($attribute){

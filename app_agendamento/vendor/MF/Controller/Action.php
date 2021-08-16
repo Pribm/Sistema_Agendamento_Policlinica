@@ -33,7 +33,9 @@
         }
 
         protected function validaAutenticacao(){
-            session_start();
+            if(!isset($_SESSION)){ 
+                session_start(); 
+            } 
             $this->view->usuario = $_SESSION['nome'];
             if(!isset($_SESSION['id']) || $_SESSION['id'] == '' || !isset($_SESSION['nome']) || $_SESSION['nome'] == ''){
                 header('Location: /?login=erro2');
