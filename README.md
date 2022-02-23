@@ -8,9 +8,18 @@
 [![NPM](https://img.shields.io/apm/l/react)](https://github.com/Pribm/Sistema_Agendamento_Policlinica/blob/main/LICENSE)
 
 ## About
-> This project sample was deployed using a free domain, some loading delays may occur. http://cfpneumologia.scienceontheweb.net/
-
 > It is a clinical appointment scheduling system developed for a public hospital in the state of Amazonas, Manaus - Brazil. It is currently running on the hospital's intranet, with the purpose of managing the patients seen, the doctors' schedules and the medical unit's records.</p>
+
+# Test Application
+> This project sample was deployed using a free domain, some loading delays may occur.
+> You can access the application through the following link: http://cfpneumologia.scienceontheweb.net/
+
+## Login
+> Taking in mind this application was developed for a hospital administrator to register other users, the login screen does not have a registration session. In order to access administrator page you must enter the following credentials:
+- login
+> adm<span>@teste.com.br
+- password
+> 123456
 
 ## Database Moddeling
 
