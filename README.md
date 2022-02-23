@@ -11,3 +11,12 @@
 > This project sample was deployed using a free domain, some loading delays may occur. http://cfpneumologia.scienceontheweb.net/
 
 > It is a clinical appointment scheduling system developed for a public hospital in the state of Amazonas, Manaus - Brazil. It is currently running on the hospital's intranet, with the purpose of managing the patients seen, the doctors' schedules and the medical unit's records.</p>
+
+## Database Moddeling
+
+> The database used to create the project was mySql, no kind of ORM was used to create the queries, all queries were performed through PHP PDO.
+
+<div align='center'>
+   <img src='https://user-images.githubusercontent.com/67340789/155264134-4756ef71-8183-45ba-8a7b-941924e8acd7.png' alt='diagrama relacional' height='600px'/>
+</div>
+
