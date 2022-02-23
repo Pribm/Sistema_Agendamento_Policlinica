@@ -20,3 +20,22 @@
    <img src='https://user-images.githubusercontent.com/67340789/155264134-4756ef71-8183-45ba-8a7b-941924e8acd7.png' alt='diagrama relacional' height='600px'/>
 </div>
 
+# Used Technologies
+
+## Backend
+- PHP
+> The backend was developed entirely with php on the backend. No framework was used, however the project was implemented using the mvc architecture to keep the source code organized.
+
+## Frontend
+- HTML/CSS/JAVASCRIPT
+- JQUERY
+- AJAX
+- BOOTSTRAP
+
+> Some asynchronous requests were used for the backend in order to keep the user interaction more fluid in some pages.
+
+## Author
+
+Paulo Vinícius Ribeiro Monteiro
+
+
