@@ -1,5 +1,5 @@
 # Scheduling system for Cardoso Fontes polyclinic
-![NPM](https://img.shields.io/apm/l/react)
+[![NPM](https://img.shields.io/apm/l/react)](https://github.com/Pribm/Sistema_Agendamento_Policlinica/blob/main/LICENSE)
 ## About
 > This project sample was deployed using a free domain, some loading delays may occur. http://cfpneumologia.scienceontheweb.net/
 
