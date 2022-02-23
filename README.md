@@ -1,5 +1,12 @@
-# Scheduling system for Cardoso Fontes polyclinic
+<div align='center'>
+  <img src='https://raw.githubusercontent.com/Pribm/Sistema_Agendamento_Policlinica/main/app_agendamento/public/img/logo_cardoso_fontes.gif' alt='logo cardoso fontes'/>
+</div>
+
+
+<h1 align='center'>Scheduling system for Cardoso Fontes polyclinic</h1>
+
 [![NPM](https://img.shields.io/apm/l/react)](https://github.com/Pribm/Sistema_Agendamento_Policlinica/blob/main/LICENSE)
+
 ## About
 > This project sample was deployed using a free domain, some loading delays may occur. http://cfpneumologia.scienceontheweb.net/
 
