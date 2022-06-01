@@ -17,7 +17,7 @@
 ## Login
 > Taking in mind this application was developed for a hospital administrator to register other users, the login screen does not have a registration session. In order to access administrator page you must enter the following credentials:
 - login
-> adm<span>@teste.com.br
+> user<span>@teste.com.br
 - password
 > 123456
 
