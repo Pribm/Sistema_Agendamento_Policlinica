@@ -37,9 +37,8 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           
-          # Verificar se a chave privada foi criada corretamente
-          echo "Chave privada criada:"
-          cat ~/.ssh/id_rsa
+          # Adicionar o host à lista de conhecidos
+          ssh-keyscan -H ${H_HOST%%:*} >> ~/.ssh/known_hosts
 
           # Verificar variáveis de ambiente
           echo "H_HOST: $H_HOST"
