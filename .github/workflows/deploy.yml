@@ -1,0 +1,36 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+
+    - name: Install Composer dependencies
+      run: |
+        cd app_agendamento composer install --no-dev --optimize-autoloader
+
+    - name: Deploy to Hostinger
+      env:
+        H_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}   # Adicione este segredo
+        H_USER: ${{ secrets.HOSTINGER_SSH_USERNAME }}   # Adicione este segredo
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Chave privada do GitHub   # Adicione este segredo
+        H_DIR: '/public_html/seu_projeto'       # Caminho do seu projeto na Hostinger
+      run: |
+          mkdir -p ~/.ssh
+          echo "$HOSTINGER_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $HOSTINGER_SSH_HOST >> ~/.ssh/known_hosts
+          rsync -avz --delete ./ $HOSTINGER_SSH_USERNAME@$HOSTINGER_SSH_HOST:/home/seu_usuario/public_html/
