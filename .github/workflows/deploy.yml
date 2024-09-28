@@ -41,7 +41,7 @@ jobs:
           echo "Chave privada criada:"
           cat ~/.ssh/id_rsa
           
-          # Adicionar o host conhecido
+          echo "Adicionar o host conhecido"
           ssh-keyscan -H ${H_HOST%%:*} >> ~/.ssh/known_hosts
 
           # Verificar variáveis de ambiente
@@ -49,5 +49,5 @@ jobs:
           echo "H_USER: $H_USER"
           echo "H_DIR: $H_DIR"
 
-          # Sincronizar arquivos com rsync
+          echo "Sincronizar arquivos com rsync"
           rsync -avz --delete -e "ssh -p ${H_HOST##*:}" ./app_agendamento/ $H_USER@${H_HOST%%:*}:$H_DIR/ -vv
