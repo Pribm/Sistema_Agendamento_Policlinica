@@ -40,9 +40,6 @@ jobs:
           # Verificar se a chave privada foi criada corretamente
           echo "Chave privada criada:"
           cat ~/.ssh/id_rsa
-          
-          echo "Adicionar o host conhecido"
-          ssh-keyscan -H ${H_HOST%%:*} >> ~/.ssh/known_hosts
 
           # Verificar variáveis de ambiente
           echo "H_HOST: $H_HOST"
