@@ -20,17 +20,18 @@ jobs:
 
     - name: Install Composer dependencies
       run: |
-        cd app_agendamento composer install --no-dev --optimize-autoloader
+        cd app_agendamento
+        composer install --no-dev --optimize-autoloader
 
     - name: Deploy to Hostinger
       env:
         H_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}   # Adicione este segredo
         H_USER: ${{ secrets.HOSTINGER_SSH_USERNAME }}   # Adicione este segredo
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Chave privada do GitHub   # Adicione este segredo
-        H_DIR: '/public_html/seu_projeto'       # Caminho do seu projeto na Hostinger
+        H_DIR: '/home/seu_usuario/public_html/seu_projeto'  # Caminho do seu projeto na Hostinger
       run: |
           mkdir -p ~/.ssh
-          echo "$HOSTINGER_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H $HOSTINGER_SSH_HOST >> ~/.ssh/known_hosts
-          rsync -avz --delete ./ $HOSTINGER_SSH_USERNAME@$HOSTINGER_SSH_HOST:/home/seu_usuario/public_html/
+          ssh-keyscan -H ${H_HOST%%:*} >> ~/.ssh/known_hosts
+          rsync -avz --delete -e "ssh -p ${H_HOST##*:}" ./app_agendamento/ $H_USER@${H_HOST%%:*}:$H_DIR/
