@@ -28,7 +28,7 @@ jobs:
         H_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
         H_USER: ${{ secrets.HOSTINGER_SSH_USERNAME }}
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        H_DIR: '/home/seu_usuario/public_html/seu_projeto'  # Caminho do seu projeto na Hostinger
+        H_DIR: '/home/snow-loris-286275.hostingersite.com'  # Caminho do seu projeto na Hostinger
       run: |
           # Criar o diretório .ssh
           mkdir -p ~/.ssh
