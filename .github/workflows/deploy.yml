@@ -30,5 +30,6 @@ jobs:
             ARGS: "-rlgoDzvc -i --delete"
             SOURCE: "app_agendamento/"
             REMOTE_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
+            REMOTE_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
             REMOTE_USER: ${{ secrets.HOSTINGER_SSH_USERNAME }}
             TARGET: ${{ secrets.REMOTE_TARGET }}
