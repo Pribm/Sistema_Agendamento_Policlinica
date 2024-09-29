@@ -46,4 +46,4 @@ jobs:
           echo "H_DIR: $H_DIR"
 
           echo "Sincronizar arquivos com rsync"
-          rsync -avz --delete -e "ssh -p ${H_HOST##*:}" ./app_agendamento/ $H_USER@${H_HOST%%:*}:$H_DIR/ -vv
+          rsync -avz --delete -e "ssh -p 65002 ${H_USER}@${H_HOST}" ./app_agendamento/ ./domains/snow-loris-286275.hostingersite.com -vv
