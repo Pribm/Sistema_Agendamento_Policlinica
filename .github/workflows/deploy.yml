@@ -24,26 +24,11 @@ jobs:
         composer install --no-dev --optimize-autoloader
 
     - name: Deploy to Hostinger
-      env:
-        H_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
-        H_USER: ${{ secrets.HOSTINGER_SSH_USERNAME }}
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        H_DIR: '/snow-loris-286275.hostingersite.com'  # Caminho do seu projeto na Hostinger
-      run: |
-          # Criar o diretório .ssh
-          mkdir -p ~/.ssh
-          
-          # Colocar a chave privada no arquivo
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          
-          # Adicionar o host à lista de conhecidos
-          ssh-keyscan -H ${H_HOST%%:*} >> ~/.ssh/known_hosts
-
-          # Verificar variáveis de ambiente
-          echo "H_HOST: $H_HOST"
-          echo "H_USER: $H_USER"
-          echo "H_DIR: $H_DIR"
-
-          echo "Sincronizar arquivos com rsync"
-          rsync -avz --delete -e "ssh -p 65002 ${H_USER}@${H_HOST}" ./app_agendamento/ ./domains/snow-loris-286275.hostingersite.com -vv
+      uses: easingthemes/ssh-deploy@main
+      with:
+            SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            ARGS: "-rlgoDzvc -i --delete"
+            SOURCE: "app_agendamento/"
+            REMOTE_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
+            REMOTE_USER: ${{ secrets.HOSTINGER_SSH_USERNAME }}
+            TARGET: ${{ secrets.REMOTE_TARGET }}
