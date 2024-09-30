@@ -102,8 +102,9 @@
                     const diasDivArray = document.querySelectorAll('.day')
 
                     medicos.forEach(function(medico, index) {
+                        console.log(medico.nome)
                         $('#medico').append(`<option value='${medico.id}'>${medico.nome}</option>`)
-                        if (medico.id === document.querySelector('#medico').value) {
+                        if (medico.id === document.querySelector('#medico').value &&  medico.turnos !== null) {
                             medico.turnos.forEach(function(turno, index) {
                                 $('#horario').append(`<option value='${turno.horario_id}'>${turno.horario_label}</option>`)
                                 if (turno.horario_id === document.getElementById('horario').value) {
@@ -210,7 +211,8 @@
             $('#dias_disponiveis').html('')
             const diasDivArray = document.querySelectorAll('.day')
             lista_medicos.forEach(function(medico, index) {
-                if (medico.id === document.querySelector('#medico').value) {
+                if (medico.id === document.querySelector('#medico').value && medico.turnos !== null) {
+
                     medico.turnos.forEach(function(turno, index) {
                         if (turno.horario_id === document.getElementById('horario').value) {
                             let diasSemanaMedico = []

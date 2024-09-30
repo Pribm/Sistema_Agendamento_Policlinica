@@ -40,7 +40,7 @@
         }
 
         public function getFuncionario(){
-            $query = 'SELECT f.id,f.nome, f.id_setor, f.telefone, f.email, f.turnos, s.setor FROM funcionarios AS f JOIN setores AS s ON f.id_setor = s.id WHERE situacao = 1 AND f.id = :id';
+            $query = 'SELECT f.id,f.nome, f.id_setor, f.telefone, f.email, f.turnos, s.setor FROM funcionarios AS f JOIN setores AS s ON f.id_setor = s.id WHERE f.situacao = 1 AND f.id = :id';
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->execute();

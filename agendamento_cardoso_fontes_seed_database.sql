@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Tempo de geração: 13-Ago-2021 às 15:56
--- Versão do servidor: 10.4.19-MariaDB
--- versão do PHP: 8.0.6
+-- Host: 127.0.0.1:3306
+-- Generation Time: Sep 29, 2024 at 12:58 PM
+-- Server version: 10.11.8-MariaDB-cll-lve
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `agendamento_cardoso_fontes`
+-- Database: `u611050133_agendamento_cf`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `agendamentos`
+-- Table structure for table `agendamentos`
 --
 
 CREATE TABLE `agendamentos` (
@@ -38,32 +38,32 @@ CREATE TABLE `agendamentos` (
   `agendado_por` varchar(90) DEFAULT NULL,
   `extra` tinyint(4) DEFAULT NULL,
   `atendimento_realizado` tinyint(4) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `atendimentos_realizados`
+-- Table structure for table `atendimentos_realizados`
 --
 
 CREATE TABLE `atendimentos_realizados` (
   `id` int(11) NOT NULL,
   `id_agendamento` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `dias_de_atendimento`
+-- Table structure for table `dias_de_atendimento`
 --
 
 CREATE TABLE `dias_de_atendimento` (
   `id` int(11) NOT NULL,
   `dia` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `dias_de_atendimento`
+-- Dumping data for table `dias_de_atendimento`
 --
 
 INSERT INTO `dias_de_atendimento` (`id`, `dia`) VALUES
@@ -76,16 +76,16 @@ INSERT INTO `dias_de_atendimento` (`id`, `dia`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `estado_civil`
+-- Table structure for table `estado_civil`
 --
 
 CREATE TABLE `estado_civil` (
   `id` int(11) NOT NULL,
   `estado_civil` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `estado_civil`
+-- Dumping data for table `estado_civil`
 --
 
 INSERT INTO `estado_civil` (`id`, `estado_civil`) VALUES
@@ -98,7 +98,7 @@ INSERT INTO `estado_civil` (`id`, `estado_civil`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `funcionarios`
+-- Table structure for table `funcionarios`
 --
 
 CREATE TABLE `funcionarios` (
@@ -110,43 +110,43 @@ CREATE TABLE `funcionarios` (
   `senha` varchar(32) DEFAULT NULL,
   `situacao` tinyint(4) DEFAULT 1,
   `turnos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `funcionarios`
+-- Dumping data for table `funcionarios`
 --
 
 INSERT INTO `funcionarios` (`id`, `nome`, `id_setor`, `telefone`, `email`, `senha`, `situacao`, `turnos`) VALUES
-(1, 'Adm', 1, 'sem telefone', 'sem email', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL);
+(1, 'Adm', 1, 'sem telefone', 'user@teste.com.br', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `funcionario_horario`
+-- Table structure for table `funcionario_horario`
 --
 
 CREATE TABLE `funcionario_horario` (
   `id` int(11) NOT NULL,
   `id_funcionario` int(11) NOT NULL,
   `id_horario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `horarios`
+-- Table structure for table `horarios`
 --
 
 CREATE TABLE `horarios` (
   `id` int(11) NOT NULL,
   `horario` time DEFAULT NULL,
   `deletado` tinyint(4) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `horario_atendimentos`
+-- Table structure for table `horario_atendimentos`
 --
 
 CREATE TABLE `horario_atendimentos` (
@@ -156,12 +156,12 @@ CREATE TABLE `horario_atendimentos` (
   `atendimentos` int(11) NOT NULL,
   `extras` int(11) NOT NULL,
   `id_funcionario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `prontuario`
+-- Table structure for table `prontuario`
 --
 
 CREATE TABLE `prontuario` (
@@ -184,40 +184,41 @@ CREATE TABLE `prontuario` (
   `observacao` text DEFAULT NULL,
   `aberto_por` varchar(120) DEFAULT NULL,
   `data_criacao` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `setores`
+-- Table structure for table `setores`
 --
 
 CREATE TABLE `setores` (
   `id` int(11) NOT NULL,
-  `setor` varchar(80) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `setor` varchar(80) DEFAULT NULL,
+  `situacao` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `setores`
+-- Dumping data for table `setores`
 --
 
-INSERT INTO `setores` (`id`, `setor`) VALUES
-(1, 'Diretoria'),
-(2, 'Médico');
+INSERT INTO `setores` (`id`, `setor`, `situacao`) VALUES
+(1, 'Diretoria', 1),
+(2, 'Médico', 1);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `sexo`
+-- Table structure for table `sexo`
 --
 
 CREATE TABLE `sexo` (
   `id` int(11) NOT NULL,
   `sexo` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `sexo`
+-- Dumping data for table `sexo`
 --
 
 INSERT INTO `sexo` (`id`, `sexo`) VALUES
@@ -225,55 +226,55 @@ INSERT INTO `sexo` (`id`, `sexo`) VALUES
 (2, 'Feminino');
 
 --
--- Índices para tabelas despejadas
+-- Indexes for dumped tables
 --
 
 --
--- Índices para tabela `agendamentos`
+-- Indexes for table `agendamentos`
 --
 ALTER TABLE `agendamentos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `medico_id` (`medico_id`);
 
 --
--- Índices para tabela `atendimentos_realizados`
+-- Indexes for table `atendimentos_realizados`
 --
 ALTER TABLE `atendimentos_realizados`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `dias_de_atendimento`
+-- Indexes for table `dias_de_atendimento`
 --
 ALTER TABLE `dias_de_atendimento`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `estado_civil`
+-- Indexes for table `estado_civil`
 --
 ALTER TABLE `estado_civil`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `funcionarios`
+-- Indexes for table `funcionarios`
 --
 ALTER TABLE `funcionarios`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_setor` (`id_setor`);
 
 --
--- Índices para tabela `funcionario_horario`
+-- Indexes for table `funcionario_horario`
 --
 ALTER TABLE `funcionario_horario`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `horarios`
+-- Indexes for table `horarios`
 --
 ALTER TABLE `horarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `horario_atendimentos`
+-- Indexes for table `horario_atendimentos`
 --
 ALTER TABLE `horario_atendimentos`
   ADD PRIMARY KEY (`id`),
@@ -281,7 +282,7 @@ ALTER TABLE `horario_atendimentos`
   ADD KEY `id_funcionario` (`id_funcionario`);
 
 --
--- Índices para tabela `prontuario`
+-- Indexes for table `prontuario`
 --
 ALTER TABLE `prontuario`
   ADD PRIMARY KEY (`id`),
@@ -289,105 +290,105 @@ ALTER TABLE `prontuario`
   ADD KEY `id_sexo` (`id_sexo`);
 
 --
--- Índices para tabela `setores`
+-- Indexes for table `setores`
 --
 ALTER TABLE `setores`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `sexo`
+-- Indexes for table `sexo`
 --
 ALTER TABLE `sexo`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT de tabelas despejadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de tabela `agendamentos`
+-- AUTO_INCREMENT for table `agendamentos`
 --
 ALTER TABLE `agendamentos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `atendimentos_realizados`
+-- AUTO_INCREMENT for table `atendimentos_realizados`
 --
 ALTER TABLE `atendimentos_realizados`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `dias_de_atendimento`
+-- AUTO_INCREMENT for table `dias_de_atendimento`
 --
 ALTER TABLE `dias_de_atendimento`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de tabela `estado_civil`
+-- AUTO_INCREMENT for table `estado_civil`
 --
 ALTER TABLE `estado_civil`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT de tabela `funcionarios`
+-- AUTO_INCREMENT for table `funcionarios`
 --
 ALTER TABLE `funcionarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de tabela `funcionario_horario`
+-- AUTO_INCREMENT for table `funcionario_horario`
 --
 ALTER TABLE `funcionario_horario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `horarios`
+-- AUTO_INCREMENT for table `horarios`
 --
 ALTER TABLE `horarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `horario_atendimentos`
+-- AUTO_INCREMENT for table `horario_atendimentos`
 --
 ALTER TABLE `horario_atendimentos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `prontuario`
+-- AUTO_INCREMENT for table `prontuario`
 --
 ALTER TABLE `prontuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `setores`
+-- AUTO_INCREMENT for table `setores`
 --
 ALTER TABLE `setores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de tabela `sexo`
+-- AUTO_INCREMENT for table `sexo`
 --
 ALTER TABLE `sexo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Restrições para despejos de tabelas
+-- Constraints for dumped tables
 --
 
 --
--- Limitadores para a tabela `agendamentos`
+-- Constraints for table `agendamentos`
 --
 ALTER TABLE `agendamentos`
   ADD CONSTRAINT `agendamentos_ibfk_1` FOREIGN KEY (`medico_id`) REFERENCES `funcionarios` (`id`);
 
 --
--- Limitadores para a tabela `funcionarios`
+-- Constraints for table `funcionarios`
 --
 ALTER TABLE `funcionarios`
   ADD CONSTRAINT `funcionarios_ibfk_1` FOREIGN KEY (`id_setor`) REFERENCES `setores` (`id`);
 
 --
--- Limitadores para a tabela `prontuario`
+-- Constraints for table `prontuario`
 --
 ALTER TABLE `prontuario`
   ADD CONSTRAINT `prontuario_ibfk_1` FOREIGN KEY (`id_estado_civil`) REFERENCES `estado_civil` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

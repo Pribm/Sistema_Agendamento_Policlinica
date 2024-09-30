@@ -14,11 +14,11 @@
 
             $conn = new \PDO(
 
-                'mysql:dbname=agendamento_cardoso_fontes;host=127.0.0.1:3306; charset=utf8',
+                'mysql:dbname=u611050133_agendamento_cf;host=srv1041.hstgr.io; charset=utf8',
 
-                "root", 
+                "u611050133_root", 
 
-                "",
+                "Lker4nFM#.9U#qW",
 
                 array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 

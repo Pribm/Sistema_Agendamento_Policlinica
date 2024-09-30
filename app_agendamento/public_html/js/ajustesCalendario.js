@@ -6,7 +6,7 @@ $(document).ready(function () {
     $('#calendar').on('selectDate', function (event, newDate, oldDate) {
        let inputDay = document.getElementById('dia');
        inputDay.value = newDate
-       loader(true)
+     //  loader(true)
 
        document.querySelector('#dia_semana').value = formatDate(inputDay.value).getDay();
        $('#dias_disponiveis').html('')
@@ -27,7 +27,7 @@ $(document).ready(function () {
                                 data: {dia:newDate, medico_id: medicoSelecionado},
                                 dataType: "json",
                                 success: function (response) {
-                                    loader(false)
+                                  //  loader(false)
                                     let atendimentosTotais = (parseInt(dia.atendimentos) - parseInt(response[0]))
                                     $('#dias_disponiveis').html(`<p class='font-weight-bold text-uppercase text-success'>${dia.label_dia}-feira, ${atendimentosTotais} atendimentos</p>`)
                                     if (atendimentosTotais <= 0){

@@ -24,12 +24,12 @@
         </div>
 
         <div style="position: absolute; bottom: 5%; left: 50%; transform: translate(-50%, -50%); z-index: 2500;" id='alertContainer'>
-            
+
         </div>
 
         <!-- Modal de cadastro-->
         <div class="modal fade" id="modalcadastro" aria-hidden="true" role="dialog" style="z-index: 1400;">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog " role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Cadastro de funcionário</h5>
@@ -38,192 +38,202 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="form_cadastro">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="inputEmail4">Email</label>
-                                    <input name="email" type="email" class="form-control" id="email" placeholder="Email">
+                        <div id="form_cadastro_container">
+                            <form id="form_cadastro">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputEmail4">Email</label>
+                                        <input name="email" type="email" class="form-control" id="email" placeholder="Email">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputPassword4">Senha</label>
+                                        <input name="senha" type="password" class="form-control" id="password" placeholder="Password">
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="inputPassword4">Senha</label>
-                                    <input name="senha" type="password" class="form-control" id="password" placeholder="Password">
+                                <div class="form-group">
+                                    <label for="nomeCompleto">Nome Completo</label>
+                                    <input name="nome" type="text" class="form-control" placeholder="Insira o nome do funcionário" id='nome'>
                                 </div>
+                                <div class="form-row align-items-center">
+                                    <div class="form-group col-md-6">
+                                        <label for="telefone">Telefone</label>
+                                        <input name="telefone" type="text" class="form-control input_phone" placeholder="Telefone" id='telefone'>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="setor">Setor</label>
+                                        <select id="setores_select" class="form-control" name="id_setor">
+                                            <?php foreach ($this->view->setores as $key => $setor) { ?>
+                                                <option value=<?= $setor['id'] ?>><?= $setor['setor'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="dia_e_vagas">
+                                    <hr />
+
+                                    <div class="row mb-2 justify-content-center">
+                                        <div class="col-md-6">
+                                            <h5 class="text-center">Primeiro Horário</h5>
+
+                                            <select id="horarios_select mb-2" class="form-control" name="id_horario[]">
+                                                <option value='0'>------------------------</option>
+                                                <?php foreach ($this->view->horarios as $key => $h) { ?>
+                                                    <option value=<?= $h['id'] ?>><?= $h['horario'] ?></option>
+                                                <?php } ?>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <h5 class="text-center">Dias e número de vagas</h5>
+
+                                    <div class="row d-flex flex-nowrap">
+                                        <div class="d-flex flex-column align-items-center mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input onclick="EnableTextbox(this, 'inputSegunda')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="1">
+                                                    </div>
+                                                </div>
+                                                <input type="text" id='inputSegunda' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
+                                            </div>
+                                            <p>Segunda</p>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input onclick="EnableTextbox(this, 'inputTerca')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="2">
+                                                    </div>
+                                                </div>
+                                                <input type="text" id='inputTerca' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
+                                            </div>
+                                            <p>Terça</p>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center mb-3 mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input onclick="EnableTextbox(this, 'inputQuarta')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="3">
+                                                    </div>
+                                                </div>
+                                                <input type="text" id='inputQuarta' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
+                                            </div>
+                                            <p>Quarta</p>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input onclick="EnableTextbox(this, 'inputQuinta')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="4">
+                                                    </div>
+                                                </div>
+                                                <input type="text" id='inputQuinta' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
+                                            </div>
+                                            <p>Quinta</p>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input onclick="EnableTextbox(this, 'inputSexta')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="5">
+                                                    </div>
+                                                </div>
+                                                <input type="text" id='inputSexta' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
+                                            </div>
+                                            <p>Sexta</p>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+
+                                    <div class="row mb-2 justify-content-center">
+                                        <div class="col-md-6">
+                                            <h5 class="text-center">Segundo Horário</h5>
+
+                                            <select id="horarios_select mb-2" class="form-control" name="id_horario[]">
+                                                <option value='0'>------------------------</option>
+                                                <?php foreach ($this->view->horarios as $key => $h) { ?>
+                                                    <option value=<?= $h['id'] ?>><?= $h['horario'] ?></option>
+                                                <?php } ?>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <h5 class="text-center">Dias e número de vagas</h5>
+
+                                    <div class="row d-flex flex-nowrap">
+                                        <div class="d-flex flex-column align-items-center mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input type="checkbox" onclick="EnableTextbox(this, 'inputSegunda2')" aria-label="Checkbox for following text input" name='dia_semana2[]' value="1">
+                                                    </div>
+                                                </div>
+                                                <input id='inputSegunda2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                            </div>
+                                            <p>Segunda</p>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input onclick="EnableTextbox(this, 'inputTerca2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="2">
+                                                    </div>
+                                                </div>
+                                                <input id='inputTerca2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                            </div>
+                                            <p>Terça</p>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center mb-3 mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input onclick="EnableTextbox(this, 'inputQuarta2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="3">
+                                                    </div>
+                                                </div>
+                                                <input id='inputQuarta2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                            </div>
+                                            <p>Quarta</p>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input onclick="EnableTextbox(this, 'inputQuinta2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="4">
+                                                    </div>
+                                                </div>
+                                                <input id='inputQuinta2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                            </div>
+                                            <p>Quinta</p>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center mx-2">
+                                            <div class="input-group d-flex flex-row">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <input onclick="EnableTextbox(this, 'inputSexta2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="5">
+                                                    </div>
+                                                </div>
+                                                <input id='inputSexta2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
+                                            </div>
+                                            <p>Sexta</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+                                <input id='id_func' name='id' type='hidden' value='' />
+                            </form>
+                            <div class="d-flex justify-content-center">
+                                <button id='submit' form="form_cadastro" type="submit" class="btn btn-primary">Cadastrar</button>
                             </div>
-                            <div class="form-group">
-                                <label for="nomeCompleto">Nome Completo</label>
-                                <input name="nome" type="text" class="form-control" placeholder="Insira o nome do funcionário" id='nome'>
+                        </div>
+
+                        <div id="form_cadastro_loader" class="text-primary p-4 text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
                             </div>
-                            <div class="form-row align-items-center">
-                                <div class="form-group col-md-6">
-                                    <label for="telefone">Telefone</label>
-                                    <input name="telefone" type="text" class="form-control input_phone" placeholder="Telefone" id='telefone'>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="setor">Setor</label>
-                                    <select id="setores_select" class="form-control" name="id_setor">
-                                        <?php foreach ($this->view->setores as $key => $setor) { ?>
-                                            <option value=<?= $setor['id'] ?>><?= $setor['setor'] ?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <hr />
-
-                            <div class="row mb-2 justify-content-center">
-                                <div class="col-md-6">
-                                    <h5 class="text-center">Primeiro Horário</h5>
-
-                                    <select id="horarios_select mb-2" class="form-control" name="id_horario[]">
-                                        <option value='0'>------------------------</option>
-                                        <?php foreach ($this->view->horarios as $key => $h) { ?>
-                                            <option value=<?= $h['id'] ?>><?= $h['horario'] ?></option>
-                                        <?php } ?>
-
-                                    </select>
-                                </div>
-                            </div>
-
-                            <h5 class="text-center">Dias e número de vagas</h5>
-
-                            <div class="row d-flex flex-nowrap">
-                                <div class="d-flex flex-column align-items-center mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input onclick="EnableTextbox(this, 'inputSegunda')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="1">
-                                            </div>
-                                        </div>
-                                        <input type="text" id='inputSegunda' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
-                                    </div>
-                                    <p>Segunda</p>
-                                </div>
-                                <div class="d-flex flex-column align-items-center mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input onclick="EnableTextbox(this, 'inputTerca')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="2">
-                                            </div>
-                                        </div>
-                                        <input type="text" id='inputTerca' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
-                                    </div>
-                                    <p>Terça</p>
-                                </div>
-                                <div class="d-flex flex-column align-items-center mb-3 mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input onclick="EnableTextbox(this, 'inputQuarta')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="3">
-                                            </div>
-                                        </div>
-                                        <input type="text" id='inputQuarta' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
-                                    </div>
-                                    <p>Quarta</p>
-                                </div>
-                                <div class="d-flex flex-column align-items-center mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input onclick="EnableTextbox(this, 'inputQuinta')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="4">
-                                            </div>
-                                        </div>
-                                        <input type="text" id='inputQuinta' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
-                                    </div>
-                                    <p>Quinta</p>
-                                </div>
-                                <div class="d-flex flex-column align-items-center mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input onclick="EnableTextbox(this, 'inputSexta')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana1[]' value="5">
-                                            </div>
-                                        </div>
-                                        <input type="text" id='inputSexta' class="form-control" aria-label="Text input with checkbox" name='numero_vagas1[]' disabled>
-                                    </div>
-                                    <p>Sexta</p>
-                                </div>
-                            </div>
-
-                            <hr />
-
-                            <div class="row mb-2 justify-content-center">
-                                <div class="col-md-6">
-                                    <h5 class="text-center">Segundo Horário</h5>
-
-                                    <select id="horarios_select mb-2" class="form-control" name="id_horario[]">
-                                        <option value='0'>------------------------</option>
-                                        <?php foreach ($this->view->horarios as $key => $h) { ?>
-                                            <option value=<?= $h['id'] ?>><?= $h['horario'] ?></option>
-                                        <?php } ?>
-
-                                    </select>
-                                </div>
-                            </div>
-
-                            <h5 class="text-center">Dias e número de vagas</h5>
-
-                            <div class="row d-flex flex-nowrap">
-                                <div class="d-flex flex-column align-items-center mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" onclick="EnableTextbox(this, 'inputSegunda2')" aria-label="Checkbox for following text input" name='dia_semana2[]' value="1">
-                                            </div>
-                                        </div>
-                                        <input id='inputSegunda2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
-                                    </div>
-                                    <p>Segunda</p>
-                                </div>
-                                <div class="d-flex flex-column align-items-center mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input onclick="EnableTextbox(this, 'inputTerca2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="2">
-                                            </div>
-                                        </div>
-                                        <input id='inputTerca2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
-                                    </div>
-                                    <p>Terça</p>
-                                </div>
-                                <div class="d-flex flex-column align-items-center mb-3 mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input onclick="EnableTextbox(this, 'inputQuarta2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="3">
-                                            </div>
-                                        </div>
-                                        <input id='inputQuarta2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
-                                    </div>
-                                    <p>Quarta</p>
-                                </div>
-                                <div class="d-flex flex-column align-items-center mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input onclick="EnableTextbox(this, 'inputQuinta2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="4">
-                                            </div>
-                                        </div>
-                                        <input id='inputQuinta2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
-                                    </div>
-                                    <p>Quinta</p>
-                                </div>
-                                <div class="d-flex flex-column align-items-center mx-2">
-                                    <div class="input-group d-flex flex-row">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input onclick="EnableTextbox(this, 'inputSexta2')" type="checkbox" aria-label="Checkbox for following text input" name='dia_semana2[]' value="5">
-                                            </div>
-                                        </div>
-                                        <input id='inputSexta2' type="text" class="form-control" aria-label="Text input with checkbox" name='numero_vagas2[]' disabled>
-                                    </div>
-                                    <p>Sexta</p>
-                                </div>
-                            </div>
-                            <hr/>
-                            <input id='id_func' name='id' type='hidden' value=''/>
-                        </form>
-                        <div class="d-flex justify-content-center">
-                        <button id='submit' form="form_cadastro" type="submit" class="btn btn-primary">Cadastrar</button>
                         </div>
                     </div>
                 </div>
@@ -235,23 +245,23 @@
     <div class="modal fade" id="modalGeral" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="titleModal">Modal title</h5>
-            </div>
-            <div class="modal-body" id='modalGeralBody'>
-                <div id='modalGeralInputField'>
-
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleModal">Modal title</h5>
                 </div>
-                <div id='modalGeralTable'>
+                <div class="modal-body" id='modalGeralBody'>
+                    <div id='modalGeralInputField'>
 
+                    </div>
+                    <div id='modalGeralTable'>
+
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="document.location.reload(true)">Salvar</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="document.location.reload(true)">Salvar</button>
+                </div>
             </div>
         </div>
-        </div>
+    </div>
 
 
     <!----------------------Topo da Tabela-------------------------------------->
@@ -286,18 +296,20 @@
                 data: $(this).serialize(),
                 success: function(response) {
                     response = JSON.parse(response)
-                    if(response.Sucesso){
+                    if (response.Sucesso) {
                         let alert = '<div class="alert alert-success" role="alert">'
                         alert += response.Sucesso
                         alert += '</div>'
                         $('#alertContainer').append(alert);
-                        
-                        setTimeout(()=> {$('#alertContainer').html('')}, 1500)
+
+                        setTimeout(() => {
+                            $('#alertContainer').html('')
+                        }, 1500)
                         $('#modalcadastro').modal('hide')
                         listarRegistros();
                         limparCampos();
-                    }else{
-                        $('#alertContainer').append('<div class="alert alert-danger" role="alert">'+response.Erro+'</div>');
+                    } else {
+                        $('#alertContainer').append('<div class="alert alert-danger" role="alert">' + response.Erro + '</div>');
                     }
                 }
             });
@@ -346,15 +358,32 @@
         }
 
         function editarFuncionario(id) {
+
             $('#modalcadastro').modal('toggle')
+
+            $("#form_cadastro_container").hide()
+            $("#form_cadastro_loader").show()
+
             $('#id_func').val(id);
 
-            $.get("/lista_funcionarios", {id : id},
-                function (response, textStatus, jqXHR) {
-                   $('#email').val(response.email);
-                   $('#nome').val(response.nome);
-                   $('#telefone').val(response.telefone);
-                   $('#setores_select').val(response.id_setor)
+            $.get("/lista_funcionarios", {
+                    id: id
+                },
+                function(response, textStatus, jqXHR) {
+
+                    $("#form_cadastro_container").show()
+                    $("#form_cadastro_loader").hide()
+
+                    $('#email').val(response.email);
+                    $('#nome').val(response.nome);
+                    $('#telefone').val(response.telefone);
+                    $('#setores_select').val(response.id_setor)
+
+                    $("#dia_e_vagas").show()
+
+                    if (response.id_setor != 2) {
+                        $("#dia_e_vagas").hide()
+                    }
                 },
                 "json"
             );
@@ -363,33 +392,34 @@
             botaoModal.html('Alterar')
             botaoModal.addClass('btn-success');
 
-            
-            if($('#id_func').val() !== ''){
-                $('#form_cadastro').submit(function (e) { 
+
+            if ($('#id_func').val() !== '') {
+                $('#form_cadastro').submit(function(e) {
                     e.preventDefault();
                     $.ajax({
                         type: "post",
                         url: "cadastrar_funcionario",
                         data: $(this).serialize(),
                         dataType: "json",
-                        success: function (response) {
+                        success: function(response) {
+
                             $('#id_func').val('');
                             setTimeout(() => {
                                 $('#alertContainer').html('');
                             }, 2500);
                         }
-                    });   
+                    });
                 });
             }
         }
 
-        function cadastraHorarios(){
+        function cadastraHorarios() {
             let input = `<div class="input-group mb-3">`
-            input+=`<input type="text" id="horarioInput" class="form-control horarioInput" placeholder="Horário">`
-            input+=`<div class="input-group-append">`
-            input+=`<button class="btn btn-outline-primary" type="button" onclick='insereHora()'>Cadastrar</button>`
-            input+='</div>'
-            input+='</div>'
+            input += `<input type="text" id="horarioInput" class="form-control horarioInput" placeholder="Horário">`
+            input += `<div class="input-group-append">`
+            input += `<button class="btn btn-outline-primary" type="button" onclick='insereHora()'>Cadastrar</button>`
+            input += '</div>'
+            input += '</div>'
             $('#modalGeralInputField').html(input)
             let inputHora = new Cleave('.horarioInput', {
                 time: true,
@@ -402,106 +432,109 @@
             $('#modalGeral').modal('toggle')
         }
 
-        function insereHora(){
+        function insereHora() {
             $.ajax({
                 type: "post",
                 url: "/cadastra_horario",
-                data: {horario: ($('#horarioInput').val()+':00')},
+                data: {
+                    horario: ($('#horarioInput').val() + ':00')
+                },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     horariosTable()
                 }
             });
         }
 
-        function horariosTable(){
+        function horariosTable() {
             $.get("get_horarios",
-                function (data, textStatus, jqXHR) {
-                        let table = `<table class="table">`
-                        table+='<thead>'
-                        table+='<tr>'
-                        table+='<th class="text-center">#</th>'
-                        table+='<th class="text-center">Horario</th>'
-                        table+='<th class="text-center"></th>'
-                        table+='</tr>'
-                        table+='</thead>'
-                        table+='<tbody>'
+                function(data, textStatus, jqXHR) {
+                    let table = `<table class="table">`
+                    table += '<thead>'
+                    table += '<tr>'
+                    table += '<th class="text-center">#</th>'
+                    table += '<th class="text-center">Horario</th>'
+                    table += '<th class="text-center"></th>'
+                    table += '</tr>'
+                    table += '</thead>'
+                    table += '<tbody>'
                     data.horarios.forEach((horario, index) => {
-                        table+=`<tr>`
-                        table+=`<td scope="row" class="text-center">${index+1}</td>`
-                        table+=`<td class="text-center">${horario.horario}</td>`
-                        table+=`<td class="text-center"><button class="btn btn-primary" onclick='deletar_horario(${horario.id})'>Apagar</button></td>`
-                        table+=`</tr>`
+                        table += `<tr>`
+                        table += `<td scope="row" class="text-center">${index+1}</td>`
+                        table += `<td class="text-center">${horario.horario}</td>`
+                        table += `<td class="text-center"><button class="btn btn-primary" onclick='deletar_horario(${horario.id})'>Apagar</button></td>`
+                        table += `</tr>`
                     });
-                    table+='</tbody>'
-                    table+='</table>'
+                    table += '</tbody>'
+                    table += '</table>'
                     $('#modalGeralTable').html(table)
                 },
                 "json"
             );
         }
 
-        function cadastraSetores(){
+        function cadastraSetores() {
             $('#titleModal').html('Cadastrar Setor');
             let input = `<div class="input-group mb-3">`
-            input+=`<input type="text" id="setorInput" class="form-control setorInput" placeholder="Setor">`
-            input+=`<div class="input-group-append">`
-            input+=`<button class="btn btn-outline-primary" type="button" onclick='insereSetor()'>Cadastrar</button>`
-            input+='</div>'
-            input+='</div>'
+            input += `<input type="text" id="setorInput" class="form-control setorInput" placeholder="Setor">`
+            input += `<div class="input-group-append">`
+            input += `<button class="btn btn-outline-primary" type="button" onclick='insereSetor()'>Cadastrar</button>`
+            input += '</div>'
+            input += '</div>'
             $('#modalGeralInputField').html(input)
             setoresTable()
             $('#modalGeral').modal('toggle')
         }
 
-        function setoresTable(){
+        function setoresTable() {
             $.get("get_setores",
-                function (data, textStatus, jqXHR) {
-                        let table = `<table class="table">`
-                        table+='<thead>'
-                        table+='<tr>'
-                        table+='<th class="text-center">#</th>'
-                        table+='<th class="text-center">Setores</th>'
-                        table+='<th class="text-center"></th>'
-                        table+='</tr>'
-                        table+='</thead>'
-                        table+='<tbody>'
+                function(data, textStatus, jqXHR) {
+                    let table = `<table class="table">`
+                    table += '<thead>'
+                    table += '<tr>'
+                    table += '<th class="text-center">#</th>'
+                    table += '<th class="text-center">Setores</th>'
+                    table += '<th class="text-center"></th>'
+                    table += '</tr>'
+                    table += '</thead>'
+                    table += '<tbody>'
                     data.forEach((setor, index) => {
-                        table+=`<tr>`
-                        table+=`<td scope="row" class="text-center">${index+1}</td>`
-                        table+=`<td class="text-center">${setor.setor}</td>`
-                        table+=`<td class="text-center"><button class="btn btn-primary" onclick='deletar_setor(${setor.id})'>Apagar</button></td>`
-                        table+=`</tr>`
+                        table += `<tr>`
+                        table += `<td scope="row" class="text-center">${index+1}</td>`
+                        table += `<td class="text-center">${setor.setor}</td>`
+                        table += `<td class="text-center"><button class="btn btn-primary" onclick='deletar_setor(${setor.id})'>Apagar</button></td>`
+                        table += `</tr>`
                     });
-                    table+='</tbody>'
-                    table+='</table>'
+                    table += '</tbody>'
+                    table += '</table>'
                     $('#modalGeralTable').html(table)
                 },
                 "json"
             );
         }
 
-        function insereSetor(){
+        function insereSetor() {
             $.ajax({
                 type: "post",
                 url: "/cadastra_setor",
-                data: {setor: ($('#setorInput').val())},
+                data: {
+                    setor: ($('#setorInput').val())
+                },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     setoresTable()
                     $('#setorInput').val('');
                 }
             });
         }
 
-        function EnableTextbox(ObjChkId, inputId)
-        {
+        function EnableTextbox(ObjChkId, inputId) {
 
-           if (ObjChkId.checked === true){
-               document.querySelector('#'+inputId).disabled = false
-           }else{
-            document.querySelector('#'+inputId).disabled = true
-           }
+            if (ObjChkId.checked === true) {
+                document.querySelector('#' + inputId).disabled = false
+            } else {
+                document.querySelector('#' + inputId).disabled = true
+            }
         }
 
         function limparCampos() {
@@ -523,7 +556,7 @@
                 type: "get",
                 url: `/delete_horario?action=delete&id=${id}`,
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     horariosTable()
                 }
             });
@@ -534,7 +567,7 @@
                 type: "get",
                 url: `/delete_setor?action=delete&id=${id}`,
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     setoresTable()
                 }
             });

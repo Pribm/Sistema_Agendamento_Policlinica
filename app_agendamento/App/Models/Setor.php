@@ -16,7 +16,7 @@
         }
 
         public function read(){
-            $query = 'SELECT * from setores WHERE situacao != 1';
+            $query = 'SELECT * from setores WHERE situacao = 1';
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
